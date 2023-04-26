@@ -61,6 +61,50 @@ for (let i = 0; i < 8; i++) {
   cells[i].style.borderLeft = '1px dashed white';
 }
 
+
+// add event listener to each cell
+for (let i = 0; i < cells.length; i++) {
+  cells[i].addEventListener('click', function() {
+    // create popup window
+    let popup = window.open("", "My Popup", "width=500,height=500");
+
+    // insert custom HTML code
+    popup.document.write(`
+      <html>
+        <head>
+          <title>My Popup</title>
+        </head>
+        <body>
+          <div id="mint">
+            <div>
+              <label for="occupant">Occupant:</label>
+              <input type="text" id="occupant" name="occupant" required>&nbsp;&nbsp;<br>
+
+              <label for="epitaph">Epitaph:</label>
+              <input type="text" id="epitaph" name="epitaph" required>&nbsp;&nbsp;<br>
+
+              <label for="metadata">Metadata:</label>
+              <input type="text" id="metadata" name="metadata" required>&nbsp;&nbsp;<br>
+              <button id="mintNFTButton">Mint NFT</button>
+              <p id="status"></p>
+            </div>
+          </div>
+        </body>
+      </html>
+    `);
+
+    // close the popup window when the user clicks outside of it
+    popup.addEventListener('blur', function() {
+      popup.close();
+    });
+  });
+}
+
+
+
+
+
+
 // добавляем стили через тег style
 let style = document.createElement('style');
 style.innerHTML = `

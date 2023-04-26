@@ -69,6 +69,14 @@ a:link {
   }
 
 
+
+  .Popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+
   #mint {
     position: absolute;
     display: flex;
