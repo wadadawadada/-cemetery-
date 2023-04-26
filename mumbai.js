@@ -532,7 +532,7 @@ mintNFTButton.addEventListener("click", async () => {
         setStatus("Minting NFT...");
         await mintNFT(occupant, epitaph, metadata);
     } else {
-        setStatus("Please enter the occupant, epitaph, and metadata.");
+        setStatus("Please enter<br> the occupant,<br> epitaph, and metadata.");
     }
 });
 

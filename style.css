@@ -32,20 +32,7 @@ a:link {
     color: rgb(255, 255, 255);
   }
 
-  #wallet {
-    position: relative;
-    display: flex;
-    width: 200px;
-    height: 2vh;
-    text-align: center;
-    margin-top: 1vw;
-    margin-bottom: -vw;
-    margin-left: 62%;
-    padding: 0vw;
-   
-    
-    z-index: 20;
-  }
+  
 
 #logo {
     position: relative;
@@ -63,20 +50,41 @@ a:link {
   }
 
 
+
+
+  /* /////////////  MINTING  /////////////////////////////////////////////////// */
+  #wallet {
+    position: absolute;
+    display: flex;
+    width: 200px;
+    height: 2vh;
+    text-align: center;
+    margin-top: 1vw;
+    margin-bottom: 2vw;
+    margin-left: 75%;
+    padding: 0vw;
+   
+    
+    z-index: 20;
+  }
+
+
   #mint {
     position: absolute;
     display: flex;
-    width: 113vw;
+    width: 11vw;
     height: 120px;
     text-align: right;
-    margin-top: 1vw;
+    margin-top: 5vw;
     margin-bottom: -1vw;
-    margin-left: 58%;
+    margin-left: 70%;
     padding: 0vw;
     z-index: 9;
+    border: 1px solid rgb(255, 255, 255);
   }
 
 #occupant {
+  margin-top: 5px;
   width: 80px;
   height: 20px;
 }
@@ -92,11 +100,24 @@ a:link {
 }
 
 #mintNFTButton {
+  background-color: #000000; /* Green */
+  border: solid 1px;
+  color: white;
   width: 80px;
-  height: 20px;
+  height: 30px;
   font-size: small;
-  
+  margin-top: 4px;
+  margin-bottom: 4px;
+  margin-right: 19px;
 }
+
+#status{
+  color: aqua;
+  padding: 2vw;
+}
+
+/* //////////////////////////////////////////////////////////////////////////// */
+
 
   #skel {
     position: absolute;
@@ -161,3 +182,6 @@ table {
   td:hover {
     background-color: green;
   }
+
+
+  
