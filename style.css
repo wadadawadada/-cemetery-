@@ -41,7 +41,7 @@ a:link {
     margin-top: 1vw;
     margin-bottom: -vw;
     margin-left: 62%;
-    padding: 1vw;
+    padding: 0vw;
    
     
     z-index: 20;
@@ -51,7 +51,7 @@ a:link {
     position: relative;
     display: flex;
     width: 200px;
-    height: 2vh;
+    height: 1vh;
     text-align: center;
     margin-top: 1vw;
     margin-bottom: -4vw;
@@ -137,3 +137,7 @@ table {
     max-height: 800px;
   }
   
+
+  td:hover {
+    background-color: green;
+  }

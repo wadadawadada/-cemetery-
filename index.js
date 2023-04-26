@@ -64,14 +64,18 @@ for (let i = 0; i < 8; i++) {
 // добавляем стили через тег style
 let style = document.createElement('style');
 style.innerHTML = `
-  td {
-    font-size: 28px;
-    
-  }
+td {
+  font-size: 28px;
+  
+}
 
-  td > a {
-    font-size: 10px;
-  }
+td > a {
+  font-size: 10px;
+}
+
+td:hover {
+  background-color: green;
+}
 `;
 document.head.appendChild(style);
 
