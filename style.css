@@ -32,11 +32,24 @@ a:link {
     color: rgb(255, 255, 255);
   }
 
+  #wallet {
+    position: relative;
+    display: flex;
+    width: 200px;
+    height: 2vh;
+    text-align: center;
+    margin-top: 1vw;
+    margin-bottom: -4vw;
+    margin-left: 45%;
+    padding: 1vw;
+   
+    
+    z-index: 10;
+  }
 
 #logo {
     position: relative;
     display: flex;
-    pointer-events: none;   /* this element will not catch any events */
     width: 200px;
     height: 2vh;
     text-align: center;
