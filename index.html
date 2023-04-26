@@ -6,12 +6,9 @@
 	<title>crypto cemetery yo</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4-rc.1/web3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+  <script src="mumbai.js" defer></script>
 </head>
-
-
-
-
-
 
 
 <body>
@@ -53,6 +50,26 @@ async function connect() {
     <div id="logo">
         crypt0_cemetery v1.0
       </div>
+
+
+ <div id="mint">
+       <div>
+        <label for="occupant">Occupant:</label>
+        <input type="text" id="occupant" name="occupant" required>
+    </div>
+    <div>
+        <label for="epitaph">Epitaph:</label>
+        <input type="text" id="epitaph" name="epitaph" required>
+    </div>
+    <div>
+        <label for="metadata">Metadata:</label>
+        <input type="text" id="metadata" name="metadata" required>
+    </div>
+      <button id="mintNFTButton">Mint NFT</button>
+      <p id="status"></p>
+      </div>
+
+
 
       <div id="skel">
         <img src="skel.gif">
