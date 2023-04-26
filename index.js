@@ -161,3 +161,5 @@ function showMintWindow() {
   // добавляем элементы на страницу
   document.body.appendChild(overlay);
 }
+
+
