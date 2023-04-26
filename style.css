@@ -69,33 +69,28 @@ a:link {
   }
 
 
-
-  .Popup {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-}
-
+  
 
   #mint {
     position: absolute;
     display: flex;
-    width: 11vw;
-    height: 120px;
+    width: 500px;
+    height: 500px;
     text-align: right;
     margin-top: 5vw;
     margin-bottom: -1vw;
-    margin-left: 70%;
+    margin-left: 28%;
     padding: 0vw;
     z-index: 9;
     border: 1px solid rgb(255, 255, 255);
+    
   }
 
 #occupant {
   margin-top: 5px;
   width: 80px;
   height: 20px;
-  margin-left: 7px;
+  padding: 0vw;
 }
 
 #epitaph {

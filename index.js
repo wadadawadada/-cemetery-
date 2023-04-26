@@ -21,10 +21,22 @@ for (let i = 0; i < 8; i++) {
     let wallet = "0x..." + walletNumber.toString(16) + "9e8"; // заменяем уникальный текст ссылки на кошелек
 
     // создаем ссылку на кошелек
-    let link = document.createElement('a');
-    link.href = 'https://etherscan.io/address/' + wallet;
-    link.appendChild(document.createTextNode(wallet)); // добавляем номер кошелька в текст ссылки
-    link.setAttribute('target', '_blank');
+    let link;
+if (i < 1 && j < 15) {
+  // создаем кнопку "BURY"
+  link = document.createElement('button');
+  link.textContent = "BURY";
+  link.addEventListener('click', function() {
+    // показываем окно
+    showMintWindow();
+  });
+} else {
+  // создаем ссылку на кошелек
+  link = document.createElement('a');
+  link.href = 'https://etherscan.io/address/' + wallet;
+  link.appendChild(document.createTextNode(wallet));
+  link.setAttribute('target', '_blank');
+}
 
     // добавляем символ и ссылку в ячейку
     cell.appendChild(skull);
@@ -62,47 +74,6 @@ for (let i = 0; i < 8; i++) {
 }
 
 
-// add event listener to each cell
-for (let i = 0; i < cells.length; i++) {
-  cells[i].addEventListener('click', function() {
-    // create popup window
-    let popup = window.open("", "My Popup", "width=500,height=500");
-
-    // insert custom HTML code
-    popup.document.write(`
-      <html>
-        <head>
-          <title>My Popup</title>
-        </head>
-        <body>
-          <div id="mint">
-            <div>
-              <label for="occupant">Occupant:</label>
-              <input type="text" id="occupant" name="occupant" required>&nbsp;&nbsp;<br>
-
-              <label for="epitaph">Epitaph:</label>
-              <input type="text" id="epitaph" name="epitaph" required>&nbsp;&nbsp;<br>
-
-              <label for="metadata">Metadata:</label>
-              <input type="text" id="metadata" name="metadata" required>&nbsp;&nbsp;<br>
-              <button id="mintNFTButton">Mint NFT</button>
-              <p id="status"></p>
-            </div>
-          </div>
-        </body>
-      </html>
-    `);
-
-    // close the popup window when the user clicks outside of it
-    popup.addEventListener('blur', function() {
-      popup.close();
-    });
-  });
-}
-
-
-
-
 
 
 // добавляем стили через тег style
@@ -126,4 +97,67 @@ document.head.appendChild(style);
 // добавляем функцию для вывода номера кошелька из смарт-контракта
 function getWalletNumber(position) {
   return "0x..." + position.toString(16) + "9e8";
+}
+
+
+
+
+function showMintWindow() {
+  // создаем элементы формы
+  let form = document.createElement('div');
+  form.innerHTML = `
+ 
+<html>
+<head>
+    
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4-rc.1/web3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+  <script src="/mumbai.js" defer></script>
+</head>
+
+
+<body>
+  
+
+ <div id="mint">
+       <div>
+        <label for="occupant">Occupant:</label>
+        <input type="text" id="occupant" name="occupant" required>&nbsp;&nbsp;<br>
+   
+        <label for="epitaph">Epitaph:</label>
+        <input type="text" id="epitaph" name="epitaph" required>&nbsp;&nbsp;<br>
+        
+        <label for="metadata">Metadata:</label>
+        <input type="text" id="metadata" name="metadata" required>&nbsp;&nbsp;<br>
+        <button id="mintNFTButton">Mint NFT</button>
+        <p id="status"></p>
+      </div>
+      
+      
+      </div>
+
+</body>
+</html>
+
+  `;
+  form.id = 'mint';
+
+  // создаем фоновый элемент для затемнения фона
+  let overlay = document.createElement('div');
+  overlay.style.position = 'fixed';
+  overlay.style.top = '0';
+  overlay.style.left = '0';
+  overlay.style.width = '100%';
+  overlay.style.height = '100%';
+  overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+  overlay.style.zIndex = '9999';
+  overlay.appendChild(form);
+  // добавляем обработчик нажатия на кнопку "Mint NFT"
+  let mintNFTButton = form.querySelector('#mintNFTButton');
+  mintNFTButton.addEventListener('click', function() {
+    // добавляем код для создания NFT
+  });
+
+  // добавляем элементы на страницу
+  document.body.appendChild(overlay);
 }
