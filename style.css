@@ -10,6 +10,10 @@ body {
   overflow: visible; /* arooooooooo */
 }
 
+::-webkit-scrollbar {
+  width: 0;
+}
+
 a:link {
     color: rgb(255, 255, 255);
   }
@@ -206,7 +210,7 @@ table {
   
 
   td:hover {
-    background-color: green;
+    background-color: rgba(0, 0, 170, 1);
   }
 
 .modal-style {
