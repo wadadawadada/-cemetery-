@@ -1,169 +1,647 @@
-let table = document.createElement('table');
+////////////////
+// jahhweh index.js inna version
+////////////////
 
-// создаем тело таблицы
-let tableBody = document.createElement('tbody');
+const contractAddress = "0x0a1c9d130f3852ef0e03265027661B47cb878268";
+const abi = [
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "approved",
+				"type": "bool"
+			}
+		],
+		"name": "ApprovalForAll",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "occupant",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "epitaph",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "metadata",
+				"type": "string"
+			}
+		],
+		"name": "Buried",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "occupant",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "epitaph",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "metadata",
+				"type": "string"
+			}
+		],
+		"name": "mint",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransferred",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "ids",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "amounts",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "bytes",
+				"name": "data",
+				"type": "bytes"
+			}
+		],
+		"name": "safeBatchTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes",
+				"name": "data",
+				"type": "bytes"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "approved",
+				"type": "bool"
+			}
+		],
+		"name": "setApprovalForAll",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "newURI",
+				"type": "string"
+			}
+		],
+		"name": "setURI",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256[]",
+				"name": "ids",
+				"type": "uint256[]"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256[]",
+				"name": "values",
+				"type": "uint256[]"
+			}
+		],
+		"name": "TransferBatch",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "TransferSingle",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "value",
+				"type": "string"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "URI",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "withdraw",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address[]",
+				"name": "accounts",
+				"type": "address[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "ids",
+				"type": "uint256[]"
+			}
+		],
+		"name": "balanceOfBatch",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			}
+		],
+		"name": "isApprovedForAll",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "MINT_COST",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes4",
+				"name": "interfaceId",
+				"type": "bytes4"
+			}
+		],
+		"name": "supportsInterface",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "tokenDetails",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "occupant",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "epitaph",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "metadata",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "uri",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
 
-// создаем ячейки таблицы
-for (let i = 0; i < 8; i++) {
-  // создаем строку
-  let row = document.createElement('tr');
-  for (let j = 0; j < 8; j++) {
-    // создаем ячейку
-    let cell = document.createElement('td');
-
-    // создаем символ черепа
-    let skull = document.createTextNode('☠');
-
- 
-
-    // получаем номер кошелька из смарт-контракта
-    let walletNumber = i * 8 + j + 1;
-    let wallet = "0x..." + walletNumber.toString(16) + "9e8"; // заменяем уникальный текст ссылки на кошелек
-
-    // создаем ссылку на кошелек
-    let link;
-if (i < 1 && j < 15) {
-  // создаем кнопку "BURY"
-  link = document.createElement('button');
-  link.textContent = "BURY";
-  link.addEventListener('click', function() {
-    // показываем окно
-    showMintWindow();
-  });
-} else {
-  // создаем ссылку на кошелек
-  link = document.createElement('a');
-  link.href = 'https://etherscan.io/address/' + wallet;
-  link.appendChild(document.createTextNode(wallet));
-  link.setAttribute('target', '_blank');
-}
-
-    // добавляем символ и ссылку в ячейку
-    cell.appendChild(skull);
-    cell.appendChild(document.createElement('br')); // добавляем перенос строки
-    cell.appendChild(link);
-
-    // добавляем ячейку в строку
-    row.appendChild(cell);
-  }
-  // добавляем строку в тело таблицы
-  tableBody.appendChild(row);
-}
-
-// добавляем тело таблицы в таблицу
+const table = document.createElement("table");
+const tableBody = document.createElement("tbody");
 table.appendChild(tableBody);
+document.getElementById("container").appendChild(table);
 
-// добавляем таблицу в контейнер
-document.getElementById('container').appendChild(table);
-
-// задаем стиль для ячеек таблицы
-let cells = document.querySelectorAll('td');
-for (let i = 0; i < cells.length; i++) {
-  cells[i].style.border = '1px dashed white';
-}
-
-// задаем стиль для горизонтальных линий
-let rows = document.querySelectorAll('tr');
-for (let i = 0; i < rows.length; i++) {
-  rows[i].style.borderBottom = '1px dashed white';
-}
-
-// задаем стиль для вертикальных линий
-for (let i = 0; i < 8; i++) {
-  cells[i].style.borderLeft = '1px dashed white';
-}
-
-
-
-
-// добавляем стили через тег style
-let style = document.createElement('style');
-style.innerHTML = `
-td {
-  font-size: 28px;
-  
-}
-
-td > a {
-  font-size: 10px;
-}
-
-td:hover {
-  background-color: green;
-}
-`;
-document.head.appendChild(style);
-
-// добавляем функцию для вывода номера кошелька из смарт-контракта
 function getWalletNumber(position) {
   return "0x..." + position.toString(16) + "9e8";
 }
 
-
-
-
-
-
-
-let link = document.createElement('a');
-link.href = '#';
-link.textContent = 'BURY';
-link.addEventListener('click', function(e) {
-  e.preventDefault();
-  // показываем окно
-  showMintWindow();
-});
-
-
-
-
-function showMintWindow() {
-  window.open('mint.html', 'Mint', 'width=400, height=300');
+async function loadWeb3() {
+  if (window.ethereum) {
+    window.web3 = new Web3(window.ethereum);
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+  } else {
+    alert("Please install MetaMask to use this site.");
+  }
 }
 
-function showMintWindow() {
-  // create a new div element
-  let mintDiv = document.createElement('div');
-  mintDiv.style.position = 'absolute';
-  mintDiv.style.top = '0';
-  mintDiv.style.left = '0';
-  mintDiv.style.width = '100%';
-  mintDiv.style.height = '100%';
-  mintDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // semi-transparent black color
-  mintDiv.style.zIndex = '100'; // set z-index to be above the canvas
+async function loadBlockchainData() {
+  const web3 = window.web3;
+  const accounts = await web3.eth.getAccounts();
+  window.account = accounts[0];
+  window.contract = new web3.eth.Contract(abi, contractAddress);
 
-  // load the content of mint.html into the div
-  let xhr = new XMLHttpRequest();
-  xhr.open('GET', 'mint.html', true);
-  xhr.onload = function() {
-    if (this.status == 200) {
-      mintDiv.innerHTML = this.responseText;
-    }
-  };
-  xhr.send();
-
-  // append the div to the document body
-  document.body.appendChild(mintDiv);
+  document.getElementById("address").textContent = `Connected Address: ${window.account}`;
 }
 
+function showModal() {
+  const modal = document.getElementById("modal");
+  modal.style.display = "block";
+}
 
-let mintBtn = document.getElementById('mintNFTButton');
+function hideModal() {
+  const modal = document.getElementById("modal");
+  modal.style.display = "none";
+}
 
-mintBtn.addEventListener('click', function() {
-  // отправляем запрос на сервер
-  let xhr = new XMLHttpRequest();
-  xhr.open('POST', '/mint.html', true);
-  xhr.onload = function() {
-    if (this.status == 200) {
-      // выводим сообщение об успешной майнтинге
-      alert('NFT успешно создан!');
-    } else {
-      // выводим сообщение об ошибке
-      alert('Произошла ошибка: ' + this.statusText);
-    }
-  };
-  xhr.send();
+async function mintNFT(occupant, epitaph, metadata) {
+  try {
+    const MINT_COST = window.web3.utils.toWei("0.01", "ether");
+    await window.contract.methods.mint(occupant, epitaph, metadata)
+      .send({ from: window.account, value: MINT_COST });
+
+    setStatus("Successfully minted NFT!");
+  } catch (error) {
+    console.error(error);
+    setStatus("Error minting NFT.");
+  }
+}
+
+function setStatus(message) {
+  const status = document.getElementById("status");
+  status.innerHTML = message;
+}
+
+async function initApp() {
+  await loadWeb3();
+  await loadBlockchainData();
+}
+
+initApp();
+
+async function handleButtonClick(event) {
+  showModal();
+}
+
+function closeModal() {
+  const modal = document.getElementById("modal");
+  modal.style.display = "none";
+}
+
+document.getElementById("submitModal").addEventListener("click", async () => {
+  const occupant = document.getElementById("modalOccupant").value;
+  const epitaph = document.getElementById("modalEpitaph").value;
+  const metadata = document.getElementById("modalMetadata").value;
+
+  if (occupant && epitaph && metadata) {
+    setStatus("Minting NFT...");
+    await mintNFT(window.account, occupant, epitaph, metadata);
+    hideModal();
+  } else {
+    setStatus("Please enter the occupant, epitaph, and metadata.");
+  }
 });
 
+document.getElementById("closeModal").addEventListener("click", closeModal);
 
+window.addEventListener('click', (event) => {
+  if (event.target == document.getElementById('modal-body')) {
+    closeModal();
+  }
+});
 
+// Create and append table
+function createAndAppendTable() {
+  for (let i = 0; i < 8; i++) {
+    const row = document.createElement("tr");
+
+    for (let j = 0; j < 8; j++) {
+      const cell = document.createElement("td");
+      const skull = document.createTextNode("☠");
+      const walletNumber = i * 8 + j + 1;
+      const wallet = getWalletNumber(walletNumber);
+
+      let link;
+      if (i < 1 && j < 15) {
+        link = document.createElement("button");
+        link.textContent = "BURY";
+        link.addEventListener("click", handleButtonClick);
+      } else {
+        link = document.createElement("a");
+        link.href = "https://etherscan.io/address/" + wallet;
+        link.appendChild(document.createTextNode(wallet));
+        link.setAttribute("target", "_blank");
+      }
+
+      cell.appendChild(skull);
+      cell.appendChild(document.createElement("br"));
+      cell.appendChild(link);
+      row.appendChild(cell);
+    }
+    tableBody.appendChild(row);
+  }
+}
+
+createAndAppendTable();
+
+const cells = document.querySelectorAll("td");
+cells.forEach((cell) => {
+  cell.style.border = "1px dashed white";
+});
+
+const rows = document.querySelectorAll("tr");
+rows.forEach((row) => {
+  row.style.borderBottom = "1px dashed white";
+});
+
+for (let i = 0; i < 8; i++) {
+  cells[i].style.borderLeft = "1px dashed white";
+}
+
+const style = document.createElement("style");
+style.innerHTML = `
+  td {
+    font-size: 28px;
+  }
+  td > a {
+    font-size: 10px;
+  }
+  td:hover {
+    background-color: green;
+  }
+`;
+document.head.appendChild(style);
