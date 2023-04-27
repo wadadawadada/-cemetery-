@@ -38,7 +38,7 @@ a:link {
     height: 1vh;
     text-align: center;
     margin-top: 1vw;
-    margin-bottom: -4vw;
+    margin-bottom: -vw;
     margin-left: 25%;
     padding: 1vw;
     border: 1px solid rgb(255, 255, 255);
@@ -83,20 +83,20 @@ a:link {
     
   }
 
-#occupant {
+  #modalOccupant {
   margin-top: 5px;
-  width: 80px;
+  width: 280px;
   height: 20px;
-  padding: 0vw;
+  
 }
 
-#epitaph {
-  width: 80px;
+#modalEpitaph {
+  width: 280px;
   height: 20px;
 }
 
-#metadata {
-  width: 80px;
+#modalMetadata {
+  width: 280px;
   height: 20px;
 }
 
@@ -114,7 +114,8 @@ a:link {
 
 #status{
   color: aqua;
-  padding: 2vw;
+  padding: 1vw;
+  text-align: right;
 }
 
 /* //////////////////////////////////////////////////////////////////////////// */
@@ -135,8 +136,30 @@ a:link {
   }
 
 
+#adstat{
 
+  /* position: relative; */
+  display: flex;
+  width: 50vw;
+  height: 50vw;
+  max-width: 800px;
+  max-height: 10px;
+  text-align: center;
+  margin-top: 1vw;
+  margin-bottom: -4vw;
+  margin-left: 25%;
+  margin-right: 25%;
+  padding: 1vw;
+  border: 1px solid rgb(255, 255, 255);
+  font-size: large;
+  /* z-index: 2; */
+  background-color: #0000009d;
+  align-items: center;
+  justify-content: center; /* выравнивание по горизонтали */
+    align-items: center; /* выравнивание по вертикали */
+    font-size: 10px;
 
+}
 
 #container {
   /* position: relative; */
@@ -155,6 +178,8 @@ a:link {
   /* z-index: 2; */
   background-color: #0000009d;
   align-items: center;
+  justify-content: center; /* выравнивание по горизонтали */
+    align-items: center; /* выравнивание по вертикали */
  
 }
 
@@ -189,10 +214,14 @@ table {
   position: fixed; 
   top: 50%; 
   left: 50%; 
+  width: 400px; 
+  height: 200px;
   transform: translate(-50%, -50%); 
-  background-color: rgb(102, 102, 102); 
+  background-color: rgba(0, 0, 0, 0.863); 
   padding: 20px;
-  text-align: center;
+  text-align: right;
+  border: 1px solid white;
+  
 }
 
 .modal-close {
