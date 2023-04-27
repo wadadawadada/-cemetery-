@@ -101,3 +101,69 @@ function getWalletNumber(position) {
 
 
 
+
+
+
+
+let link = document.createElement('a');
+link.href = '#';
+link.textContent = 'BURY';
+link.addEventListener('click', function(e) {
+  e.preventDefault();
+  // показываем окно
+  showMintWindow();
+});
+
+
+
+
+function showMintWindow() {
+  window.open('mint.html', 'Mint', 'width=400, height=300');
+}
+
+function showMintWindow() {
+  // create a new div element
+  let mintDiv = document.createElement('div');
+  mintDiv.style.position = 'absolute';
+  mintDiv.style.top = '0';
+  mintDiv.style.left = '0';
+  mintDiv.style.width = '100%';
+  mintDiv.style.height = '100%';
+  mintDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // semi-transparent black color
+  mintDiv.style.zIndex = '100'; // set z-index to be above the canvas
+
+  // load the content of mint.html into the div
+  let xhr = new XMLHttpRequest();
+  xhr.open('GET', 'mint.html', true);
+  xhr.onload = function() {
+    if (this.status == 200) {
+      mintDiv.innerHTML = this.responseText;
+    }
+  };
+  xhr.send();
+
+  // append the div to the document body
+  document.body.appendChild(mintDiv);
+}
+
+
+let mintBtn = document.getElementById('mintNFTButton');
+
+mintBtn.addEventListener('click', function() {
+  // отправляем запрос на сервер
+  let xhr = new XMLHttpRequest();
+  xhr.open('POST', '/mint.html', true);
+  xhr.onload = function() {
+    if (this.status == 200) {
+      // выводим сообщение об успешной майнтинге
+      alert('NFT успешно создан!');
+    } else {
+      // выводим сообщение об ошибке
+      alert('Произошла ошибка: ' + this.statusText);
+    }
+  };
+  xhr.send();
+});
+
+
+
