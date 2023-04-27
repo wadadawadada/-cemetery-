@@ -168,8 +168,8 @@ a:link {
 #container {
   /* position: relative; */
   display: flex;
-  width: 50vw;
-  height: 50vw;
+  width: 100%; 
+  height: 100%;
   max-width: 800px;
   max-height: 800px;
   text-align: center;
@@ -238,3 +238,4 @@ table {
   border: 1px solid white;
 }
   
+
