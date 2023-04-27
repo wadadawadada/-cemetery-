@@ -640,8 +640,8 @@ style.innerHTML = `
   td > a {
     font-size: 10px;
   }
-  td:hover {
-    background-color: green;
-  }
+//   td:hover {
+//     background-color: blue;
+//   }
 `;
 document.head.appendChild(style);

@@ -206,11 +206,12 @@ table {
     margin: auto;
     max-width: 800px;
     max-height: 800px;
+    
   }
   
 
   td:hover {
-    background-color: rgba(0, 0, 170, 1);
+    background-color: rgb(2, 10, 119);
   }
 
 .modal-style {
@@ -232,5 +233,8 @@ table {
   position: absolute; 
   right: 10px; 
   top: 10px;
+  background-color: rgba(0, 0, 0, 0.863); 
+  color: #FFFFFF;
+  border: 1px solid white;
 }
   
