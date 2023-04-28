@@ -520,6 +520,8 @@ const abi = [
   },
 ];
 
+//////////
+
 const table = document.createElement("table");
 const tableBody = document.createElement("tbody");
 table.appendChild(tableBody);
@@ -528,42 +530,48 @@ document.getElementById("container-jahhweh").appendChild(table);
 const buttonsContainer = document.createElement("div");
 const nextButton = document.createElement("button");
 const prevButton = document.createElement("button");
-const tableNumber = document.createElement("span");
+const cemeteryNumber = document.createElement("span");
 const goButton = document.createElement("button");
-const tableNumberInput = document.createElement("input");
+const cemeteryNumberInput = document.createElement("input");
 
 nextButton.textContent = "NEXT";
 prevButton.textContent = "PREV";
 goButton.textContent = "GO";
-tableNumberInput.type = "number";
-tableNumberInput.min = 1;
+cemeteryNumberInput.type = "number";
+cemeteryNumberInput.min = 1;
 
 buttonsContainer.appendChild(prevButton);
-buttonsContainer.appendChild(tableNumber);
+buttonsContainer.appendChild(cemeteryNumber);
 buttonsContainer.appendChild(nextButton);
-buttonsContainer.appendChild(tableNumberInput);
+buttonsContainer.appendChild(cemeteryNumberInput);
 buttonsContainer.appendChild(goButton);
 
 document.getElementById("gravenav").appendChild(buttonsContainer);
 
 const style = document.createElement("style");
-style.innerHTML = ` 
-  td, tr {
-    border: 1px dashed white;
-  }
-  td {
-    font-size: 28px;
-    padding: 4px;
-  }
-  td > button {
-    font-size: 10px;
-  }
-  .close-details-modal-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-  }
+style.innerHTML = `
+    td, tr {
+      border: 1px dashed white;
+    }
+    td {
+      font-size: 28px;
+      padding: 4px;
+    }
+    td > button {
+      font-size: 10px;
+    }
+    .close-details-modal-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+    .grave:hover {
+      background-color: rgb(119, 2, 2);
+    }
+    .bury:hover {
+      background-color: rgb(2, 10, 119);
+    }
 `;
 document.head.appendChild(style);
 
@@ -619,23 +627,20 @@ function hideDetailsModal() {
 }
 
 async function getNFTDetails(graveNumber) {
-	console.log("graveNumber: ", graveNumber);
-  
-	try {
-	  const nftDetails = await window.contract.methods
-		.tokenDetails(graveNumber)
-		.call();
-  
-	  const tokenDetailsElement = document.getElementById("tokenDetailsModal");
-	  // Reset tokenDetailsElement every time GRAVE button is clicked
-	  tokenDetailsElement.innerHTML = '';
-  
-	  // Add Close button
-	  const closeDetailsModalButton = document.createElement("div");
-	  closeDetailsModalButton.classList.add("close-details-modal-button");
-	  closeDetailsModalButton.innerText = "X";
-	  closeDetailsModalButton.addEventListener("click", closeDetailsModal);
-	  tokenDetailsElement.appendChild(closeDetailsModalButton);
+  console.log("graveNumber: ", graveNumber);
+
+  try {
+    const nftDetails = await window.contract.methods
+      .tokenDetails(graveNumber)
+      .call();
+
+    const tokenDetailsElement = document.getElementById("tokenDetailsModal");
+    tokenDetailsElement.innerHTML = "";
+    const closeDetailsModalButton = document.createElement("div");
+    closeDetailsModalButton.classList.add("close-details-modal-button");
+    closeDetailsModalButton.innerText = "X";
+    closeDetailsModalButton.addEventListener("click", closeDetailsModal);
+    tokenDetailsElement.appendChild(closeDetailsModalButton);
 
     const occupant = document.createElement("div");
     occupant.innerText = `Occupant: ${nftDetails.occupant}`;
@@ -735,40 +740,48 @@ window.addEventListener("click", (event) => {
 });
 
 async function updateGraveNumbers() {
-  clearTableBody();
-  const totalSupply = await getTotalSupply();
-  let graveCounter = startGraveNumber;
-  for (let i = 0; i < 8; i++) {
-    const row = document.createElement("tr");
-    for (let j = 0; j < 8; j++) {
-      const cell = document.createElement("td");
-      const skull = document.createTextNode("☠");
-      const link = document.createElement("button");
-      if (graveCounter <= totalSupply) {
-        const graveNumber = document.createTextNode(graveCounter);
-        cell.appendChild(graveNumber);
-        cell.appendChild(document.createElement("br"));
-        graveCounter++;
-      }
-      cell.appendChild(skull);
-      cell.appendChild(document.createElement("br"));
-      row.appendChild(cell);
-
-      if (cell.textContent.length > 1) {
-        link.textContent = "GRAVE";
-        const graveNumber = cell.textContent.replace("☠", "");
-        console.log("updateGrave graveNumber: ", graveNumber);
-        link.addEventListener("click", () => getNFTDetails(graveNumber));
-      } else {
-        link.textContent = "BURY";
-        link.addEventListener("click", handleButtonClick);
-      }
-      cell.appendChild(link);
-    }
-    tableBody.appendChild(row);
+	clearTableBody();
+	const totalSupply = await getTotalSupply();
+	let graveCounter = startGraveNumber;
+	for (let i = 0; i < 8; i++) {
+	  const row = document.createElement("tr");
+	  for (let j = 0; j < 8; j++) {
+		const cell = document.createElement("td");
+		const skull = document.createTextNode("☠");
+		const link = document.createElement("button");
+		if (graveCounter <= totalSupply) {
+		  const graveNumber = document.createTextNode(graveCounter);
+		  cell.appendChild(graveNumber);
+		  cell.appendChild(document.createElement("br"));
+		  graveCounter++;
+		}
+		cell.appendChild(skull);
+		cell.appendChild(document.createElement("br"));
+		row.appendChild(cell);
+  
+		if (cell.textContent.length > 1) {
+		  link.textContent = "GRAVE";
+		  const graveNumber = cell.textContent.replace("☠", "");
+		  console.log("updateGrave graveNumber: ", graveNumber);
+		  link.addEventListener("click", () => getNFTDetails(graveNumber));
+  
+		  // Mouse over and mouse out event listeners for GRAVE cells
+		  cell.addEventListener("mouseover", () => cell.classList.add("grave"));
+		  cell.addEventListener("mouseout", () => cell.classList.remove("grave"));
+		} else {
+		  link.textContent = "BURY";
+		  link.addEventListener("click", handleButtonClick);
+  
+		  // Mouse over and mouse out event listeners for BURY cells
+		  cell.addEventListener("mouseover", () => cell.classList.add("bury"));
+		  cell.addEventListener("mouseout", () => cell.classList.remove("bury"));
+		}
+		cell.appendChild(link);
+	  }
+	  tableBody.appendChild(row);
+	}
+	updateTableNumber();
   }
-  updateTableNumber();
-}
 
 function clearTableBody() {
   while (tableBody.firstChild) {
@@ -778,7 +791,7 @@ function clearTableBody() {
 
 function updateTableNumber() {
   const tableIndex = Math.ceil(startGraveNumber / 64);
-  tableNumber.textContent = ` Cemetery ${tableIndex} `;
+  cemeteryNumber.textContent = ` Cemetery ${tableIndex} `;
 }
 
 nextButton.addEventListener("click", async () => {
@@ -792,7 +805,7 @@ prevButton.addEventListener("click", async () => {
 });
 
 goButton.addEventListener("click", async () => {
-  const requestedTableNumber = parseInt(tableNumberInput.value);
+  const requestedTableNumber = parseInt(cemeteryNumberInput.value);
   if (requestedTableNumber > 0) {
     startGraveNumber = (requestedTableNumber - 1) * 64 + 1;
     await updateGraveNumbers();
