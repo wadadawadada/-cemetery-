@@ -626,6 +626,19 @@ function hideDetailsModal() {
   tokenDetailsModal.style.display = "none";
 }
 
+async function fetchJsonFromIpfs(ipfsUrl) {
+  try {
+    const response = await fetch(`https://ipfs.io/ipfs/${ipfsUrl.slice(7)}`);
+    const jsonData = await response.json();
+
+    return jsonData;
+  } catch (error) {
+    console.error('Error fetching JSON from IPFS:', error);
+
+    return null;
+  }
+}
+
 async function getNFTDetails(graveNumber) {
   console.log("graveNumber: ", graveNumber);
 
@@ -633,6 +646,11 @@ async function getNFTDetails(graveNumber) {
     const nftDetails = await window.contract.methods
       .tokenDetails(graveNumber)
       .call();
+
+    let jsonData = null;
+    if (nftDetails.metadata.startsWith('ipfs://')) {
+      jsonData = await fetchJsonFromIpfs(nftDetails.metadata);
+    }
 
     const tokenDetailsElement = document.getElementById("tokenDetailsModal");
     tokenDetailsElement.innerHTML = "";
@@ -667,6 +685,13 @@ async function getNFTDetails(graveNumber) {
     metadata.innerText = `Metadata: ${nftDetails.metadata}`;
     tokenDetailsElement.appendChild(metadata);
 
+    if (jsonData) {
+      const jsonDetails = document.createElement("div");
+      tokenDetailsElement.appendChild(document.createElement("hr"))
+      jsonDetails.innerText = `JSON Data: ${JSON.stringify(jsonData, null, 4)}`;
+      tokenDetailsElement.appendChild(jsonDetails);
+    }
+
     showDetailsModal();
     setStatus("Looking at graves");
   } catch (error) {
@@ -687,6 +712,7 @@ async function mintNFT(occupant, birth, epitaph, metadata) {
       .send({ from: window.account, value: MINT_COST });
     setStatus("Successfully buried coffin");
     updateGraveNumbers();
+    closeModal()
   } catch (error) {
     console.error(error);
     setStatus("Something went terribly wrong");
@@ -757,14 +783,18 @@ async function updateGraveNumbers() {
 	  for (let j = 0; j < 8; j++) {
 		const cell = document.createElement("td");
 		const skull = document.createTextNode("☠");
+    const tools = document.createTextNode("⚒")
 		const link = document.createElement("button");
 		if (graveCounter <= totalSupply) {
 		  const graveNumber = document.createTextNode(graveCounter);
 		  cell.appendChild(graveNumber);
 		  cell.appendChild(document.createElement("br"));
 		  graveCounter++;
-		}
-		cell.appendChild(skull);
+      cell.appendChild(skull);
+		} else {
+      cell.appendChild(tools);
+    }
+
 		cell.appendChild(document.createElement("br"));
 		row.appendChild(cell);
   
