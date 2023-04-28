@@ -783,14 +783,18 @@ async function updateGraveNumbers() {
 	  for (let j = 0; j < 8; j++) {
 		const cell = document.createElement("td");
 		const skull = document.createTextNode("☠");
+    const tools = document.createTextNode("⚒")
 		const link = document.createElement("button");
 		if (graveCounter <= totalSupply) {
 		  const graveNumber = document.createTextNode(graveCounter);
 		  cell.appendChild(graveNumber);
 		  cell.appendChild(document.createElement("br"));
 		  graveCounter++;
-		}
-		cell.appendChild(skull);
+      cell.appendChild(skull);
+		} else {
+      cell.appendChild(tools);
+    }
+
 		cell.appendChild(document.createElement("br"));
 		row.appendChild(cell);
   
