@@ -554,11 +554,13 @@ style.innerHTML = `
       border: 2px dashed white;
       width: 70px; 
       height:100px 
-    
+      
     }
     td {
       font-size: 28px;
       padding: 10px;
+      border-top-left-radius: 35px;
+      border-top-right-radius: 35px;
     }
     td > button {
       font-size: 10px;
