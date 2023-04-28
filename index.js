@@ -553,7 +553,7 @@ style.innerHTML = `
     td, tr {
       border: 2px dashed white;
       width: 70px; 
-      height:100px 
+      height: 100px 
       
     }
     td {
