@@ -1,7 +1,6 @@
-Crypto Coffin is deployed:
-Mumbai: 0x0a1c9d130f3852ef0e03265027661B47cb878268
+Crypto Coffin is currently deployed:
+Mumbai: 0xce896C526d0baFD33b15457992aC0a7Ef14c258a
 
-// SPDX-License-Identifier: MIT
 //
 // crypt0-c0ffin crypt0-c0ffin crypt0-c0ffin crypt0-c0ffin 
 //         ▐█╩╩███▒▒▒▒▒╢▓╢╢▓╢▒▓▀-░░ └---████╩▀█`
@@ -42,21 +41,24 @@ Mumbai: 0x0a1c9d130f3852ef0e03265027661B47cb878268
 //            ████,,`,,,`,▄,,,,,▐,, ▒,└ ███▌
 //             █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▌
 //
+//
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract crypt0_c0ffin is ERC1155, Ownable, ReentrancyGuard {
+contract crypt0c0ffin is ERC1155, Ownable, ReentrancyGuard {
     uint256 private _currentCoffinId = 0;
     uint256 public constant MINT_COST = 0.001 ether;
 
     mapping(uint256 => string) private _occupant;
+    mapping(uint256 => uint256) private _dateBorn;
     mapping(uint256 => string) private _epitaph;
     mapping(uint256 => string) private _metadata;
 
-    event Buried(uint256 tokenId, string occupant, string epitaph, string metadata);
+    event Buried(uint256 tokenId, string occupant, uint256 dateBorn, string epitaph, string metadata);
 
     constructor() ERC1155("") {}
 
@@ -64,25 +66,44 @@ contract crypt0_c0ffin is ERC1155, Ownable, ReentrancyGuard {
         _setURI(newURI);
     }
 
-    function mint(string memory occupant, string memory epitaph, string memory metadata) external payable nonReentrant {
+    function mint(string memory occupant, uint256 dateBorn, string memory epitaph, string memory metadata) 
+        external 
+        payable 
+        nonReentrant 
+    {
         require(msg.value >= MINT_COST, "Insufficient payment for coffin.");
 
         uint256 tokenId = _getNextTokenId();
 
         _mint(msg.sender, tokenId, 1, "");
         _occupant[tokenId] = occupant;
+        _dateBorn[tokenId] = dateBorn;
         _epitaph[tokenId] = epitaph;
         _metadata[tokenId] = metadata;
 
-        emit Buried(tokenId, occupant, epitaph, metadata);
+        emit Buried(tokenId, occupant, dateBorn, epitaph, metadata);
         _incrementTokenId();
     }
 
-    function tokenDetails(uint256 tokenId) external view returns (string memory occupant, string memory epitaph, string memory metadata) {
+    function tokenDetails(uint256 tokenId) 
+        external 
+        view 
+        returns (
+            string memory occupant, 
+            uint256 dateBorn, 
+            string memory epitaph, 
+            string memory metadata
+        ) 
+    {
         require(_exists(tokenId), "Coffin does not exist");
         occupant = _occupant[tokenId];
+        dateBorn = _dateBorn[tokenId];
         epitaph = _epitaph[tokenId];
         metadata = _metadata[tokenId];
+    }
+
+    function totalSupply() public view returns (uint256) {
+        return _currentCoffinId;
     }
 
     function withdraw() external onlyOwner {

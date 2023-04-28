@@ -46,6 +46,12 @@
 			},
 			{
 				"indexed": false,
+				"internalType": "uint256",
+				"name": "dateBorn",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
 				"internalType": "string",
 				"name": "epitaph",
 				"type": "string"
@@ -66,6 +72,11 @@
 				"internalType": "string",
 				"name": "occupant",
 				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "dateBorn",
+				"type": "uint256"
 			},
 			{
 				"internalType": "string",
@@ -452,6 +463,11 @@
 				"type": "string"
 			},
 			{
+				"internalType": "uint256",
+				"name": "dateBorn",
+				"type": "uint256"
+			},
+			{
 				"internalType": "string",
 				"name": "epitaph",
 				"type": "string"
@@ -460,6 +476,19 @@
 				"internalType": "string",
 				"name": "metadata",
 				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalSupply",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
