@@ -135,7 +135,7 @@ a:link {
  margin-top: 0vw;
  margin-left: 25%;
  margin-right: 25%;
- padding: 0vw;
+ padding: 10px;
  border: 1px solid rgb(255, 255, 255);
  font-size: large;
  /* z-index: 2; */
@@ -146,30 +146,11 @@ a:link {
 
 } */
 
-#container-jahhweh {
-  position: relative;
-  display: flex;
-  width: 100%; 
-  height: 100%;
-  max-width: 800px;
-  max-height: 800px;
-  text-align: center;
-  margin-top: 5vw;
-  margin-left: 25%;
-  margin-right: 25%;
-  padding: 1vw;
-  border: 1px solid rgb(255, 255, 255);
-  font-size: large;
-  /* z-index: 2; */
-  background-color: #0000009d;
-  align-items: center;
-  justify-content: center; /* выравнивание по горизонтали */
-  align-items: center; /* выравнивание по вертикали */
- 
-}
+
 
 table {
-    border: 1px solid white;
+  display: flex;  
+  border: 1px solid rgb(255, 255, 255);
     color: #FFFFFF;
     border-collapse: collapse;
     background-color: #000000;
@@ -178,6 +159,7 @@ table {
     margin: auto;
     max-width: 800px;
     max-height: 800px;
+    font-size: small;
 
   }
   
@@ -219,25 +201,36 @@ table {
 }
   
 .nav-container {
+  position: relative;
   display: flex;
   flex-direction: row;
   width: fit-content;
   gap: 10px;
   justify-content: left;
   align-items: center;
-  border: 1px solid rgb(255, 255, 255);
-  padding: 2px;
+  border: 1px solid rgb(231, 0, 0);
+  padding: 10px;
 }
 
 #container-jahhweh {
+  position: relative;
   display: flex;
   padding: 10px;
   border: 1px solid rgb(255, 255, 255);
   background-color: #0000009d;
   text-align: center;
+  font-size: small;
+  justify-content: center;
+  max-width: 800px;
+  margin-left: 25%;
+  margin-right: 25%;
 }
 
-.main-container {
+/* .main-container {
   display: flex;
   justify-content: center;
-}
+} */
+
+
+
+
