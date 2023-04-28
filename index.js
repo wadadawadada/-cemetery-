@@ -551,11 +551,14 @@ document.getElementById("gravenav").appendChild(buttonsContainer);
 const style = document.createElement("style");
 style.innerHTML = `
     td, tr {
-      border: 1px dashed white;
+      border: 2px dashed white;
+      width: 70px; 
+      height:100px 
+    
     }
     td {
       font-size: 28px;
-      padding: 4px;
+      padding: 10px;
     }
     td > button {
       font-size: 10px;

@@ -36,24 +36,14 @@ a:link {
   
 
 #logo {
-    /* position: relative;
-    display: flex;
-    width: 200px;
-    height: 1vh;
-    text-align: center;
-    margin-top: 1vw;
-    margin-bottom: -vw;
-    margin-left: 25%;
-    padding: 1vw;
-    border: 1px solid rgb(255, 255, 255);
-    z-index: 1; */
-
+    
     display: flex;
     position: relative;
     border: 1px solid rgb(255, 255, 255);
     padding: 5px;
     height: min-content;
     width: max-content;
+    margin-left: 25%;
   }
 
 
@@ -149,7 +139,7 @@ a:link {
 
 
 table {
-  display: flex;  
+  /* display: flex;  
   border: 1px solid rgb(255, 255, 255);
     color: #FFFFFF;
     border-collapse: collapse;
@@ -159,7 +149,7 @@ table {
     margin: auto;
     max-width: 800px;
     max-height: 800px;
-    font-size: small;
+    font-size: small; */
 
   }
   
@@ -210,7 +200,7 @@ table {
   gap: 10px;
   justify-content: left;
   align-items: center;
-  border: 1px solid rgb(231, 0, 0);
+  border: 1px solid rgb(255, 255, 255);
   padding: 10px;
 }
 
@@ -218,6 +208,7 @@ table {
   position: relative;
   display: flex;
   padding: 10px;
+  padding-top: 25px;
   border: 1px solid rgb(255, 255, 255);
   background-color: #0000009d;
   text-align: center;
