@@ -648,7 +648,7 @@ async function fetchJsonFromIpfs(ipfsUrl) {
 
 async function getNFTDetails(graveNumber) {
   console.log("graveNumber: ", graveNumber);
-
+  
   try {
     const nftDetails = await window.contract.methods
       .tokenDetails(graveNumber)
@@ -670,19 +670,14 @@ async function getNFTDetails(graveNumber) {
     const occupant = document.createElement("div");
     occupant.innerText = `Occupant: ${nftDetails.occupant}`;
     tokenDetailsElement.appendChild(occupant);
-
-	const dateBorn = document.createElement("div");
-
-	// Extract year, month and day from the original date format
-	const year = nftDetails.dateBorn.substring(0, 4);
-	const month = nftDetails.dateBorn.substring(4, 6);
-	const day = nftDetails.dateBorn.substring(6, 8);
-	
-	// Combine year, month, and day in the desired format
-	const formattedDate = `${year}-${month}-${day}`;
-	
-	dateBorn.innerText = `Date Born: ${formattedDate}`;
-	tokenDetailsElement.appendChild(dateBorn);
+ 
+    const dateBorn = document.createElement("div");
+    const year = nftDetails.dateBorn.substring(0, 4);
+    const month = nftDetails.dateBorn.substring(4, 6);
+    const day = nftDetails.dateBorn.substring(6, 8);
+    const formattedDate = `${year}-${month}-${day}`;
+    dateBorn.innerText = `Date Born: ${formattedDate}`;
+    tokenDetailsElement.appendChild(dateBorn);
 
     const epitaph = document.createElement("div");
     epitaph.innerText = `Epitaph: ${nftDetails.epitaph}`;
@@ -697,18 +692,27 @@ async function getNFTDetails(graveNumber) {
       tokenDetailsElement.appendChild(document.createElement("hr"));
       jsonDetails.innerText = `JSON Data: ${JSON.stringify(jsonData, null, 4)}`;
       tokenDetailsElement.appendChild(jsonDetails);
-      
+
       if (jsonData.image) {
-          const imageUrl = 'https://ipfs.io/ipfs/' + jsonData.image.slice(7);
-          console.log(imageUrl);
-          const imgElement = document.createElement("img");
-          imgElement.src = imageUrl;
-          imgElement.alt = 'Image from JSON Data';
-          imgElement.style.maxWidth = '420px';
-          imgElement.style.maxHeight = '420px';
+        const imageUrl = 'https://ipfs.io/ipfs/' + jsonData.image.slice(7);
+        console.log(imageUrl);
+
+        const imgElement = document.createElement("img");
+        imgElement.alt = 'Image from JSON Data';
+        imgElement.style.maxWidth = '420px';
+        imgElement.style.maxHeight = '420px';
+        imgElement.src = imageUrl;
+
+        imgElement.onerror = () => {
+          console.log('Failed to load image');
+        };
+
+        imgElement.onload = () => {
           tokenDetailsElement.appendChild(imgElement);
+        };
       }
-}
+    }
+
     showDetailsModal();
     setStatus("Looking at graves");
   } catch (error) {
@@ -723,7 +727,7 @@ async function mintNFT(occupant, birth, epitaph, metadata) {
   console.log("metadata: ", metadata);
 
   try {
-    const MINT_COST = window.web3.utils.toWei("0.01", "ether");
+    const MINT_COST = window.web3.utils.toWei("0.001", "ether");
     await window.contract.methods
       .mint(occupant, birth, epitaph, metadata)
       .send({ from: window.account, value: MINT_COST });
