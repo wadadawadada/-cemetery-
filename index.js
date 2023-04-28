@@ -634,6 +634,8 @@ function hideDetailsModal() {
 async function fetchJsonFromIpfs(ipfsUrl) {
   try {
     const response = await fetch(`https://ipfs.io/ipfs/${ipfsUrl.slice(7)}`);
+    console.log('url', ipfsUrl)
+    console.log('response', response)
     const jsonData = await response.json();
 
     return jsonData;
