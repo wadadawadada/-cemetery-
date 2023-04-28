@@ -646,9 +646,18 @@ async function getNFTDetails(graveNumber) {
     occupant.innerText = `Occupant: ${nftDetails.occupant}`;
     tokenDetailsElement.appendChild(occupant);
 
-    const dateBorn = document.createElement("div");
-    dateBorn.innerText = `Date Born: ${nftDetails.dateBorn}`;
-    tokenDetailsElement.appendChild(dateBorn);
+	const dateBorn = document.createElement("div");
+
+	// Extract year, month and day from the original date format
+	const year = nftDetails.dateBorn.substring(0, 4);
+	const month = nftDetails.dateBorn.substring(4, 6);
+	const day = nftDetails.dateBorn.substring(6, 8);
+	
+	// Combine year, month, and day in the desired format
+	const formattedDate = `${year}-${month}-${day}`;
+	
+	dateBorn.innerText = `Date Born: ${formattedDate}`;
+	tokenDetailsElement.appendChild(dateBorn);
 
     const epitaph = document.createElement("div");
     epitaph.innerText = `Epitaph: ${nftDetails.epitaph}`;
