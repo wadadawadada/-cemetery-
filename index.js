@@ -4,532 +4,561 @@
 
 const contractAddress = "0xce896C526d0baFD33b15457992aC0a7Ef14c258a";
 const abi = [
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "account",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "bool",
-				"name": "approved",
-				"type": "bool"
-			}
-		],
-		"name": "ApprovalForAll",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "occupant",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "dateBorn",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "epitaph",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "metadata",
-				"type": "string"
-			}
-		],
-		"name": "Buried",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "occupant",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "dateBorn",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "epitaph",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "metadata",
-				"type": "string"
-			}
-		],
-		"name": "mint",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "previousOwner",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "OwnershipTransferred",
-		"type": "event"
-	},
-	{
-		"inputs": [],
-		"name": "renounceOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256[]",
-				"name": "ids",
-				"type": "uint256[]"
-			},
-			{
-				"internalType": "uint256[]",
-				"name": "amounts",
-				"type": "uint256[]"
-			},
-			{
-				"internalType": "bytes",
-				"name": "data",
-				"type": "bytes"
-			}
-		],
-		"name": "safeBatchTransferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bytes",
-				"name": "data",
-				"type": "bytes"
-			}
-		],
-		"name": "safeTransferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			},
-			{
-				"internalType": "bool",
-				"name": "approved",
-				"type": "bool"
-			}
-		],
-		"name": "setApprovalForAll",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "newURI",
-				"type": "string"
-			}
-		],
-		"name": "setURI",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256[]",
-				"name": "ids",
-				"type": "uint256[]"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256[]",
-				"name": "values",
-				"type": "uint256[]"
-			}
-		],
-		"name": "TransferBatch",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "transferOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "value",
-				"type": "uint256"
-			}
-		],
-		"name": "TransferSingle",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "value",
-				"type": "string"
-			},
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "URI",
-		"type": "event"
-	},
-	{
-		"inputs": [],
-		"name": "withdraw",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "account",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "balanceOf",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address[]",
-				"name": "accounts",
-				"type": "address[]"
-			},
-			{
-				"internalType": "uint256[]",
-				"name": "ids",
-				"type": "uint256[]"
-			}
-		],
-		"name": "balanceOfBatch",
-		"outputs": [
-			{
-				"internalType": "uint256[]",
-				"name": "",
-				"type": "uint256[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "account",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			}
-		],
-		"name": "isApprovedForAll",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "MINT_COST",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes4",
-				"name": "interfaceId",
-				"type": "bytes4"
-			}
-		],
-		"name": "supportsInterface",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "tokenDetails",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "occupant",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "dateBorn",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "epitaph",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "metadata",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "totalSupply",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "uri",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
+  {
+    inputs: [],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "operator",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "bool",
+        name: "approved",
+        type: "bool",
+      },
+    ],
+    name: "ApprovalForAll",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "occupant",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "dateBorn",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "epitaph",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "metadata",
+        type: "string",
+      },
+    ],
+    name: "Buried",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "occupant",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "dateBorn",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "epitaph",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "metadata",
+        type: "string",
+      },
+    ],
+    name: "mint",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
+    inputs: [],
+    name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        internalType: "uint256[]",
+        name: "ids",
+        type: "uint256[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "amounts",
+        type: "uint256[]",
+      },
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "safeBatchTransferFrom",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "safeTransferFrom",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "operator",
+        type: "address",
+      },
+      {
+        internalType: "bool",
+        name: "approved",
+        type: "bool",
+      },
+    ],
+    name: "setApprovalForAll",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "newURI",
+        type: "string",
+      },
+    ],
+    name: "setURI",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "operator",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256[]",
+        name: "ids",
+        type: "uint256[]",
+      },
+      {
+        indexed: false,
+        internalType: "uint256[]",
+        name: "values",
+        type: "uint256[]",
+      },
+    ],
+    name: "TransferBatch",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "transferOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "operator",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "value",
+        type: "uint256",
+      },
+    ],
+    name: "TransferSingle",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "string",
+        name: "value",
+        type: "string",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+    ],
+    name: "URI",
+    type: "event",
+  },
+  {
+    inputs: [],
+    name: "withdraw",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+    ],
+    name: "balanceOf",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address[]",
+        name: "accounts",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "ids",
+        type: "uint256[]",
+      },
+    ],
+    name: "balanceOfBatch",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "operator",
+        type: "address",
+      },
+    ],
+    name: "isApprovedForAll",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "MINT_COST",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes4",
+        name: "interfaceId",
+        type: "bytes4",
+      },
+    ],
+    name: "supportsInterface",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+    ],
+    name: "tokenDetails",
+    outputs: [
+      {
+        internalType: "string",
+        name: "occupant",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "dateBorn",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "epitaph",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "metadata",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "totalSupply",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "uri",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
 ];
 
 const table = document.createElement("table");
 const tableBody = document.createElement("tbody");
 table.appendChild(tableBody);
 document.getElementById("container-jahhweh").appendChild(table);
+
+const buttonsContainer = document.createElement("div");
+const nextButton = document.createElement("button");
+const prevButton = document.createElement("button");
+const tableNumber = document.createElement("span");
+nextButton.textContent = "NEXT";
+prevButton.textContent = "PREV";
+buttonsContainer.appendChild(prevButton);
+buttonsContainer.appendChild(tableNumber);
+buttonsContainer.appendChild(nextButton);
+document.getElementById("gravenav").appendChild(buttonsContainer);
+
+const style = document.createElement("style");
+style.innerHTML = `
+  td, tr {
+    border: 1px dashed white;
+  }
+  td {
+    font-size: 28px;
+    padding: 4px;
+  }
+  td > button {
+    font-size: 10px;
+  }
+`;
+document.head.appendChild(style);
+
 setStatus("Waiting for a connection");
+
+let startGraveNumber = 1;
 
 async function loadWeb3() {
   if (window.ethereum) {
     window.web3 = new Web3(window.ethereum);
-    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    await window.ethereum.request({ method: "eth_requestAccounts" });
   } else {
     alert("Please install MetaMask to use this site.");
   }
@@ -540,7 +569,9 @@ async function loadBlockchainData() {
   const accounts = await web3.eth.getAccounts();
   window.account = accounts[0];
   window.contract = new web3.eth.Contract(abi, contractAddress);
-  document.getElementById("address").textContent = `Connected Address: ${window.account}`;
+  document.getElementById(
+    "address"
+  ).textContent = `Connected Address: ${window.account}`;
   setStatus("Welcome to the cemetery");
   updateGraveNumbers();
 }
@@ -553,6 +584,7 @@ async function getTotalSupply() {
 function showModal() {
   const modal = document.getElementById("modal");
   modal.style.display = "block";
+  setStatus("Preparing to bury");
 }
 
 function hideModal() {
@@ -561,42 +593,49 @@ function hideModal() {
 }
 
 function showDetailsModal() {
-	const tokenDetailsModal = document.getElementById("tokenDetailsModal");
-	tokenDetailsModal.style.display = "block";
-  }
-  
-  function hideDetailsModal() {
-	const tokenDetailsModal = document.getElementById("tokenDetailsModal");
-	tokenDetailsModal.style.display = "none";
-  }
+  const tokenDetailsModal = document.getElementById("tokenDetailsModal");
+  tokenDetailsModal.style.display = "block";
+}
+
+function hideDetailsModal() {
+  const tokenDetailsModal = document.getElementById("tokenDetailsModal");
+  tokenDetailsModal.style.display = "none";
+}
 
 async function getNFTDetails(graveNumber) {
-  console.log('graveNumber: ', graveNumber)
+  console.log("graveNumber: ", graveNumber);
   try {
-    const nftDetails = await window.contract.methods.tokenDetails(graveNumber).call();
-    // Display NFT Details in a modal
-    document.getElementById("tokenDetails").innerText = JSON.stringify(nftDetails, null, 2);
+    const nftDetails = await window.contract.methods
+      .tokenDetails(graveNumber)
+      .call();
+    document.getElementById("tokenDetails").innerText = JSON.stringify(
+      nftDetails,
+      null,
+      2
+    );
     showDetailsModal();
+    setStatus("Looking at graves");
   } catch (error) {
     console.error(error);
   }
 }
 
 async function mintNFT(occupant, birth, epitaph, metadata) {
-  console.log('occupant: ', occupant);
-  console.log('birth: ', birth);
-  console.log('epitaph: ', epitaph);
-  console.log('metadata: ', metadata);
+  console.log("occupant: ", occupant);
+  console.log("birth: ", birth);
+  console.log("epitaph: ", epitaph);
+  console.log("metadata: ", metadata);
 
   try {
     const MINT_COST = window.web3.utils.toWei("0.01", "ether");
-    await window.contract.methods.mint(occupant, birth, epitaph, metadata)
+    await window.contract.methods
+      .mint(occupant, birth, epitaph, metadata)
       .send({ from: window.account, value: MINT_COST });
-    setStatus("Successfully minted NFT!");
+    setStatus("Successfully buried coffin");
     updateGraveNumbers();
   } catch (error) {
     console.error(error);
-    setStatus("Error minting NFT.");
+    setStatus("Something went terribly wrong");
   }
 }
 
@@ -619,22 +658,24 @@ async function handleButtonClick(event) {
 function closeModal() {
   const modal = document.getElementById("modal");
   modal.style.display = "none";
+  setStatus("Welcome to the cemetery");
 }
 
 function closeDetailsModal() {
-	const tokenDetailsModal = document.getElementById("tokenDetailsModal");
-	tokenDetailsModal.style.display = "none";
-  }
+  const tokenDetailsModal = document.getElementById("tokenDetailsModal");
+  tokenDetailsModal.style.display = "none";
+  setStatus("Welcome to the cemetery");
+}
 
 document.getElementById("submitModal").addEventListener("click", async () => {
   const occupant = document.getElementById("modalOccupant").value;
   const birth = document.getElementById("modalBirth").value;
   const epitaph = document.getElementById("modalEpitaph").value;
   const metadata = document.getElementById("modalMetadata").value;
-  const nBirth = birth.replaceAll('-', '');
+  const nBirth = birth.replaceAll("-", "");
 
   if (occupant && nBirth && epitaph && metadata) {
-    setStatus("Minting NFT...");
+    setStatus("Lowering coffin...");
     await mintNFT(occupant, nBirth, epitaph, metadata);
     hideModal();
   } else {
@@ -643,10 +684,12 @@ document.getElementById("submitModal").addEventListener("click", async () => {
 });
 
 document.getElementById("closeModal").addEventListener("click", closeModal);
-document.getElementById("closeDetailsModal").addEventListener("click", closeDetailsModal);
+document
+  .getElementById("closeDetailsModal")
+  .addEventListener("click", closeDetailsModal);
 
-window.addEventListener('click', (event) => {
-  if (event.target == document.getElementById('modal-body')) {
+window.addEventListener("click", (event) => {
+  if (event.target == document.getElementById("modal-body")) {
     closeModal();
   }
 });
@@ -654,10 +697,9 @@ window.addEventListener('click', (event) => {
 async function updateGraveNumbers() {
   clearTableBody();
   const totalSupply = await getTotalSupply();
-  let graveCounter = 1;
+  let graveCounter = startGraveNumber;
   for (let i = 0; i < 8; i++) {
     const row = document.createElement("tr");
-
     for (let j = 0; j < 8; j++) {
       const cell = document.createElement("td");
       const skull = document.createTextNode("☠");
@@ -674,8 +716,8 @@ async function updateGraveNumbers() {
 
       if (cell.textContent.length > 1) {
         link.textContent = "GRAVE";
-        const graveNumber = cell.textContent.replace('☠', '');
-        console.log('updateGrave graveNumber: ', graveNumber)
+        const graveNumber = cell.textContent.replace("☠", "");
+        console.log("updateGrave graveNumber: ", graveNumber);
         link.addEventListener("click", () => getNFTDetails(graveNumber));
       } else {
         link.textContent = "BURY";
@@ -685,6 +727,7 @@ async function updateGraveNumbers() {
     }
     tableBody.appendChild(row);
   }
+  updateTableNumber();
 }
 
 function clearTableBody() {
@@ -693,27 +736,17 @@ function clearTableBody() {
   }
 }
 
-const cells = document.querySelectorAll("td");
-cells.forEach((cell) => {
-  cell.style.border = "1px dashed white";
-});
-
-const rows = document.querySelectorAll("tr");
-rows.forEach((row) => {
-  row.style.borderBottom = "1px dashed white";
-});
-
-for (let i = 0; i < 8; i++) {
-  cells[i].style.borderLeft = "1px dashed white";
+function updateTableNumber() {
+  const tableIndex = Math.ceil(startGraveNumber / 64);
+  tableNumber.textContent = ` Cemetery ${tableIndex} `;
 }
 
-const style = document.createElement("style");
-style.innerHTML = `
-  td {
-    font-size: 28px;
-  }
-  td > button {
-    font-size: 10px;
-  }
-`;
-document.head.appendChild(style);
+nextButton.addEventListener("click", async () => {
+  startGraveNumber += 64;
+  await updateGraveNumbers();
+});
+
+prevButton.addEventListener("click", async () => {
+  startGraveNumber = Math.max(1, startGraveNumber - 64);
+  await updateGraveNumbers();
+});
