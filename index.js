@@ -529,11 +529,21 @@ const buttonsContainer = document.createElement("div");
 const nextButton = document.createElement("button");
 const prevButton = document.createElement("button");
 const tableNumber = document.createElement("span");
+const goButton = document.createElement("button");
+const tableNumberInput = document.createElement("input");
+
 nextButton.textContent = "NEXT";
 prevButton.textContent = "PREV";
+goButton.textContent = "GO";
+tableNumberInput.type = "number";
+tableNumberInput.min = 1;
+
 buttonsContainer.appendChild(prevButton);
 buttonsContainer.appendChild(tableNumber);
 buttonsContainer.appendChild(nextButton);
+buttonsContainer.appendChild(tableNumberInput);
+buttonsContainer.appendChild(goButton);
+
 document.getElementById("gravenav").appendChild(buttonsContainer);
 
 const style = document.createElement("style");
@@ -750,3 +760,13 @@ prevButton.addEventListener("click", async () => {
   startGraveNumber = Math.max(1, startGraveNumber - 64);
   await updateGraveNumbers();
 });
+
+goButton.addEventListener("click", async () => {
+	const requestedTableNumber = parseInt(tableNumberInput.value);
+	if (requestedTableNumber > 0) {
+	  startGraveNumber = (requestedTableNumber - 1) * 64 + 1;
+	  await updateGraveNumbers();
+	} else {
+	  requestedTableNumber = 0
+	}
+  });
