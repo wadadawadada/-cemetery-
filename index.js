@@ -522,6 +522,20 @@ const abi = [
 
 //////////
 
+const CONTAINER_ID = 'container-jahhweh';
+const GRAVENAV_ID = 'gravenav';
+const STATUS_ID = 'status';
+const ADDRESS_ID = 'address';
+const MODAL_ID = 'modal';
+const TOKEN_DETAILS_MODAL_ID = 'tokenDetailsModal';
+const SUBMIT_MODAL_ID = 'submitModal';
+const CLOSE_MODAL_ID = 'closeModal';
+const CLOSE_DETAILS_MODAL_ID = 'closeDetailsModal';
+const MODAL_OCCUPANT_ID = 'modalOccupant';
+const MODAL_BIRTH_ID = 'modalBirth';
+const MODAL_EPITAPH_ID = 'modalEpitaph';
+const MODAL_METADATA_ID = 'modalMetadata';
+
 const table = document.createElement("table");
 const tableBody = document.createElement("tbody");
 table.appendChild(tableBody);
@@ -548,40 +562,40 @@ buttonsContainer.appendChild(goButton);
 
 document.getElementById("gravenav").appendChild(buttonsContainer);
 
+// Apply styles
 const style = document.createElement("style");
 style.innerHTML = `
-    td, tr {
-      border: 2px dashed white;
-      width: 70px; 
-      height: 100px 
-      
-    }
-    td {
-      font-size: 28px;
-      padding: 10px;
-      border-top-left-radius: 35px;
-      border-top-right-radius: 35px;
-    }
-    td > button {
-      font-size: 10px;
-    }
-    .close-details-modal-button {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      cursor: pointer;
-    }
-    .grave:hover {
-      background-color: rgb(119, 2, 2);
-    }
-    .bury:hover {
-      background-color: rgb(2, 10, 119);
-    }
+  td, tr {
+    border: 2px dashed white;
+    width: 70px;
+    height: 100px;
+  }
+  td {
+    font-size: 28px;
+    padding: 10px;
+    border-top-left-radius: 35px;
+    border-top-right-radius: 35px;
+  }
+  td > button {
+    font-size: 10px;
+  }
+  .close-details-modal-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+  .grave:hover {
+    background-color: rgb(119, 2, 2);
+  }
+  .bury:hover {
+    background-color: rgb(2, 10, 119);
+  }
 `;
 document.head.appendChild(style);
 
+// Initialize the application
 setStatus("Waiting for a connection");
-
 let startGraveNumber = 1;
 
 async function loadWeb3() {
@@ -634,13 +648,13 @@ function hideDetailsModal() {
 async function fetchJsonFromIpfs(ipfsUrl) {
   try {
     const response = await fetch(`https://ipfs.io/ipfs/${ipfsUrl.slice(7)}`);
-    console.log('url', ipfsUrl)
-    console.log('response', response)
+    console.log("url", ipfsUrl);
+    console.log("response", response);
     const jsonData = await response.json();
 
     return jsonData;
   } catch (error) {
-    console.error('Error fetching JSON from IPFS:', error);
+    console.error("Error fetching JSON from IPFS:", error);
 
     return null;
   }
@@ -648,14 +662,14 @@ async function fetchJsonFromIpfs(ipfsUrl) {
 
 async function getNFTDetails(graveNumber) {
   console.log("graveNumber: ", graveNumber);
-  
+
   try {
     const nftDetails = await window.contract.methods
       .tokenDetails(graveNumber)
       .call();
 
     let jsonData = null;
-    if (nftDetails.metadata.startsWith('ipfs://')) {
+    if (nftDetails.metadata.startsWith("ipfs://")) {
       jsonData = await fetchJsonFromIpfs(nftDetails.metadata);
     }
 
@@ -670,7 +684,7 @@ async function getNFTDetails(graveNumber) {
     const occupant = document.createElement("div");
     occupant.innerText = `Occupant: ${nftDetails.occupant}`;
     tokenDetailsElement.appendChild(occupant);
- 
+
     const dateBorn = document.createElement("div");
     const year = nftDetails.dateBorn.substring(0, 4);
     const month = nftDetails.dateBorn.substring(4, 6);
@@ -694,22 +708,27 @@ async function getNFTDetails(graveNumber) {
       tokenDetailsElement.appendChild(jsonDetails);
 
       if (jsonData.image) {
-        const imageUrl = 'https://ipfs.io/ipfs/' + jsonData.image.slice(7);
+        const imageUrl = "https://ipfs.io/ipfs/" + jsonData.image.slice(7);
         console.log(imageUrl);
 
-        const imgElement = document.createElement("img");
-        imgElement.alt = 'Image from JSON Data';
-        imgElement.style.maxWidth = '420px';
-        imgElement.style.maxHeight = '420px';
-        imgElement.src = imageUrl;
+        // Check if the image URL has a valid gif file extension
+        if (imageUrl.toLowerCase().endsWith(".gif")) {
+          const imgElement = document.createElement("img");
+          imgElement.alt = "Image from JSON Data";
+          imgElement.style.maxWidth = "420px";
+          imgElement.style.maxHeight = "420px";
+          imgElement.src = imageUrl;
 
-        imgElement.onerror = () => {
-          console.log('Failed to load image');
-        };
+          imgElement.onerror = () => {
+            console.log("Failed to load image");
+          };
 
-        imgElement.onload = () => {
-          tokenDetailsElement.appendChild(imgElement);
-        };
+          imgElement.onload = () => {
+            tokenDetailsElement.appendChild(imgElement);
+          };
+        } else {
+          console.log("The image is not a valid gif file");
+        }
       }
     }
 
@@ -733,7 +752,7 @@ async function mintNFT(occupant, birth, epitaph, metadata) {
       .send({ from: window.account, value: MINT_COST });
     setStatus("Successfully buried coffin");
     updateGraveNumbers();
-    closeModal()
+    closeModal();
   } catch (error) {
     console.error(error);
     setStatus("Something went terribly wrong");
@@ -741,7 +760,7 @@ async function mintNFT(occupant, birth, epitaph, metadata) {
 }
 
 function setStatus(message) {
-  const status = document.getElementById("status");
+  const status = document.getElementById(STATUS_ID);
   status.innerHTML = message;
 }
 
@@ -749,8 +768,26 @@ async function initApp() {
   await loadWeb3();
   await loadBlockchainData();
 }
-
 initApp();
+
+document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
+  const occupant = document.getElementById(MODAL_OCCUPANT_ID).value;
+  const birth = document.getElementById(MODAL_BIRTH_ID).value;
+  const epitaph = document.getElementById(MODAL_EPITAPH_ID).value;
+  const metadata = document.getElementById(MODAL_METADATA_ID).value;
+  const nBirth = birth.replaceAll("-", "");
+
+  if (occupant && nBirth && epitaph && metadata) {
+    setStatus("Lowering coffin...");
+    await mintNFT(occupant, nBirth, epitaph, metadata);
+    hideModal();
+  } else {
+    setStatus("Please enter the occupant, epitaph, and metadata.");
+  }
+});
+
+document.getElementById(CLOSE_MODAL_ID).addEventListener("click", closeModal);
+document.getElementById(CLOSE_DETAILS_MODAL_ID).addEventListener("click", closeDetailsModal);
 
 async function handleButtonClick(event) {
   showModal();
@@ -768,80 +805,51 @@ function closeDetailsModal() {
   setStatus("Welcome to the cemetery");
 }
 
-document.getElementById("submitModal").addEventListener("click", async () => {
-  const occupant = document.getElementById("modalOccupant").value;
-  const birth = document.getElementById("modalBirth").value;
-  const epitaph = document.getElementById("modalEpitaph").value;
-  const metadata = document.getElementById("modalMetadata").value;
-  const nBirth = birth.replaceAll("-", "");
-
-  if (occupant && nBirth && epitaph && metadata) {
-    setStatus("Lowering coffin...");
-    await mintNFT(occupant, nBirth, epitaph, metadata);
-    hideModal();
-  } else {
-    setStatus("Please enter the occupant, epitaph, and metadata.");
-  }
-});
-
-document.getElementById("closeModal").addEventListener("click", closeModal);
-document
-  .getElementById("closeDetailsModal")
-  .addEventListener("click", closeDetailsModal);
-
-window.addEventListener("click", (event) => {
-  if (event.target == document.getElementById("modal-body")) {
-    closeModal();
-  }
-});
-
 async function updateGraveNumbers() {
-	clearTableBody();
-	const totalSupply = await getTotalSupply();
-	let graveCounter = startGraveNumber;
-	for (let i = 0; i < 8; i++) {
-	  const row = document.createElement("tr");
-	  for (let j = 0; j < 8; j++) {
-		const cell = document.createElement("td");
-		const skull = document.createTextNode("☠");
-    const tools = document.createTextNode("⚒")
-		const link = document.createElement("button");
-		if (graveCounter <= totalSupply) {
-		  const graveNumber = document.createTextNode(graveCounter);
-		  cell.appendChild(graveNumber);
-		  cell.appendChild(document.createElement("br"));
-		  graveCounter++;
-      cell.appendChild(skull);
-		} else {
-      cell.appendChild(tools);
-    }
+  clearTableBody();
+  const totalSupply = await getTotalSupply();
+  let graveCounter = startGraveNumber;
+  for (let i = 0; i < 8; i++) {
+    const row = document.createElement("tr");
+    for (let j = 0; j < 8; j++) {
+      const cell = document.createElement("td");
+      const skull = document.createTextNode("☠");
+      const tools = document.createTextNode("⚒");
+      const link = document.createElement("button");
+      if (graveCounter <= totalSupply) {
+        const graveNumber = document.createTextNode(graveCounter);
+        cell.appendChild(graveNumber);
+        cell.appendChild(document.createElement("br"));
+        graveCounter++;
+        cell.appendChild(skull);
+      } else {
+        cell.appendChild(tools);
+      }
 
-		cell.appendChild(document.createElement("br"));
-		row.appendChild(cell);
-  
-		if (cell.textContent.length > 1) {
-		  link.textContent = "GRAVE";
-		  const graveNumber = cell.textContent.replace("☠", "");
-		  console.log("updateGrave graveNumber: ", graveNumber);
-		  link.addEventListener("click", () => getNFTDetails(graveNumber));
-  
-		  // Mouse over and mouse out event listeners for GRAVE cells
-		  cell.addEventListener("mouseover", () => cell.classList.add("grave"));
-		  cell.addEventListener("mouseout", () => cell.classList.remove("grave"));
-		} else {
-		  link.textContent = "BURY";
-		  link.addEventListener("click", handleButtonClick);
-  
-		  // Mouse over and mouse out event listeners for BURY cells
-		  cell.addEventListener("mouseover", () => cell.classList.add("bury"));
-		  cell.addEventListener("mouseout", () => cell.classList.remove("bury"));
-		}
-		cell.appendChild(link);
-	  }
-	  tableBody.appendChild(row);
-	}
-	updateTableNumber();
+      cell.appendChild(document.createElement("br"));
+      row.appendChild(cell);
+
+      if (cell.textContent.length > 1) {
+        link.textContent = "GRAVE";
+        const graveNumber = cell.textContent.replace("☠", "");
+        console.log("updateGrave graveNumber: ", graveNumber);
+        link.addEventListener("click", () => getNFTDetails(graveNumber));
+
+        cell.addEventListener("mouseover", () => cell.classList.add("grave"));
+        cell.addEventListener("mouseout", () => cell.classList.remove("grave"));
+      } else {
+        link.textContent = "BURY";
+        link.addEventListener("click", handleButtonClick);
+
+        cell.addEventListener("mouseover", () => cell.classList.add("bury"));
+        cell.addEventListener("mouseout", () => cell.classList.remove("bury"));
+      }
+      cell.appendChild(link);
+    }
+    tableBody.appendChild(row);
   }
+  updateTableNumber();
+}
 
 function clearTableBody() {
   while (tableBody.firstChild) {
@@ -870,6 +878,6 @@ goButton.addEventListener("click", async () => {
     startGraveNumber = (requestedTableNumber - 1) * 64 + 1;
     await updateGraveNumbers();
   } else {
-    requestedTableNumber = 0;
+    requestedTableNumber = 1;
   }
 });
