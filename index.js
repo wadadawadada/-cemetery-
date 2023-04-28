@@ -2,7 +2,7 @@
 // jahhweh index.js inna version
 ////////////////
 
-const contractAddress = "0x0a1c9d130f3852ef0e03265027661B47cb878268";
+const contractAddress = "0xce896C526d0baFD33b15457992aC0a7Ef14c258a";
 const abi = [
 	{
 		"inputs": [],
@@ -51,6 +51,12 @@ const abi = [
 			},
 			{
 				"indexed": false,
+				"internalType": "uint256",
+				"name": "dateBorn",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
 				"internalType": "string",
 				"name": "epitaph",
 				"type": "string"
@@ -71,6 +77,11 @@ const abi = [
 				"internalType": "string",
 				"name": "occupant",
 				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "dateBorn",
+				"type": "uint256"
 			},
 			{
 				"internalType": "string",
@@ -457,6 +468,11 @@ const abi = [
 				"type": "string"
 			},
 			{
+				"internalType": "uint256",
+				"name": "dateBorn",
+				"type": "uint256"
+			},
+			{
 				"internalType": "string",
 				"name": "epitaph",
 				"type": "string"
@@ -465,6 +481,19 @@ const abi = [
 				"internalType": "string",
 				"name": "metadata",
 				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalSupply",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -494,11 +523,8 @@ const abi = [
 const table = document.createElement("table");
 const tableBody = document.createElement("tbody");
 table.appendChild(tableBody);
-document.getElementById("container").appendChild(table);
-
-function getWalletNumber(position) {
-  return "0x..." + position.toString(16) + "9e8";
-}
+document.getElementById("container-jahhweh").appendChild(table);
+setStatus("Waiting for a connection");
 
 async function loadWeb3() {
   if (window.ethereum) {
@@ -514,8 +540,14 @@ async function loadBlockchainData() {
   const accounts = await web3.eth.getAccounts();
   window.account = accounts[0];
   window.contract = new web3.eth.Contract(abi, contractAddress);
-
   document.getElementById("address").textContent = `Connected Address: ${window.account}`;
+  setStatus("Welcome to the cemetery");
+  updateGraveNumbers();
+}
+
+async function getTotalSupply() {
+  const totalSupply = await window.contract.methods.totalSupply().call();
+  return totalSupply - 1;
 }
 
 function showModal() {
@@ -528,13 +560,40 @@ function hideModal() {
   modal.style.display = "none";
 }
 
-async function mintNFT(occupant, epitaph, metadata) {
+function showDetailsModal() {
+	const tokenDetailsModal = document.getElementById("tokenDetailsModal");
+	tokenDetailsModal.style.display = "block";
+  }
+  
+  function hideDetailsModal() {
+	const tokenDetailsModal = document.getElementById("tokenDetailsModal");
+	tokenDetailsModal.style.display = "none";
+  }
+
+async function getNFTDetails(graveNumber) {
+  console.log('graveNumber: ', graveNumber)
+  try {
+    const nftDetails = await window.contract.methods.tokenDetails(graveNumber).call();
+    // Display NFT Details in a modal
+    document.getElementById("tokenDetails").innerText = JSON.stringify(nftDetails, null, 2);
+    showDetailsModal();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function mintNFT(occupant, birth, epitaph, metadata) {
+  console.log('occupant: ', occupant);
+  console.log('birth: ', birth);
+  console.log('epitaph: ', epitaph);
+  console.log('metadata: ', metadata);
+
   try {
     const MINT_COST = window.web3.utils.toWei("0.01", "ether");
-    await window.contract.methods.mint(occupant, epitaph, metadata)
+    await window.contract.methods.mint(occupant, birth, epitaph, metadata)
       .send({ from: window.account, value: MINT_COST });
-
     setStatus("Successfully minted NFT!");
+    updateGraveNumbers();
   } catch (error) {
     console.error(error);
     setStatus("Error minting NFT.");
@@ -562,14 +621,21 @@ function closeModal() {
   modal.style.display = "none";
 }
 
+function closeDetailsModal() {
+	const tokenDetailsModal = document.getElementById("tokenDetailsModal");
+	tokenDetailsModal.style.display = "none";
+  }
+
 document.getElementById("submitModal").addEventListener("click", async () => {
   const occupant = document.getElementById("modalOccupant").value;
+  const birth = document.getElementById("modalBirth").value;
   const epitaph = document.getElementById("modalEpitaph").value;
   const metadata = document.getElementById("modalMetadata").value;
+  const nBirth = birth.replaceAll('-', '');
 
-  if (occupant && epitaph && metadata) {
+  if (occupant && nBirth && epitaph && metadata) {
     setStatus("Minting NFT...");
-    await mintNFT(window.account, occupant, epitaph, metadata);
+    await mintNFT(occupant, nBirth, epitaph, metadata);
     hideModal();
   } else {
     setStatus("Please enter the occupant, epitaph, and metadata.");
@@ -577,6 +643,7 @@ document.getElementById("submitModal").addEventListener("click", async () => {
 });
 
 document.getElementById("closeModal").addEventListener("click", closeModal);
+document.getElementById("closeDetailsModal").addEventListener("click", closeDetailsModal);
 
 window.addEventListener('click', (event) => {
   if (event.target == document.getElementById('modal-body')) {
@@ -584,39 +651,47 @@ window.addEventListener('click', (event) => {
   }
 });
 
-// Create and append table
-function createAndAppendTable() {
+async function updateGraveNumbers() {
+  clearTableBody();
+  const totalSupply = await getTotalSupply();
+  let graveCounter = 1;
   for (let i = 0; i < 8; i++) {
     const row = document.createElement("tr");
 
     for (let j = 0; j < 8; j++) {
       const cell = document.createElement("td");
       const skull = document.createTextNode("☠");
-      const walletNumber = i * 8 + j + 1;
-      const wallet = getWalletNumber(walletNumber);
-
-      let link;
-      if (i < 1 && j < 15) {
-        link = document.createElement("button");
-        link.textContent = "BURY";
-        link.addEventListener("click", handleButtonClick);
-      } else {
-        link = document.createElement("a");
-        link.href = "https://etherscan.io/address/" + wallet;
-        link.appendChild(document.createTextNode(wallet));
-        link.setAttribute("target", "_blank");
+      const link = document.createElement("button");
+      if (graveCounter <= totalSupply) {
+        const graveNumber = document.createTextNode(graveCounter);
+        cell.appendChild(graveNumber);
+        cell.appendChild(document.createElement("br"));
+        graveCounter++;
       }
-
       cell.appendChild(skull);
       cell.appendChild(document.createElement("br"));
-      cell.appendChild(link);
       row.appendChild(cell);
+
+      if (cell.textContent.length > 1) {
+        link.textContent = "GRAVE";
+        const graveNumber = cell.textContent.replace('☠', '');
+        console.log('updateGrave graveNumber: ', graveNumber)
+        link.addEventListener("click", () => getNFTDetails(graveNumber));
+      } else {
+        link.textContent = "BURY";
+        link.addEventListener("click", handleButtonClick);
+      }
+      cell.appendChild(link);
     }
     tableBody.appendChild(row);
   }
 }
 
-createAndAppendTable();
+function clearTableBody() {
+  while (tableBody.firstChild) {
+    tableBody.removeChild(tableBody.firstChild);
+  }
+}
 
 const cells = document.querySelectorAll("td");
 cells.forEach((cell) => {
@@ -637,11 +712,8 @@ style.innerHTML = `
   td {
     font-size: 28px;
   }
-  td > a {
+  td > button {
     font-size: 10px;
   }
-//   td:hover {
-//     background-color: blue;
-//   }
 `;
 document.head.appendChild(style);
