@@ -692,11 +692,21 @@ async function getNFTDetails(graveNumber) {
 
     if (jsonData) {
       const jsonDetails = document.createElement("div");
-      tokenDetailsElement.appendChild(document.createElement("hr"))
+      tokenDetailsElement.appendChild(document.createElement("hr"));
       jsonDetails.innerText = `JSON Data: ${JSON.stringify(jsonData, null, 4)}`;
       tokenDetailsElement.appendChild(jsonDetails);
-    }
-
+      
+      if (jsonData.image) {
+          const imageUrl = 'https://ipfs.io/ipfs/' + jsonData.image.slice(7);
+          console.log(imageUrl);
+          const imgElement = document.createElement("img");
+          imgElement.src = imageUrl;
+          imgElement.alt = 'Image from JSON Data';
+          imgElement.style.maxWidth = '420px';
+          imgElement.style.maxHeight = '420px';
+          tokenDetailsElement.appendChild(imgElement);
+      }
+}
     showDetailsModal();
     setStatus("Looking at graves");
   } catch (error) {
