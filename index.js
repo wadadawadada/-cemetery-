@@ -706,28 +706,31 @@ async function getNFTDetails(graveNumber) {
       tokenDetailsElement.appendChild(document.createElement("hr"));
       jsonDetails.innerText = `JSON Data: ${JSON.stringify(jsonData, null, 4)}`;
       tokenDetailsElement.appendChild(jsonDetails);
-
+    
       if (jsonData.image) {
         const imageUrl = "https://ipfs.io/ipfs/" + jsonData.image.slice(7);
         console.log(imageUrl);
-
-        // Check if the image URL has a valid gif file extension
-        if (imageUrl.toLowerCase().endsWith(".gif")) {
+    
+        // Check if the image URL has a valid file extension
+        const validExtensions = /\.(jpeg|jpg|gif|png|bmp|webp|svg)$/;
+        const fileExtensionIsValid = validExtensions.test(imageUrl.toLowerCase());
+    
+        if (fileExtensionIsValid) {
           const imgElement = document.createElement("img");
           imgElement.alt = "Image from JSON Data";
           imgElement.style.maxWidth = "420px";
           imgElement.style.maxHeight = "420px";
           imgElement.src = imageUrl;
-
+    
           imgElement.onerror = () => {
             console.log("Failed to load image");
           };
-
+    
           imgElement.onload = () => {
             tokenDetailsElement.appendChild(imgElement);
           };
         } else {
-          console.log("The image is not a valid gif file");
+          console.log("The image is not a valid file format");
         }
       }
     }
