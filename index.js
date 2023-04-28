@@ -547,7 +547,7 @@ buttonsContainer.appendChild(goButton);
 document.getElementById("gravenav").appendChild(buttonsContainer);
 
 const style = document.createElement("style");
-style.innerHTML = `
+style.innerHTML = ` 
   td, tr {
     border: 1px dashed white;
   }
@@ -557,6 +557,12 @@ style.innerHTML = `
   }
   td > button {
     font-size: 10px;
+  }
+  .close-details-modal-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
   }
 `;
 document.head.appendChild(style);
@@ -613,16 +619,40 @@ function hideDetailsModal() {
 }
 
 async function getNFTDetails(graveNumber) {
-  console.log("graveNumber: ", graveNumber);
-  try {
-    const nftDetails = await window.contract.methods
-      .tokenDetails(graveNumber)
-      .call();
-    document.getElementById("tokenDetails").innerText = JSON.stringify(
-      nftDetails,
-      null,
-      2
-    );
+	console.log("graveNumber: ", graveNumber);
+  
+	try {
+	  const nftDetails = await window.contract.methods
+		.tokenDetails(graveNumber)
+		.call();
+  
+	  const tokenDetailsElement = document.getElementById("tokenDetailsModal");
+	  // Reset tokenDetailsElement every time GRAVE button is clicked
+	  tokenDetailsElement.innerHTML = '';
+  
+	  // Add Close button
+	  const closeDetailsModalButton = document.createElement("div");
+	  closeDetailsModalButton.classList.add("close-details-modal-button");
+	  closeDetailsModalButton.innerText = "X";
+	  closeDetailsModalButton.addEventListener("click", closeDetailsModal);
+	  tokenDetailsElement.appendChild(closeDetailsModalButton);
+
+    const occupant = document.createElement("div");
+    occupant.innerText = `Occupant: ${nftDetails.occupant}`;
+    tokenDetailsElement.appendChild(occupant);
+
+    const dateBorn = document.createElement("div");
+    dateBorn.innerText = `Date Born: ${nftDetails.dateBorn}`;
+    tokenDetailsElement.appendChild(dateBorn);
+
+    const epitaph = document.createElement("div");
+    epitaph.innerText = `Epitaph: ${nftDetails.epitaph}`;
+    tokenDetailsElement.appendChild(epitaph);
+
+    const metadata = document.createElement("div");
+    metadata.innerText = `Metadata: ${nftDetails.metadata}`;
+    tokenDetailsElement.appendChild(metadata);
+
     showDetailsModal();
     setStatus("Looking at graves");
   } catch (error) {
@@ -762,11 +792,11 @@ prevButton.addEventListener("click", async () => {
 });
 
 goButton.addEventListener("click", async () => {
-	const requestedTableNumber = parseInt(tableNumberInput.value);
-	if (requestedTableNumber > 0) {
-	  startGraveNumber = (requestedTableNumber - 1) * 64 + 1;
-	  await updateGraveNumbers();
-	} else {
-	  requestedTableNumber = 0
-	}
-  });
+  const requestedTableNumber = parseInt(tableNumberInput.value);
+  if (requestedTableNumber > 0) {
+    startGraveNumber = (requestedTableNumber - 1) * 64 + 1;
+    await updateGraveNumbers();
+  } else {
+    requestedTableNumber = 0;
+  }
+});
