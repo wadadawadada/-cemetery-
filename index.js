@@ -827,44 +827,59 @@ async function updateGraveNumbers() {
   const totalSupply = await getTotalSupply();
   let graveCounter = startGraveNumber;
   for (let i = 0; i < 8; i++) {
-    const row = document.createElement("tr");
-    for (let j = 0; j < 8; j++) {
-      const cell = document.createElement("td");
-      const skull = document.createTextNode("☠");
-      const tools = document.createTextNode("⚒");
-      const link = document.createElement("button");
+      const row = document.createElement("tr");
+      for (let j = 0; j < 8; j++) {
+          const cell = document.createElement("td");
 
-      if (graveCounter <= totalSupply) {
-        const graveNumber = document.createTextNode(graveCounter);
-        cell.appendChild(graveNumber);
-        cell.appendChild(document.createElement("br"));
-        graveCounter++;
-        cell.appendChild(skull);
-      } else {
-        cell.appendChild(tools);
+          const skullSpan = document.createElement("span");
+          skullSpan.classList.add("skull");
+          const skull = document.createTextNode("☠");
+          skullSpan.appendChild(skull);
+
+          const toolsSpan = document.createElement("span");
+          toolsSpan.classList.add("tools");
+          const tools = document.createTextNode("⚒");
+          toolsSpan.appendChild(tools);
+
+          const link = document.createElement("button");
+
+          if (graveCounter <= totalSupply) {
+              const graveNumberSpan = document.createElement("span");
+              graveNumberSpan.classList.add("graveNumber");
+              const graveNumber = document.createTextNode(graveCounter);
+              graveNumberSpan.appendChild(graveNumber);
+
+              cell.appendChild(graveNumberSpan);
+              cell.appendChild(document.createElement("br"));
+              graveCounter++;
+              cell.appendChild(skullSpan);
+          } else {
+              cell.appendChild(toolsSpan);
+          }
+
+          cell.appendChild(document.createElement("br"));
+          row.appendChild(cell);
+
+          if (cell.textContent.length > 1) {
+              link.textContent = "GRAVE";
+              link.classList.add("graveButton"); // Add the graveButton CSS class
+              const graveNumber = cell.textContent.replace("☠", "");
+              console.log("updateGrave graveNumber: ", graveNumber);
+              link.addEventListener("click", () => getNFTDetails(graveNumber));
+
+              cell.addEventListener("mouseover", () => cell.classList.add("grave"));
+              cell.addEventListener("mouseout", () => cell.classList.remove("grave"));
+          } else {
+              link.textContent = "BURY";
+              link.classList.add("buryButton"); // Add the buryButton CSS class
+              link.addEventListener("click", handleButtonClick);
+
+              cell.addEventListener("mouseover", () => cell.classList.add("bury"));
+              cell.addEventListener("mouseout", () => cell.classList.remove("bury"));
+          }
+          cell.appendChild(link);
       }
-
-      cell.appendChild(document.createElement("br"));
-      row.appendChild(cell);
-
-      if (cell.textContent.length > 1) {
-        link.textContent = "GRAVE";
-        const graveNumber = cell.textContent.replace("☠", "");
-        console.log("updateGrave graveNumber: ", graveNumber);
-        link.addEventListener("click", () => getNFTDetails(graveNumber));
-
-        cell.addEventListener("mouseover", () => cell.classList.add("grave"));
-        cell.addEventListener("mouseout", () => cell.classList.remove("grave"));
-      } else {
-        link.textContent = "BURY";
-        link.addEventListener("click", handleButtonClick);
-
-        cell.addEventListener("mouseover", () => cell.classList.add("bury"));
-        cell.addEventListener("mouseout", () => cell.classList.remove("bury"));
-      }
-      cell.appendChild(link);
-    }
-    tableBody.appendChild(row);
+      tableBody.appendChild(row);
   }
   updateTableNumber();
 }
