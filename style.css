@@ -154,10 +154,48 @@ table {
   }
   
 
-  td:hover {
+td:hover {
     background-color: rgb(2, 10, 119);
     background-image: url("tomb.gif");
     background-size: 100%;
+}
+
+.grave:hover {
+  background-image: url("tomb.gif");
+  background-size: 100%;
+}
+.bury:hover {
+  background-image: url("dig.gif");
+  background-size: 100%;
+}
+
+.grave > button {
+  background-color: rgb(119, 2, 2);
+}
+
+.bury > button {
+  background-color: rgb(2, 10, 119);
+}
+
+td, tr {
+  border: 2px dashed white;
+  width: 70px;
+  height: 100px;
+}
+td {
+  font-size: 28px;
+  padding: 10px;
+  border-top-left-radius: 35px;
+  border-top-right-radius: 35px;
+}
+td > button {
+  font-size: 10px;
+}
+.close-details-modal-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
 }
 
 /* JAHHWEH STYLEE */

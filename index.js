@@ -1,6 +1,6 @@
-////////////////
-// jahhweh index.js inna version
-////////////////
+ //////////////////////
+// crypt0-cemetery  //
+/////////////////////
 
 const contractAddress = "0xce896C526d0baFD33b15457992aC0a7Ef14c258a";
 const abi = [
@@ -535,6 +535,19 @@ const MODAL_OCCUPANT_ID = 'modalOccupant';
 const MODAL_BIRTH_ID = 'modalBirth';
 const MODAL_EPITAPH_ID = 'modalEpitaph';
 const MODAL_METADATA_ID = 'modalMetadata';
+const CONNECT_BUTTON_ID = 'connectBtn';
+const SKEL_GIF_ID = 'skelGif';
+
+const skelGif = document.createElement("img");
+skelGif.src = "skel.gif";
+skelGif.id = SKEL_GIF_ID;
+skelGif.style.position = "fixed";
+skelGif.style.top = "50%";
+skelGif.style.left = "50%";
+skelGif.style.transform = "translate(-50%, -50%)";
+skelGif.style.zIndex = 9999;
+
+document.body.appendChild(skelGif);
 
 const table = document.createElement("table");
 const tableBody = document.createElement("tbody");
@@ -547,56 +560,25 @@ const prevButton = document.createElement("button");
 const cemeteryNumber = document.createElement("span");
 const goButton = document.createElement("button");
 const cemeteryNumberInput = document.createElement("input");
+const connectBtn = document.createElement("button");
 
 nextButton.textContent = "NEXT";
 prevButton.textContent = "PREV";
 goButton.textContent = "GO";
 cemeteryNumberInput.type = "number";
 cemeteryNumberInput.min = 1;
+connectBtn.textContent = "CONNECT";
+connectBtn.id = CONNECT_BUTTON_ID;
 
 buttonsContainer.appendChild(prevButton);
 buttonsContainer.appendChild(cemeteryNumber);
 buttonsContainer.appendChild(nextButton);
 buttonsContainer.appendChild(cemeteryNumberInput);
 buttonsContainer.appendChild(goButton);
+buttonsContainer.appendChild(connectBtn);
 
 document.getElementById("gravenav").appendChild(buttonsContainer);
 
-// Apply styles
-const style = document.createElement("style");
-style.innerHTML = `
-  td, tr {
-    border: 2px dashed white;
-    width: 70px;
-    height: 100px;
-  }
-  td {
-    font-size: 28px;
-    padding: 10px;
-    border-top-left-radius: 35px;
-    border-top-right-radius: 35px;
-  }
-  td > button {
-    font-size: 10px;
-  }
-  .close-details-modal-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-  }
-
-  .grave > button {
-    background-color: rgb(119, 2, 2);
-  }
-
-  .bury > button {
-    background-color: rgb(2, 10, 119);
-  }
-`;
-document.head.appendChild(style);
-
-// Initialize the application
 setStatus("Waiting for a connection");
 let startGraveNumber = 1;
 
@@ -610,7 +592,7 @@ async function loadWeb3() {
 }
 
 async function loadBlockchainData() {
-  const web3 = window.web3;
+  window.web3 = new Web3(window.ethereum);
   const accounts = await web3.eth.getAccounts();
   window.account = accounts[0];
   window.contract = new web3.eth.Contract(abi, contractAddress);
@@ -619,6 +601,18 @@ async function loadBlockchainData() {
   ).textContent = `Connected Address: ${window.account}`;
   setStatus("Welcome to the cemetery");
   updateGraveNumbers();
+  removeConnectButton();
+}
+
+function removeConnectButton() {
+  const connectBtn = document.getElementById(CONNECT_BUTTON_ID);
+  const skelGif = document.getElementById(SKEL_GIF_ID);
+  if (connectBtn) {
+    connectBtn.parentNode.removeChild(connectBtn);
+  }
+  if (skelGif) {
+    skelGif.parentNode.removeChild(skelGif);
+  }
 }
 
 async function getTotalSupply() {
@@ -712,23 +706,34 @@ async function getNFTDetails(graveNumber) {
     }
 
     if (nftDetails.metadata.startsWith("ipfs://")) {
-      const mediaContainer = document.createElement("div");
-      mediaContainer.classList.add("media-container");
-      mediaContainer.style.textAlign = "center";
+  const mediaContainer = document.createElement("div");
+  mediaContainer.classList.add("media-container");
+  mediaContainer.style.textAlign = "center";
+  const mediaUrl = `https://ipfs.io/ipfs/${nftDetails.metadata.slice(7)}`;
+  const mediaType = mediaUrl.split('.').pop().toLowerCase();
+  let mediaElement;
 
-      const mediaUrl = `https://ipfs.io/ipfs/${nftDetails.metadata.slice(7)}`;
+  if (['mp4', 'webm', 'ogv'].includes(mediaType)) {
+    mediaElement = document.createElement("video");
+    mediaElement.setAttribute("controls", "");
+  } else if (['mp3', 'wav', 'ogg'].includes(mediaType)) {
+    mediaElement = document.createElement("audio");
+    mediaElement.setAttribute("controls", "");
+  } else {
+    mediaElement = document.createElement("img");
+    mediaElement.setAttribute("alt", "-->Error finding media ");
+  }
 
-      const mediaElement = document.createElement("img");
-      mediaElement.setAttribute("src", mediaUrl);
-      mediaElement.setAttribute("alt", "-->Error finding media ");
-      mediaElement.classList.add("media");
-      mediaElement.style.maxWidth = "420px";
-      mediaElement.style.maxHeight = "420px";
-      mediaElement.style.display = "block";
-      mediaElement.style.margin = "0 auto";
-      mediaContainer.appendChild(mediaElement);
-      tokenDetailsElement.appendChild(mediaContainer);
-    }
+  mediaElement.setAttribute("src", mediaUrl);
+  mediaElement.classList.add("media");
+  mediaElement.style.maxWidth = "420px";
+  mediaElement.style.maxHeight = "420px";
+  mediaElement.style.display = "block";
+  mediaElement.style.margin = "0 auto";
+  
+  mediaContainer.appendChild(mediaElement);
+  tokenDetailsElement.appendChild(mediaContainer);
+}
 
     showDetailsModal();
     setStatus("Looking at graves");
@@ -762,7 +767,11 @@ async function initApp() {
   await loadWeb3();
   await loadBlockchainData();
 }
-initApp();
+
+document.getElementById(CONNECT_BUTTON_ID).addEventListener("click", async () => {
+  await window.ethereum.request({ method: "eth_requestAccounts" });
+  await loadBlockchainData();
+});
 
 document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
   const occupant = document.getElementById(MODAL_OCCUPANT_ID).value;
