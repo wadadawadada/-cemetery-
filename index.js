@@ -578,8 +578,8 @@ buttonsContainer.appendChild(goButton);
 buttonsContainer.appendChild(connectBtn);
 
 document.getElementById("gravenav").appendChild(buttonsContainer);
-
 setStatus("Waiting for a connection");
+
 let startGraveNumber = 1;
 
 async function loadWeb3() {
@@ -599,9 +599,24 @@ async function loadBlockchainData() {
   document.getElementById(
     "address"
   ).textContent = `Connected Address: ${window.account}`;
-  setStatus("Welcome to the cemetery");
+
+  // Get the current network and display the name
+  const networkId = await web3.eth.net.getId();
+    console.log('network: ', networkId)
+  // Check if the user is connected to the Mumbai network
+  if (networkId !== 80001) {
+    setStatus("Switch to Mumbai");
+  } else {
+    setStatus("Welcome to the cemetery");
+  }
+
   updateGraveNumbers();
   removeConnectButton();
+}
+
+function setStatus(message) {
+  const statusElement = document.getElementById("status");
+  statusElement.textContent = message;
 }
 
 function removeConnectButton() {
@@ -818,6 +833,7 @@ async function updateGraveNumbers() {
       const skull = document.createTextNode("☠");
       const tools = document.createTextNode("⚒");
       const link = document.createElement("button");
+
       if (graveCounter <= totalSupply) {
         const graveNumber = document.createTextNode(graveCounter);
         cell.appendChild(graveNumber);
