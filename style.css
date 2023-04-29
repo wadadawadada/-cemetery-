@@ -72,11 +72,13 @@ font-size: 15px;
     font-size: 12px;
 }
 .skull {
-    color: rgb(255, 255, 255);
-    font-size: 38px;
+    color: rgb(0, 255, 234);
+    font-size: 18px;
 }
 .tools {
     color: rgb(0, 238, 255);
+    font-size: 18px;
+   
 }
 .graveButton,
 .buryButton {
@@ -172,11 +174,12 @@ td:hover {
 }
 
 .grave > button {
-  background-color: rgb(119, 2, 2);
+  background-color: rgba(9, 49, 56, 0.973);
+  
 }
 
 .bury > button {
-  background-color: rgb(2, 10, 119);
+  background-color: rgba(66, 4, 4, 0.479);
 }
 
 td, tr {
