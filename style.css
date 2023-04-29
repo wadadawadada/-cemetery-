@@ -187,9 +187,12 @@ td {
   padding: 10px;
   border-top-left-radius: 35px;
   border-top-right-radius: 35px;
+  border-spacing: 20px;
 }
 td > button {
-  font-size: 10px;
+  font-size: 14px;
+  color: rgb(255, 255, 255);
+  background-color: black;
 }
 .close-details-modal-button {
   position: absolute;
