@@ -585,10 +585,12 @@ style.innerHTML = `
     right: 10px;
     cursor: pointer;
   }
-  .grave:hover {
+
+  .grave > button {
     background-color: rgb(119, 2, 2);
   }
-  .bury:hover {
+
+  .bury > button {
     background-color: rgb(2, 10, 119);
   }
 `;
@@ -645,36 +647,16 @@ function hideDetailsModal() {
   tokenDetailsModal.style.display = "none";
 }
 
-async function fetchJsonFromIpfs(ipfsUrl) {
-  try {
-    const response = await fetch(`https://ipfs.io/ipfs/${ipfsUrl.slice(7)}`);
-    console.log("url", ipfsUrl);
-    console.log("response", response);
-    const jsonData = await response.json();
-
-    return jsonData;
-  } catch (error) {
-    console.error("Error fetching JSON from IPFS:", error);
-
-    return null;
-  }
-}
-
 async function getNFTDetails(graveNumber) {
   console.log("graveNumber: ", graveNumber);
-
   try {
     const nftDetails = await window.contract.methods
       .tokenDetails(graveNumber)
       .call();
 
-    let jsonData = null;
-    if (nftDetails.metadata.startsWith("ipfs://")) {
-      jsonData = await fetchJsonFromIpfs(nftDetails.metadata);
-    }
-
     const tokenDetailsElement = document.getElementById("tokenDetailsModal");
     tokenDetailsElement.innerHTML = "";
+
     const closeDetailsModalButton = document.createElement("div");
     closeDetailsModalButton.classList.add("close-details-modal-button");
     closeDetailsModalButton.innerText = "X";
@@ -701,38 +683,51 @@ async function getNFTDetails(graveNumber) {
     metadata.innerText = `Metadata: ${nftDetails.metadata}`;
     tokenDetailsElement.appendChild(metadata);
 
-    if (jsonData) {
-      const jsonDetails = document.createElement("div");
-      tokenDetailsElement.appendChild(document.createElement("hr"));
-      jsonDetails.innerText = `JSON Data: ${JSON.stringify(jsonData, null, 4)}`;
-      tokenDetailsElement.appendChild(jsonDetails);
-    
-      if (jsonData.image) {
-        const imageUrl = "https://ipfs.io/ipfs/" + jsonData.image.slice(7);
-        console.log(imageUrl);
-    
-        // Check if the image URL has a valid file extension
-        const validExtensions = /\.(jpeg|jpg|gif|png|bmp|webp|svg)$/;
-        const fileExtensionIsValid = validExtensions.test(imageUrl.toLowerCase());
-    
-        if (fileExtensionIsValid) {
-          const imgElement = document.createElement("img");
-          imgElement.alt = "Image from JSON Data";
-          imgElement.style.maxWidth = "420px";
-          imgElement.style.maxHeight = "420px";
-          imgElement.src = imageUrl;
-    
-          imgElement.onerror = () => {
-            console.log("Failed to load image");
-          };
-    
-          imgElement.onload = () => {
-            tokenDetailsElement.appendChild(imgElement);
-          };
-        } else {
-          console.log("The image is not a valid file format");
-        }
-      }
+    if (nftDetails.metadata.endsWith(".json")) {
+      fetch("https://ipfs.io/ipfs/" + nftDetails.metadata.slice(7))
+        .then((response) => response.json())
+        .then((jsonData) => {
+          for (const [key, value] of Object.entries(jsonData)) {
+            const dataElement = document.createElement("div");
+
+            if (key === "image") {
+              const imgElement = document.createElement("img");
+              imgElement.src = 'https://ipfs.io/ipfs/' + value.slice(7);
+              imgElement.alt = "image";
+              imgElement.style.maxWidth = "420px";
+              imgElement.style.maxHeight = "420px";
+              imgElement.style.display = "block";
+              imgElement.style.margin = "0 auto";
+              dataElement.appendChild(imgElement);
+            } else {
+              dataElement.innerText = `${key}: ${value}`;
+            }
+
+            tokenDetailsElement.appendChild(dataElement);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching JSON data:", error);
+        });
+    }
+
+    if (nftDetails.metadata.startsWith("ipfs://")) {
+      const mediaContainer = document.createElement("div");
+      mediaContainer.classList.add("media-container");
+      mediaContainer.style.textAlign = "center";
+
+      const mediaUrl = `https://ipfs.io/ipfs/${nftDetails.metadata.slice(7)}`;
+
+      const mediaElement = document.createElement("img");
+      mediaElement.setAttribute("src", mediaUrl);
+      mediaElement.setAttribute("alt", "-->Error finding media ");
+      mediaElement.classList.add("media");
+      mediaElement.style.maxWidth = "420px";
+      mediaElement.style.maxHeight = "420px";
+      mediaElement.style.display = "block";
+      mediaElement.style.margin = "0 auto";
+      mediaContainer.appendChild(mediaElement);
+      tokenDetailsElement.appendChild(mediaContainer);
     }
 
     showDetailsModal();
@@ -743,10 +738,6 @@ async function getNFTDetails(graveNumber) {
 }
 
 async function mintNFT(occupant, birth, epitaph, metadata) {
-  console.log("occupant: ", occupant);
-  console.log("birth: ", birth);
-  console.log("epitaph: ", epitaph);
-  console.log("metadata: ", metadata);
 
   try {
     const MINT_COST = window.web3.utils.toWei("0.001", "ether");
@@ -779,7 +770,6 @@ document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
   const epitaph = document.getElementById(MODAL_EPITAPH_ID).value;
   const metadata = document.getElementById(MODAL_METADATA_ID).value;
   const nBirth = birth.replaceAll("-", "");
-
   if (occupant && nBirth && epitaph && metadata) {
     setStatus("Lowering coffin...");
     await mintNFT(occupant, nBirth, epitaph, metadata);
