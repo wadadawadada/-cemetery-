@@ -33,8 +33,6 @@ a:link {
     color: rgb(255, 255, 255);
   }
 
-  
-
 #logo {
     
     display: flex;
@@ -47,6 +45,22 @@ a:link {
   }
 
 
+  /* THIS RIGHT HERE BREDDA */
+
+.graveNumber {
+    color: blue;
+}
+.skull {
+    color: red;
+}
+.tools {
+    color: green;
+}
+.graveButton,
+.buryButton {
+    background-color: purple;
+    color: white;
+}
 
 
   /* /////////////  MINTING  /////////////////////////////////////////////////// */
