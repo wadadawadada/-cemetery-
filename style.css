@@ -229,6 +229,7 @@ td {
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: cover;
+  /* box-shadow: 12px -12px 12px 4px rgba(20, 20, 20, 0.7); */
   
 }
 td > button {
