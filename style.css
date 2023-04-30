@@ -71,17 +71,22 @@ font-size: 15px;
     color: rgb(255, 255, 255);
     font-size: 12px;
 }
+
+.graveNumber:hover {
+  display: none;
+}
+
 .skull {
     color: rgb(255, 255, 255);
     font-size: 22px;
 }
 .tools {
-    color: rgb(0, 238, 255);
+    color: rgb(255, 255, 255);
     font-size: 22px;
    padding-bottom: 30px;
 }
 .graveButton {
-    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.555);
     color: white;
     /* position: relative; */
 }
@@ -106,14 +111,14 @@ font-size: 15px;
 #modalOccupant {
   width: 100%;
   height: 20px;
-  text-align: right;
+  text-align: left;
   
 }
 
 #modalEpitaph {
   width: 100%;
   height: 20px;
-  text-align: right;
+  text-align: left;
   
 
 }
@@ -121,7 +126,7 @@ font-size: 15px;
 #modalMetadata {
   width: 100%;
   height: 20px;
-  text-align: right;
+  text-align: left;
 }
 
 #status{
@@ -199,12 +204,13 @@ font-size: 15px;
 }
 
 .grave > button {
-  background-color: rgba(9, 49, 56, 0.973);
+  background-color: rgba(0, 0, 0, 0.363);
   
 }
 
 .bury > button {
   background-color: rgba(66, 4, 4, 0.479);
+  
 }
 
 td, tr {
