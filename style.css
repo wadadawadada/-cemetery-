@@ -89,7 +89,7 @@ a:link {
      /* width: fit-content; */
      gap: 10px;
      /* justify-content: left; */
-     border: 1px solid rgb(255, 255, 255);
+     /* border: 1px solid rgb(255, 255, 255); */
     
    } 
   
@@ -99,7 +99,7 @@ a:link {
     left: 0%;
     /* padding: 10px; */
     /* padding-top: 25px; */
-    border: 1px solid rgb(255, 255, 255);
+    /* border: 1px solid rgb(255, 255, 255); */
     background-color: #0000009d;
     text-align: center;
     font-size: small;
@@ -109,7 +109,7 @@ a:link {
     /* margin-left: 25%; */
     /* margin-right: 0vw; */
     background-image: url("grass.gif");
-    
+    padding: 60px;
   }
 
 
