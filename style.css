@@ -45,6 +45,8 @@ a:link {
     padding: 10px;
     height: min-content;
     width: max-content;
+    border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
     /* margin-left: 25%; */
   }
 
@@ -91,8 +93,8 @@ a:link {
      /* justify-content: left; */
      /* border: 1px solid rgb(255, 255, 255); */
      background-image: url("wall.gif");
-     border-top-left-radius: 45px;
-  border-top-right-radius: 45px;
+     border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
    } 
   
   #container-jahhweh {
