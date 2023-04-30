@@ -61,6 +61,18 @@
 				"internalType": "string",
 				"name": "metadata",
 				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "dateBuried",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "resurrectTime",
+				"type": "uint256"
 			}
 		],
 		"name": "Buried",
@@ -87,6 +99,16 @@
 				"internalType": "string",
 				"name": "metadata",
 				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "resurrectTime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "beneficiary",
+				"type": "address"
 			}
 		],
 		"name": "mint",
@@ -116,6 +138,32 @@
 	{
 		"inputs": [],
 		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "Resurrected",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "resurrectUnclaimedCoffin",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -476,6 +524,26 @@
 				"internalType": "string",
 				"name": "metadata",
 				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "minter",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "dateBuried",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "resurrectTime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "beneficiary",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -484,6 +552,19 @@
 	{
 		"inputs": [],
 		"name": "totalSupply",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "TWO_YEARS",
 		"outputs": [
 			{
 				"internalType": "uint256",
