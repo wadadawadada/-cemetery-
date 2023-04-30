@@ -72,7 +72,7 @@ font-size: 15px;
     font-size: 12px;
 }
 .skull {
-    color: rgb(0, 255, 234);
+    color: rgb(255, 255, 255);
     font-size: 22px;
 }
 .tools {
@@ -173,10 +173,17 @@ font-size: 15px;
 
   
 
-td:hover {
+/* td:hover {
     background-color: rgb(0, 0, 0);
     background-image: url("tomb.gif");
     
+} */
+
+
+.grave:active {
+  background-image: url("tbg.gif");
+  background-size: 100%;
+  background-position: center;
 }
 
 .grave:hover {
@@ -218,6 +225,10 @@ td {
   border-top-left-radius: 35px;
   border-top-right-radius: 35px;
   max-width: 800px;
+  background-image: url("tbg.gif");
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: cover;
   
 }
 td > button {
@@ -277,6 +288,7 @@ td > button {
   align-items: center;
   border: 1px solid rgb(255, 255, 255);
   padding: 10px;
+  
 }
 
 #container-jahhweh {
@@ -293,6 +305,7 @@ td > button {
   min-width: 800px;
   margin-left: 25%;
   margin-right: 0vw;
+  
 }
 
 /* .main-container {
