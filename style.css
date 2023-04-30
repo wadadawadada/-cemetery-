@@ -126,9 +126,9 @@ font-size: 15px;
     font-size: 12px;
 }
 
-.graveNumber:hover {
+/* .graveNumber:hover {
   display: none;
-}
+} */
 
 .skull {
     color: rgb(255, 255, 255);
@@ -141,16 +141,17 @@ font-size: 15px;
 }
 .graveButton {
     background-color: rgba(0, 0, 0, 0);
-    color: white;
+    color: rgb(173, 173, 173);
     /* position: relative; */
 }
 
 
 .buryButton {
     background-color: rgba(0, 0, 0, 0);
-    color: white;
+    color: rgb(255, 255, 255);
     /* position: relative; */
-    bottom: -12px;
+    bottom: 2px;
+    
 }
 
 .button {
@@ -233,7 +234,7 @@ font-size: 15px;
 }
 .bury:hover {
   background-image: url("dig.gif");
-  background-size: 150%;
+  background-size: 250%;
   background-position: center;
 }
 
