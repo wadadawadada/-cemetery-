@@ -1,8 +1,10 @@
 Crypto Coffin is currently deployed:
-Mumbai: 0x0646b6a796974A0E9Bea4c093e6a1B1acD6cf7BE
+Mumbai: 0x5b03a37cA903d6462300024015972EC7E111df75
+
+resurrectTime is always stored as UTC unixtimestamp, not local client time.
 
 // v0.4
-// crypt0-c0ffin crypt0-c0ffin crypt0-c0ffin crypt0-c0ffin 
+// crypt0-c0ffin crypt0-c0ffin crypt0-c0ffin crypt0-c0ffin
 //         ▐█╩╩███▒▒▒▒▒╢▓╢╢▓╢▒▓▀-░░ └---████╩▀█`
 //         ▐█  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█▀▀█▀▀█▀▀▀▀═ ▐█`
 //        ▄▌▀,██▄                         ▄██ ▀▄▄
@@ -43,7 +45,6 @@ Mumbai: 0x0646b6a796974A0E9Bea4c093e6a1B1acD6cf7BE
 //
 //
 // SPDX-License-Identifier: MIT
-
 pragma solidity ^0.8.18;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
@@ -68,6 +69,7 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
     }
 
     mapping(uint256 => Coffin) private _coffins;
+    mapping(uint256 => address) private _tokenApprovals;
 
     event Buried(
         uint256 tokenId,
@@ -81,10 +83,6 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
     event Resurrected(uint256 tokenId);
 
     constructor() ERC1155("") {}
-
-    function setURI(string memory newURI) external onlyOwner {
-        _setURI(newURI);
-    }
 
     function mint(
         string memory occupant,
@@ -120,8 +118,6 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
             block.timestamp,
             resurrectTime
         );
-
-        _checkForResurrectionAndTransfer(tokenId);
     }
 
     function tokenDetails(uint256 tokenId)
@@ -154,31 +150,23 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
         return _currentCoffinId - 1;
     }
 
-    function withdraw() external onlyOwner {
-        uint256 balance = address(this).balance;
-        require(balance > 0, "No balance to withdraw.");
-        Address.sendValue(payable(owner()), balance);
-    }
-
     function _exists(uint256 tokenId) internal view returns (bool) {
         return tokenId > 0 && tokenId < _currentCoffinId;
     }
 
-    function _checkForResurrectionAndTransfer(uint256 tokenId) private {
+    function checkForResurrectionAndTransfer(uint256 tokenId) external {
         Coffin storage coffin = _coffins[tokenId];
+        require(coffin.resurrectTime <= block.timestamp, "Not resurrected");
+
         if (coffin.resurrectTime <= block.timestamp) {
             emit Resurrected(tokenId);
             safeTransferFrom(coffin.minter, coffin.beneficiary, tokenId, 1, "");
         }
     }
 
-    function resurrectUnclaimedCoffin(uint256 tokenId) external {
-        require(_exists(tokenId), "Coffin does not exist");
-        Coffin storage coffin = _coffins[tokenId];
-        require(
-            block.timestamp >= coffin.resurrectTime + TWO_YEARS,
-            "Cannot retrieve coffin, requires unclaimed by Beneficiary for 2 years."
-        );
-        safeTransferFrom(address(this), msg.sender, tokenId, 1, "");
+    function withdraw() external onlyOwner {
+        uint256 balance = address(this).balance;
+        require(balance > 0, "No balance to withdraw.");
+        Address.sendValue(payable(owner()), balance);
     }
 }
