@@ -606,8 +606,9 @@ const MODAL_METADATA_ID = 'modalMetadata';
 const MODAL_RESURRECTTIME_ID = 'modalResurrectTime';
 const MODAL_BENEFICIARY_ID = 'modalBeneficiary';
 const CONNECT_BUTTON_ID = 'connectBtn';
-const SKEL_GIF_ID = 'skelGif';
+const connectBtn = document.createElement("button");
 
+const SKEL_GIF_ID = 'skelGif';
 const skelGif = document.createElement("img");
 skelGif.src = "skel.gif";
 skelGif.id = SKEL_GIF_ID;
@@ -616,7 +617,6 @@ skelGif.style.top = "50%";
 skelGif.style.left = "50%";
 skelGif.style.transform = "translate(-50%, -50%)";
 skelGif.style.zIndex = 9999;
-
 document.body.appendChild(skelGif);
 
 const table = document.createElement("table");
@@ -630,7 +630,6 @@ const prevButton = document.createElement("button");
 const cemeteryNumber = document.createElement("span");
 const goButton = document.createElement("button");
 const cemeteryNumberInput = document.createElement("input");
-const connectBtn = document.createElement("button");
 
 nextButton.textContent = "NEXT";
 prevButton.textContent = "PREV";
@@ -721,6 +720,15 @@ function hideDetailsModal() {
   tokenDetailsModal.style.display = "none";
 }
 
+const BENEFICIARY_RESURRECT_BUTTON_ID = 'beneficiaryResurrectButton';
+const beneficiaryResurrectButton = document.createElement("button")
+beneficiaryResurrectButton.textContent = "RESURRECT";
+beneficiaryResurrectButton.id = BENEFICIARY_RESURRECT_BUTTON_ID;
+
+async function getBeneficiaryResurrect(graveNumber) {
+	console.log("graveNumber: ", graveNumber)
+}
+
 async function getNFTDetails(graveNumber) {
   console.log("graveNumber: ", graveNumber);
   try {
@@ -766,6 +774,8 @@ async function getNFTDetails(graveNumber) {
     const beneficiary = document.createElement("div");
     beneficiary.innerText = `Beneficiary: ${nftDetails.beneficiary}`;
     tokenDetailsElement.appendChild(beneficiary);
+	tokenDetailsElement.appendChild(beneficiaryResurrectButton)
+	beneficiaryResurrectButton.addEventListener("click", getBeneficiaryResurrect);
 
     if (nftDetails.metadata.endsWith(".json")) {
       fetch("https://ipfs.io/ipfs/" + nftDetails.metadata.slice(7))
