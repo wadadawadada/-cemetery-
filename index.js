@@ -749,7 +749,7 @@ async function getNFTDetails(graveNumber) {
     const resurrectTime = document.createElement("div");
     const date = new Date(nftDetails.resurrectTime * 1000);
     const dateString = date.toLocaleString();
-    resurrectTime.innerText = `Resurrection: ${dateString}`;
+    resurrectTime.innerText = `Resurrection: ${dateString} UTC`;
     tokenDetailsElement.appendChild(resurrectTime);
 
     const beneficiary = document.createElement("div");
