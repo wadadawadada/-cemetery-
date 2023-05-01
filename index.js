@@ -926,22 +926,12 @@ async function updateGraveNumbers() {
         //   skullSpan.classList.add("skull");
         //   const skull = document.createTextNode("☠");
         //   skullSpan.appendChild(skull);
-
 		const skullSpan = document.createElement("span");
-skullSpan.classList.add("skull");
-const skullDiv = document.createElement("div");
-skullDiv.style.width = "50px";
-skullDiv.style.height = "50px";
-skullDiv.style.backgroundImage = "url(/tomb.gif)";
-skullDiv.style.backgroundSize = "contain";
-skullDiv.style.backgroundPosition = "center";
-skullDiv.style.backgroundRepeat = "no-repeat";
-skullSpan.appendChild(skullDiv);
+        skullSpan.classList.add("skull");
+		const tombDiv = document.createElement("div");
+tombDiv.classList.add("tomb");
+skullSpan.appendChild(tombDiv);
 
-// Add styles to center the div
-skullSpan.style.display = "flex";
-skullSpan.style.justifyContent = "center";
-skullSpan.style.alignItems = "center";
 
 		
 
