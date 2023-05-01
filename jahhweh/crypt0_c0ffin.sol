@@ -1,9 +1,9 @@
 Crypto Coffin is currently deployed:
-Mumbai: 0x5b03a37cA903d6462300024015972EC7E111df75
+Mumbai: 0xb18F2B1e791956fab26E7341C7DebFeF91222f9f
 
 resurrectTime is always stored as UTC unixtimestamp, not local client time.
 
-// v0.4
+// v0.5
 // crypt0-c0ffin crypt0-c0ffin crypt0-c0ffin crypt0-c0ffin
 //         ▐█╩╩███▒▒▒▒▒╢▓╢╢▓╢▒▓▀-░░ └---████╩▀█`
 //         ▐█  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█▀▀█▀▀█▀▀▀▀═ ▐█`
@@ -50,14 +50,16 @@ pragma solidity ^0.8.18;
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Receiver.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
+    using SafeERC20 for IERC20;
+
     uint256 private _currentCoffinId = 1;
     uint256 public MINT_COST = 0.001 ether;
-    uint256 public constant TWO_YEARS = 2 * 365 days;
 
     struct Coffin {
+        uint256 tokenId;
         string occupant;
         uint256 dateBorn;
         string epitaph;
@@ -66,10 +68,10 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
         uint256 dateBuried;
         uint256 resurrectTime;
         address beneficiary;
+        bool isUpdated;
     }
 
     mapping(uint256 => Coffin) private _coffins;
-    mapping(uint256 => address) private _tokenApprovals;
 
     event Buried(
         uint256 tokenId,
@@ -81,6 +83,7 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
         uint256 resurrectTime
     );
     event Resurrected(uint256 tokenId);
+    event Buried_Again(uint256 tokenId, uint256 newResurrectTime, address newBeneficiary);
 
     constructor() ERC1155("") {}
 
@@ -92,13 +95,14 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
         uint256 resurrectTime,
         address beneficiary
     ) external payable nonReentrant {
-        require(msg.value >= MINT_COST, "Insufficient payment for coffin.");
-        require(beneficiary != address(0), "Beneficiary address is required.");
+        require(msg.value >= MINT_COST, "Insufficient payment for coffin");
+        require(beneficiary != address(0), "Beneficiary address is required");
 
         uint256 tokenId = _currentCoffinId++;
 
         _mint(msg.sender, tokenId, 1, "");
         _coffins[tokenId] = Coffin(
+            tokenId,
             occupant,
             dateBorn,
             epitaph,
@@ -106,7 +110,8 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
             msg.sender,
             block.timestamp,
             resurrectTime,
-            beneficiary
+            beneficiary,
+            false
         );
 
         emit Buried(
@@ -124,6 +129,7 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
         external
         view
         returns (
+            uint256 id,
             string memory occupant,
             uint256 dateBorn,
             string memory epitaph,
@@ -136,6 +142,7 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
     {
         require(_exists(tokenId), "Coffin does not exist");
         Coffin storage coffin = _coffins[tokenId];
+        id = coffin.tokenId;
         occupant = coffin.occupant;
         dateBorn = coffin.dateBorn;
         epitaph = coffin.epitaph;
@@ -156,17 +163,30 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
 
     function checkForResurrectionAndTransfer(uint256 tokenId) external {
         Coffin storage coffin = _coffins[tokenId];
-        require(coffin.resurrectTime <= block.timestamp, "Not resurrected");
+        require(
+            coffin.resurrectTime <= block.timestamp,
+            "Incorrect time for resurrection"
+        );
+        emit Resurrected(tokenId);
+        safeTransferFrom(coffin.minter, coffin.beneficiary, tokenId, 1, "");
+    }
 
-        if (coffin.resurrectTime <= block.timestamp) {
-            emit Resurrected(tokenId);
-            safeTransferFrom(coffin.minter, coffin.beneficiary, tokenId, 1, "");
-        }
+    function updateCoffin(uint256 tokenId, uint256 newResurrectTime, address newBeneficiary) external {
+        require(newBeneficiary != address(0), "Beneficiary address is required");
+        Coffin storage coffin = _coffins[tokenId];
+        require(msg.sender == coffin.beneficiary, "Only Beneficiary can update");
+        require(!coffin.isUpdated, "Coffin is buried");
+
+        coffin.resurrectTime = newResurrectTime;
+        coffin.beneficiary = newBeneficiary;
+        coffin.isUpdated = true;
+
+        emit Buried_Again(tokenId, newResurrectTime, newBeneficiary);
     }
 
     function withdraw() external onlyOwner {
         uint256 balance = address(this).balance;
-        require(balance > 0, "No balance to withdraw.");
-        Address.sendValue(payable(owner()), balance);
+        require(balance > 0, "No balance to withdraw");
+        payable(owner()).transfer(balance);
     }
 }
