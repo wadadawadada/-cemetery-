@@ -921,12 +921,31 @@ async function updateGraveNumbers() {
       const row = document.createElement("tr");
       for (let j = 0; j < 8; j++) {
           const cell = document.createElement("td");
+///////////////////////////////////////////////////////////
+        //   const skullSpan = document.createElement("span");
+        //   skullSpan.classList.add("skull");
+        //   const skull = document.createTextNode("☠");
+        //   skullSpan.appendChild(skull);
 
-          const skullSpan = document.createElement("span");
-          skullSpan.classList.add("skull");
-          const skull = document.createTextNode("☠");
-          skullSpan.appendChild(skull);
+		const skullSpan = document.createElement("span");
+skullSpan.classList.add("skull");
+const skullDiv = document.createElement("div");
+skullDiv.style.width = "50px";
+skullDiv.style.height = "50px";
+skullDiv.style.backgroundImage = "url(/tomb.gif)";
+skullDiv.style.backgroundSize = "contain";
+skullDiv.style.backgroundPosition = "center";
+skullDiv.style.backgroundRepeat = "no-repeat";
+skullSpan.appendChild(skullDiv);
 
+// Add styles to center the div
+skullSpan.style.display = "flex";
+skullSpan.style.justifyContent = "center";
+skullSpan.style.alignItems = "center";
+
+		
+
+/////////////////////////////////////////////////////////////
           const toolsSpan = document.createElement("span");
           toolsSpan.classList.add("tools");
           const tools = document.createTextNode("⚒");

@@ -147,7 +147,10 @@ font-size: 15px;
 .skull {
     color: rgb(255, 255, 255);
     font-size: 22px;
-}
+    }
+
+
+
 .tools {
     color: rgb(255, 255, 255);
     font-size: 22px;
@@ -245,7 +248,11 @@ font-size: 15px;
   background-image: url("tomb.gif");
   background-size: 150%;
   background-position: center;
+  opacity: 1.0;
+    
 }
+
+
 .bury:hover {
   background-image: url("dig.gif");
   background-size: 250%;
