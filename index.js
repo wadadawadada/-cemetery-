@@ -645,6 +645,7 @@ const MODAL_EPITAPH_ID = "modalEpitaph";
 const MODAL_METADATA_ID = "modalMetadata";
 const MODAL_RESURRECTTIME_ID = "modalResurrectTime";
 const MODAL_BENEFICIARY_ID = "modalBeneficiary";
+const MODAL_GRAVENUMBER_ID = "modalGraveNumber";
 const CONNECT_BUTTON_ID = "connectBtn";
 const connectBtn = document.createElement("button");
 
@@ -765,6 +766,10 @@ async function getNFTDetails(graveNumber) {
     closeDetailsModalButton.innerText = "X";
     closeDetailsModalButton.addEventListener("click", closeDetailsModal);
     tokenDetailsElement.appendChild(closeDetailsModalButton);
+
+    const coffinId = document.createElement("div");
+    coffinId.innerText = `Grave: ${nftDetails.id}`;
+    tokenDetailsElement.appendChild(coffinId);
 
     const occupant = document.createElement("div");
     occupant.innerText = `Occupant: ${nftDetails.occupant}`;
