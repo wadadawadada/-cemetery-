@@ -344,6 +344,8 @@ td > button {
   top: 50vh; 
   left: 50vw; 
   width: 50vw;
+  height: 80%;
+  overflow: auto;
   transform: translate(-50%, -50%); 
   background-color: rgba(0, 0, 0, 0.863); 
   padding: 40px;
@@ -352,7 +354,7 @@ td > button {
   border: 1px solid white;
   word-wrap: break-word;
   max-width: 840px;
-  min-height: 400px;
+  /* min-height: 400px; */
 }
 
 

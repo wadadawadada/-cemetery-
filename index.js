@@ -720,7 +720,7 @@ async function loadBlockchainData() {
   window.contract = new web3.eth.Contract(abi, contractAddress);
   document.getElementById(
     "address"
-  ).textContent = `Connected Address: ${window.account}`;
+  ).textContent = `Connected: ${window.account}`;
   const networkId = await web3.eth.net.getId();
   if (networkId !== 80001) {
     setStatus("Switch to Mumbai");
