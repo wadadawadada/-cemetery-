@@ -1,83 +1,85 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>crypto cemetery</title>
-	<link rel="stylesheet" type="text/css" href="style.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>crypto cemetery</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4-rc.1/web3.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
 </head>
 
 <body id="cemetery">
-  
-    <p  id="logo">
+
+  <p id="logo">
     crypt0_cemetery v0.3
   </p>
-  <p  id="about">
-    <a href="singularity_en.pdf">FAQ</a> &nbsp; &nbsp; 
+  <p id="about">
+    <a href="singularity_en.pdf">FAQ</a> &nbsp; &nbsp;
     <a href="singularity_en.pdf">white paper</a> &nbsp; &nbsp;
     <a href="singularity_en.pdf">socials</a>
   </p>
   <!-- <div  class="main-container"></div> -->
   <div class="nav-container">
-    
     <span id="gravenav"></span>
-      
     <div>
-        <div class="address-container">
+      <div class="address-container">
         <p><span id="address"></span></p>
       </div>
-      
-          <p>Status: <span id="status"></span></p>
-        </div> 
+      <p>Status: <span id="status"></span></p>
+    </div>
   </div>
 
-<!-- <body id="modal-body"> -->
+  <!-- <body id="modal-body"> -->
 
-</div>
+  </div>
   </div>
 
   <div id="container-jahhweh">
-  <div id="modal" class="modal-style">
-    <button id="closeModal" class="modal-close">X</button>
-    <br>
-    <text for="modalOccupant">Occupant:</text>
-    <input type="text" id="modalOccupant" />
-    <br><br><br>
-    <text for="modalBirth">Birth:</text>
-    <input type="date" id="modalBirth" />
-    <br><br><br>
-    <text for="modalEpitaph">Epitaph:</text>
-    <input type="text" id="modalEpitaph" />
-    <br><br><br>
-    <text for="modalMetadata">Metadata:</text>
-    <input type="text" id="modalMetadata" />
-    <br><br>
-    <text>Metadata must begin with "ipfs://" and point to a json or media file. Just be sure to include the full CID!</text>
-    <br><br><br>
-    <text for="modalResurrectTime">Resurrection:</text>
-    <input type="datetime-local" id="modalResurrectTime" />
-    <br><br><br>
-    <text for="modalBeneficiary">Beneficiary:</text>
-    <input type="text" id="modalBeneficiary" />
-    <br><br>
-    <text>Beneficiary must be an ethereum address (0x...)</text>
-    <br><br><br>
-    <br><br><br>
-    <button id="submitModal">BURY</button>
+    <div id="modal" class="modal-style">
+      <button id="closeModal" class="modal-close">X</button>
+      <br>
+      <text for="modalOccupant">Occupant:</text>
+      <input type="text" id="modalOccupant" />
+      <br><br><br>
+      <text for="modalBirth">Birth:</text>
+      <input type="date" id="modalBirth" />
+      <br><br><br>
+      <text for="modalEpitaph">Epitaph:</text>
+      <input type="text" id="modalEpitaph" />
+      <br><br><br>
+      <text for="modalMetadata">Metadata:</text>
+      <input type="text" id="modalMetadata" />
+      <br><br>
+      <text>Metadata must begin with "ipfs://" and point to a json or media file. Just be sure to include the full
+        CID!</text>
+      <br><br><br>
+      <text for="modalResurrectTime">Resurrection:</text>
+      <input type="datetime-local" id="modalResurrectTime" />
+      <br><br><br>
+      <text for="modalBeneficiary">Beneficiary:</text>
+      <input type="text" id="modalBeneficiary" />
+      <br><br>
+      <text>Beneficiary must be an ethereum address (0x...)</text>
+      <br><br><br>
+      <br><br><br>
+      <text>You will be asked to sign 2 transactions. The first transaction will bury your coffin. The second
+        transaction gives the beneficiary approval to resurrect any of your coffins.</text>
+      <br><br><br>
+      <button id="submitModal">BURY</button>
 
     </div>
   </div>
-  
-</div>
-<div id="tokenDetailsModal"  class="modal-style">
-  <pre id="tokenDetails"></pre>
-  <button id="closeDetailsModal" class="modal-close">X</button>
-</div>
+
+  </div>
+  <div id="tokenDetailsModal" class="modal-style">
+    <pre id="tokenDetails"></pre>
+    <button id="closeDetailsModal" class="modal-close">X</button>
+  </div>
 
   <script src="index.js"></script>
- 
+
 </body>
 
 </html>

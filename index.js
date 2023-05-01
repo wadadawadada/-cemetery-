@@ -608,6 +608,11 @@ const MODAL_BENEFICIARY_ID = "modalBeneficiary";
 const CONNECT_BUTTON_ID = "connectBtn";
 const connectBtn = document.createElement("button");
 
+const RESURRECT_BUTTON_ID = "resurrectButton";
+const resurrectButton = document.createElement("button");
+resurrectButton.textContent = "RESURRECT";
+resurrectButton.id = RESURRECT_BUTTON_ID;
+
 const SKEL_GIF_ID = "skelGif";
 const skelGif = document.createElement("img");
 skelGif.src = "connect.gif";
@@ -688,6 +693,23 @@ async function getTotalSupply() {
   return totalSupply;
 }
 
+async function setApprovalForAll(beneficiary) {
+  try {
+    const userAddress = window.account;
+    const tx = await contract.methods
+      .setApprovalForAll(beneficiary, true)
+      .send({
+        from: userAddress,
+      });
+
+    console.log("Transaction:", tx);
+    return tx;
+  } catch (error) {
+    console.error("Error setting approval for all:", error);
+    throw error;
+  }
+}
+
 async function getNFTDetails(graveNumber) {
   console.log("graveNumber: ", graveNumber);
   try {
@@ -727,12 +749,19 @@ async function getNFTDetails(graveNumber) {
     const resurrectTime = document.createElement("div");
     const date = new Date(nftDetails.resurrectTime * 1000);
     const dateString = date.toLocaleString();
-    resurrectTime.innerText = `Resurrection: ${dateString}`;
+    resurrectTime.innerText = `Resurrection: ${dateString} UTC`;
     tokenDetailsElement.appendChild(resurrectTime);
 
     const beneficiary = document.createElement("div");
     beneficiary.innerText = `Beneficiary: ${nftDetails.beneficiary}`;
     tokenDetailsElement.appendChild(beneficiary);
+
+    tokenDetailsElement.appendChild(resurrectButton);
+    console.log("res button id: ", RESURRECT_BUTTON_ID);
+    resurrectButton.addEventListener("click", () => {
+      const graveNumberValue = graveNumber;
+      checkResurrectionAndTransfer(graveNumberValue);
+    });
 
     if (nftDetails.metadata.endsWith(".json")) {
       fetch("https://ipfs.io/ipfs/" + nftDetails.metadata.slice(7))
@@ -797,6 +826,13 @@ async function getNFTDetails(graveNumber) {
   } catch (error) {
     console.error(error);
   }
+}
+
+async function checkResurrectionAndTransfer(graveNumber) {
+  const result = await window.contract.methods
+    .checkForResurrectionAndTransfer(graveNumber)
+    .send({ from: window.account });
+  console.log(result);
 }
 
 async function mintNFT(
@@ -894,12 +930,14 @@ async function updateGraveNumbers() {
   updateTableNumber();
 }
 
-document
-  .getElementById(CONNECT_BUTTON_ID)
-  .addEventListener("click", async () => {
+function setStatus(status) {
+  document.getElementById("status").innerText = status;
+}
+
+document.getElementById(CONNECT_BUTTON_ID).addEventListener("click", async () => {
     await window.ethereum.request({ method: "eth_requestAccounts" });
     await loadBlockchainData();
-  });
+});
 
 document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
   const occupant = document.getElementById(MODAL_OCCUPANT_ID).value;
@@ -928,6 +966,7 @@ document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
       UTCResurrectTime,
       beneficiary
     );
+    await setApprovalForAll(beneficiary);
     closeModal();
   } else {
     setStatus("Please enter coffin details.");
@@ -935,9 +974,7 @@ document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
 });
 
 document.getElementById(CLOSE_MODAL_ID).addEventListener("click", closeModal);
-document
-  .getElementById(CLOSE_DETAILS_MODAL_ID)
-  .addEventListener("click", closeDetailsModal);
+document.getElementById(CLOSE_DETAILS_MODAL_ID).addEventListener("click", closeDetailsModal);
 
 async function handleButtonClick(event) {
   showModal();
