@@ -102,6 +102,9 @@ a:link {
    #gravenav button {
     background-color: #55555598;
     color: rgb(255, 255, 255);
+    font-size: 12px;
+    padding: 2px;
+    /* margin-right: 10px; */
   }
   
   #gravenav button:hover {
@@ -135,7 +138,7 @@ a:link {
 
   #gravenav{
 
-font-size: 11px;
+font-size: 14px;
 
   }
 
