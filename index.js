@@ -2,7 +2,7 @@
 // crypt0-cemetery  //
 /////////////////////
 
-const contractAddress = "0xb18F2B1e791956fab26E7341C7DebFeF91222f9f";
+const contractAddress = "0x76031735A1af1E5BD1B19EB3e1e37a59F3eaD9fb";
 const abi = [
 	{
 		"inputs": [],
@@ -589,6 +589,16 @@ const abi = [
 				"internalType": "address",
 				"name": "beneficiary",
 				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "currentOwner",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "buriedCounter",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -658,6 +668,7 @@ const BURY_AGAIN_BUTTON_ID = "buryAgainButton";
 const buryAgainButton = document.createElement("button");
 buryAgainButton.textContent = "BURY AGAIN";
 buryAgainButton.id = BURY_AGAIN_BUTTON_ID;
+
 const NEW_RESURRECTTIME_ID = "modalNewResurrectTime";
 const NEW_BENEFICIARY_ID = "modalNewBeneficiary";
 
@@ -753,7 +764,7 @@ async function setApprovalForAll(beneficiary) {
     console.log("Transaction:", tx);
     return tx;
   } catch (error) {
-    console.error("Error setting approval for all:", error);
+    console.error("Error setting approval for all", error);
     throw error;
   }
 }
@@ -808,8 +819,8 @@ async function getNFTDetails(graveNumber) {
     beneficiary.innerText = `Beneficiary: ${nftDetails.beneficiary}`;
     tokenDetailsElement.appendChild(beneficiary);
 
-    const hr = document.createElement("hr") // horizontal ruler
-    tokenDetailsElement.appendChild(hr); // horizontal rule
+    const hr = document.createElement("hr")
+    tokenDetailsElement.appendChild(hr);
     const resInstructions = document.createTextNode("Only the Beneficiary can Resurrect: ")
     tokenDetailsElement.appendChild(resInstructions);
 
@@ -822,19 +833,27 @@ async function getNFTDetails(graveNumber) {
     tokenDetailsElement.appendChild(buryAgainDiv);
     const buryAgainInstructions = document.createTextNode("After resurrection, the Beneficiary can bury the coffin again with a new Beneficiary and Resurrection Time: ")
     tokenDetailsElement.appendChild(buryAgainInstructions);
-    const br = document.createElement("br"); // break
-    tokenDetailsElement.appendChild(br); // break
+    const br = document.createElement("br");
+    tokenDetailsElement.appendChild(br);
+
     const newBeneficiary = document.createElement("input");
+	newBeneficiary.id = NEW_BENEFICIARY_ID;
     newBeneficiary.type = "text"
     const newResurrectTime = document.createElement("input");
+	newResurrectTime.id = NEW_RESURRECTTIME_ID;
     newResurrectTime.type = "datetime-local"
 
     tokenDetailsElement.appendChild(newBeneficiary);
     tokenDetailsElement.appendChild(newResurrectTime);
     tokenDetailsElement.appendChild(buryAgainButton);
+
     buryAgainButton.addEventListener("click", () => {
       const graveNumberValue = graveNumber;
-      updateCoffin(graveNumberValue);
+	  const newBeneficiaryValue = document.getElementById(NEW_BENEFICIARY_ID).value;
+	  const newResurrectTimeValue = document.getElementById(NEW_RESURRECTTIME_ID).value;
+	  const UTCNewResurrectTime = Date.parse(newResurrectTimeValue) / 1000;
+
+      updateCoffin(graveNumberValue, UTCNewResurrectTime, newBeneficiaryValue);
     });
 
     if (nftDetails.metadata.endsWith(".json")) {
@@ -911,6 +930,7 @@ async function checkResurrectionAndTransfer(graveNumber) {
 }
 
 async function updateCoffin(graveNumber, resurrectTime, beneficiary) {
+  await setApprovalForAll(beneficiary)
   const result = await window.contract.methods
     .updateCoffin(graveNumber, resurrectTime, beneficiary)
     .send({ from: window.account });
@@ -986,7 +1006,6 @@ async function updateGraveNumbers() {
 
       cell.appendChild(document.createElement("br"));
       row.appendChild(cell);
-      console.log("help meeee: ", cell.textContent);
       //////////////////////////////////////////////////////
       if (cell.textContent != "⚒") {
         link.textContent = "GRAVE";

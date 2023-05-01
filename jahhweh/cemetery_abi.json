@@ -584,6 +584,16 @@
 				"internalType": "address",
 				"name": "beneficiary",
 				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "currentOwner",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "buriedCounter",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",

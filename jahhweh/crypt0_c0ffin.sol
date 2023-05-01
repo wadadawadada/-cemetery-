@@ -1,5 +1,5 @@
 Crypto Coffin is currently deployed:
-Mumbai: 0xb18F2B1e791956fab26E7341C7DebFeF91222f9f
+Mumbai: 0x76031735A1af1E5BD1B19EB3e1e37a59F3eaD9fb
 
 resurrectTime is always stored as UTC unixtimestamp, not local client time.
 
@@ -68,7 +68,9 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
         uint256 dateBuried;
         uint256 resurrectTime;
         address beneficiary;
+        address currentOwner;
         bool isUpdated;
+        uint256 buriedCounter;
     }
 
     mapping(uint256 => Coffin) private _coffins;
@@ -111,7 +113,9 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
             block.timestamp,
             resurrectTime,
             beneficiary,
-            false
+            msg.sender,
+            false,
+            1
         );
 
         emit Buried(
@@ -137,7 +141,9 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
             address minter,
             uint256 dateBuried,
             uint256 resurrectTime,
-            address beneficiary
+            address beneficiary,
+            address currentOwner,
+            uint256 buriedCounter
         )
     {
         require(_exists(tokenId), "Coffin does not exist");
@@ -151,6 +157,8 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
         dateBuried = coffin.dateBuried;
         resurrectTime = coffin.resurrectTime;
         beneficiary = coffin.beneficiary;
+        currentOwner = coffin.currentOwner;
+        buriedCounter = coffin.buriedCounter;
     }
 
     function totalSupply() public view returns (uint256) {
@@ -167,8 +175,10 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
             coffin.resurrectTime <= block.timestamp,
             "Incorrect time for resurrection"
         );
+        require(msg.sender == coffin.beneficiary, "Only Beneficiary can Resurrect");
         emit Resurrected(tokenId);
-        safeTransferFrom(coffin.minter, coffin.beneficiary, tokenId, 1, "");
+        coffin.currentOwner = msg.sender;
+        safeTransferFrom(coffin.currentOwner, coffin.beneficiary, tokenId, 1, "");
     }
 
     function updateCoffin(uint256 tokenId, uint256 newResurrectTime, address newBeneficiary) external {
@@ -179,8 +189,10 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
 
         coffin.resurrectTime = newResurrectTime;
         coffin.beneficiary = newBeneficiary;
+        coffin.dateBuried = block.timestamp;
         coffin.isUpdated = true;
-
+        coffin.currentOwner = msg.sender;
+        coffin.buriedCounter++;
         emit Buried_Again(tokenId, newResurrectTime, newBeneficiary);
     }
 
