@@ -733,11 +733,6 @@ async function getNFTDetails(graveNumber) {
     const beneficiary = document.createElement("div");
     beneficiary.innerText = `Beneficiary: ${nftDetails.beneficiary}`;
     tokenDetailsElement.appendChild(beneficiary);
-    tokenDetailsElement.appendChild(beneficiaryResurrectButton);
-    beneficiaryResurrectButton.addEventListener(
-      "click",
-      getBeneficiaryResurrect
-    );
 
     if (nftDetails.metadata.endsWith(".json")) {
       fetch("https://ipfs.io/ipfs/" + nftDetails.metadata.slice(7))
