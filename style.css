@@ -245,7 +245,7 @@ font-size: 15px;
 }
 
 .grave:hover {
-  background-image: url("tomb.gif");
+  background-image: url("dig.gif");
   background-size: 100%;
   background-position: center;
   opacity: 1.0;
