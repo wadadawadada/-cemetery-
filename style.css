@@ -1,6 +1,6 @@
 html,
 .cemetery {
-	background-color: black;
+	background-color: rgb(0, 0, 0);
 	color: rgb(255, 255, 255);
   font-family: "Lucida Console", "Courier New", monospace;
   display: flex;
@@ -110,6 +110,7 @@ a:link {
     justify-content: center;
     max-width: 820px;
     min-width: 800px;
+    min-height: 600px;
     /* margin-left: 25%; */
     /* margin-right: 0vw; */
     background-image: url("grass.gif");
@@ -312,10 +313,14 @@ td {
   /* box-shadow: 12px -12px 12px 4px rgba(20, 20, 20, 0.7); */
   
 }
+
+
+
 td > button {
   font-size: 14px;
   color: rgb(255, 255, 255);
   background-color: black;
+  
 }
 
 
@@ -353,6 +358,7 @@ td > button {
   background-color: rgba(0, 0, 0, 0.863); 
   color: #FFFFFF;
   border: 1px solid white;
+  
 }
 
 .address-container {
