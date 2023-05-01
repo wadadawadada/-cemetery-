@@ -96,7 +96,20 @@ a:link {
      border-top-left-radius: 3px;
   border-top-right-radius: 3px;
    } 
+
+
+
+   #gravenav button {
+    background-color: #55555598;
+    color: rgb(255, 255, 255);
+  }
   
+  #gravenav button:hover {
+    background-color: #6d6b6b98;
+  }
+
+  
+     
   #container-jahhweh {
     position: relative;
     display: flex;
