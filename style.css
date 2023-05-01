@@ -89,7 +89,7 @@ a:link {
      display: flex;
      flex-direction: row;
      /* width: fit-content; */
-     gap: 10px;
+     gap: 40px;
      /* justify-content: left; */
      /* border: 1px solid rgb(255, 255, 255); */
      background-image: url("wall.gif");
@@ -370,6 +370,7 @@ td > button {
 
 .address-container {
   font-size: small;
+  
 }
   
 
