@@ -248,11 +248,11 @@ font-size: 15px;
 
 .grave:hover {
   background-image: url("tomb_anim.gif");
-  background-size: 180%;
+  background-size: 160%;
   background-position: center;
   opacity: 1.0;
   border-width: 0px;
-    
+  box-shadow: inset 0px 0px 6px 5px rgba(24, 23, 23, 0); 
 }
 
 .tomb { /*PFP*/
