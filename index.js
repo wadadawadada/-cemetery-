@@ -926,14 +926,13 @@ async function updateGraveNumbers() {
         //   skullSpan.classList.add("skull");
         //   const skull = document.createTextNode("☠");
         //   skullSpan.appendChild(skull);
+
+
 		const skullSpan = document.createElement("span");
         skullSpan.classList.add("skull");
 		const tombDiv = document.createElement("div");
 tombDiv.classList.add("tomb");
 skullSpan.appendChild(tombDiv);
-
-
-		
 
 /////////////////////////////////////////////////////////////
           const toolsSpan = document.createElement("span");
@@ -959,7 +958,7 @@ skullSpan.appendChild(tombDiv);
 
           cell.appendChild(document.createElement("br"));
           row.appendChild(cell);
-
+//////////////////////////////////////////////////////
           if (cell.textContent.length > 1) {
               link.textContent = "GRAVE";
               link.classList.add("graveButton"); // Add the graveButton CSS class
@@ -977,6 +976,8 @@ skullSpan.appendChild(tombDiv);
               cell.addEventListener("mouseover", () => cell.classList.add("bury"));
               cell.addEventListener("mouseout", () => cell.classList.remove("bury"));
           }
+
+		  
           cell.appendChild(link);
       }
       tableBody.appendChild(row);

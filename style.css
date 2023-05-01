@@ -241,6 +241,7 @@ font-size: 15px;
   background-image: url("tbg.gif");
   background-size: 100%;
   background-position: center;
+ 
 }
 
 .grave:hover {
@@ -251,13 +252,15 @@ font-size: 15px;
     
 }
 
-.tomb {
+.tomb { /*PFP*/
   display: inline-block;
   width: 50px;
   height: 50px;
   background-size: 100%;
   background-image: url('tomb.gif');
+  
 }
+
 
 
 
@@ -265,6 +268,10 @@ font-size: 15px;
   background-image: url("dig.gif");
   background-size: 250%;
   background-position: center;
+  /* border-top-left-radius: 6px;
+  border-top-right-radius: 6px; */
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 
 .grave > button {
