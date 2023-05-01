@@ -135,10 +135,10 @@ font-size: 15px;
     text-decoration: underline overline #6d6d6d
 }
 
-.graveNumber::before {
+/* .graveNumber::before {
   content: '#00000';
   counter-increment: item;
-}
+} */
 
 /* .graveNumber:hover {
   display: none;
