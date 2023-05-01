@@ -242,7 +242,7 @@ font-size: 15px;
   background-image: url("tbg.gif");
   background-size: 100%;
   background-position: center;
- 
+
 }
 
 .grave:hover {
@@ -286,7 +286,7 @@ font-size: 15px;
 
 td, tr {
   border: 2px solid rgb(58, 59, 59);
-  width: 100%;
+  width: 70px;
   height: 100px;
   
   }
