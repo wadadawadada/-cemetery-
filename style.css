@@ -246,8 +246,8 @@ font-size: 15px;
 }
 
 .grave:hover {
-  background-image: url("dig.gif");
-  background-size: 100%;
+  background-image: url("tbg.gif");
+  background-size: 160%;
   background-position: center;
   opacity: 1.0;
     
@@ -267,7 +267,7 @@ font-size: 15px;
 
 .bury:hover {
   background-image: url("dig.gif");
-  background-size: 250%;
+  background-size: 100%;
   background-position: center;
   /* border-top-left-radius: 6px;
   border-top-right-radius: 6px; */
