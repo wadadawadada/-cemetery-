@@ -827,14 +827,14 @@ async function getNFTDetails(graveNumber) {
     const newBeneficiary = document.createElement("input");
     newBeneficiary.type = "text"
     const newResurrectTime = document.createElement("input");
-    newResurrectTime.type = "date"
+    newResurrectTime.type = "datetime-local"
 
     tokenDetailsElement.appendChild(newBeneficiary);
     tokenDetailsElement.appendChild(newResurrectTime);
     tokenDetailsElement.appendChild(buryAgainButton);
     buryAgainButton.addEventListener("click", () => {
       const graveNumberValue = graveNumber;
-      checkResurrectionAndTransfer(graveNumberValue);
+      updateCoffin(graveNumberValue);
     });
 
     if (nftDetails.metadata.endsWith(".json")) {
