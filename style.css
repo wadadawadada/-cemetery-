@@ -147,10 +147,11 @@ font-size: 14px;
   /* THIS RIGHT HERE BREDDA */
 
 .graveNumber {
-    color: rgb(161, 161, 161);
+    color: rgb(247, 247, 247);
     font-size: 12px;
-    text-shadow: 0px 0px 8px rgb(0, 0, 0);
-    text-decoration: underline overline #6d6d6d
+    text-shadow: 0px 0px 4px rgb(0, 0, 0);
+    text-decoration: underline overline #6d6d6d;
+   
 }
 
 /* .graveNumber::before {
