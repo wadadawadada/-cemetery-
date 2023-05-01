@@ -122,9 +122,11 @@ a:link {
 
   #gravenav{
 
-font-size: 15px;
+font-size: 11px;
 
   }
+
+ 
 
   /* THIS RIGHT HERE BREDDA */
 
@@ -339,8 +341,8 @@ td > button {
 .modal-style {
   display: none; 
   position: fixed; 
-  top: 45%; 
-  left: 47%; 
+  top: 55%; 
+  left: 50%; 
   width: 50%;
   transform: translate(-50%, -50%); 
   background-color: rgba(0, 0, 0, 0.863); 
@@ -349,7 +351,7 @@ td > button {
   line-height: 15px;
   border: 1px solid white;
   word-wrap: break-word;
-  max-width: 800px;
+  max-width: 840px;
   min-height: 400px;
 }
 
