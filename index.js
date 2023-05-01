@@ -654,6 +654,13 @@ const resurrectButton = document.createElement("button");
 resurrectButton.textContent = "RESURRECT";
 resurrectButton.id = RESURRECT_BUTTON_ID;
 
+const BURY_AGAIN_BUTTON_ID = "buryAgainButton";
+const buryAgainButton = document.createElement("button");
+buryAgainButton.textContent = "BURY AGAIN";
+buryAgainButton.id = BURY_AGAIN_BUTTON_ID;
+const NEW_RESURRECTTIME_ID = "modalNewResurrectTime";
+const NEW_BENEFICIARY_ID = "modalNewBeneficiary";
+
 const SKEL_GIF_ID = "skelGif";
 const skelGif = document.createElement("img");
 skelGif.src = "connect.gif";
@@ -801,9 +808,31 @@ async function getNFTDetails(graveNumber) {
     beneficiary.innerText = `Beneficiary: ${nftDetails.beneficiary}`;
     tokenDetailsElement.appendChild(beneficiary);
 
+    const hr = document.createElement("hr") // horizontal ruler
+    tokenDetailsElement.appendChild(hr); // horizontal rule
+    const resInstructions = document.createTextNode("Only the Beneficiary can Resurrect: ")
+    tokenDetailsElement.appendChild(resInstructions);
+
     tokenDetailsElement.appendChild(resurrectButton);
-    console.log("res button id: ", RESURRECT_BUTTON_ID);
     resurrectButton.addEventListener("click", () => {
+      const graveNumberValue = graveNumber;
+      checkResurrectionAndTransfer(graveNumberValue);
+    });
+    const buryAgainDiv = document.createElement("div")
+    tokenDetailsElement.appendChild(buryAgainDiv);
+    const buryAgainInstructions = document.createTextNode("After resurrection, the Beneficiary can bury the coffin again with a new Beneficiary and Resurrection Time: ")
+    tokenDetailsElement.appendChild(buryAgainInstructions);
+    const br = document.createElement("br"); // break
+    tokenDetailsElement.appendChild(br); // break
+    const newBeneficiary = document.createElement("input");
+    newBeneficiary.type = "text"
+    const newResurrectTime = document.createElement("input");
+    newResurrectTime.type = "date"
+
+    tokenDetailsElement.appendChild(newBeneficiary);
+    tokenDetailsElement.appendChild(newResurrectTime);
+    tokenDetailsElement.appendChild(buryAgainButton);
+    buryAgainButton.addEventListener("click", () => {
       const graveNumberValue = graveNumber;
       checkResurrectionAndTransfer(graveNumberValue);
     });
@@ -877,6 +906,15 @@ async function checkResurrectionAndTransfer(graveNumber) {
   const result = await window.contract.methods
     .checkForResurrectionAndTransfer(graveNumber)
     .send({ from: window.account });
+    setStatus("Successfully resurrected coffin");
+  console.log(result);
+}
+
+async function updateCoffin(graveNumber, resurrectTime, beneficiary) {
+  const result = await window.contract.methods
+    .updateCoffin(graveNumber, resurrectTime, beneficiary)
+    .send({ from: window.account });
+    setStatus("Successfully buried coffin");
   console.log(result);
 }
 
