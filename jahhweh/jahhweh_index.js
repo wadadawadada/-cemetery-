@@ -597,7 +597,7 @@ async function loadWeb3() {
 	}
   }
 
-  async function loadBlockchainData() {
+async function loadBlockchainData() {
 	window.web3 = new Web3(window.ethereum);
 	const accounts = await web3.eth.getAccounts();
 	window.account = accounts[0];
@@ -609,6 +609,7 @@ async function loadWeb3() {
 	  setStatus("Welcome to the cemetery");
 	}
 }
+
 async function initApp() {
 	await loadWeb3();
 	await loadBlockchainData();
@@ -620,9 +621,9 @@ async function mintNFT(occupant, dateBorn, epitaph, metadata, resurrectTime, ben
 	  .send({ from: window.account, value: window.contract.methods.MINT_COST().call() });
   
 	setStatus(`Minted NFT with tokenId: ${result.events.TransferSingle.returnValues.id}`);
-  }
+}
   
-  async function checkResurrectionAndTransfer(tokenId) {
+async function checkResurrectionAndTransfer(tokenId) {
 	const result = await window.contract.methods
 	  .checkForResurrectionAndTransfer(tokenId)
 	  .send({ from: window.account });
@@ -637,6 +638,11 @@ async function mintNFT(occupant, dateBorn, epitaph, metadata, resurrectTime, ben
   function setStatus(status) {
 	document.getElementById("status").innerText = status;
   }
+
+  document.getElementById("check").addEventListener("click", async () => {
+	const tokenId = document.getElementById("tokenId").value;
+	await checkResurrectionAndTransfer(tokenId);
+  });
   
   document.getElementById("connect").addEventListener("click", initApp);
   
@@ -651,7 +657,3 @@ async function mintNFT(occupant, dateBorn, epitaph, metadata, resurrectTime, ben
 	await mintNFT(occupant, dateBorn, epitaph, metadata, resurrectTime, beneficiary);
   });
   
-  document.getElementById("check").addEventListener("click", async () => {
-	const tokenId = document.getElementById("tokenId").value;
-	await checkResurrectionAndTransfer(tokenId);
-  });
