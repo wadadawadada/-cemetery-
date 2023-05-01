@@ -610,7 +610,7 @@ const connectBtn = document.createElement("button");
 
 const SKEL_GIF_ID = "skelGif";
 const skelGif = document.createElement("img");
-skelGif.src = "skel.gif";
+skelGif.src = "connect.gif";
 skelGif.id = SKEL_GIF_ID;
 skelGif.style.position = "fixed";
 skelGif.style.top = "50%";
