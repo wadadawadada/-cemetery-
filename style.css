@@ -89,14 +89,30 @@ a:link {
      display: flex;
      flex-direction: row;
      /* width: fit-content; */
-     gap: 10px;
+     gap: 40px;
      /* justify-content: left; */
      /* border: 1px solid rgb(255, 255, 255); */
      background-image: url("wall.gif");
      border-top-left-radius: 3px;
   border-top-right-radius: 3px;
    } 
+
+
+
+   #gravenav button {
+    background-color: #55555598;
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    padding: 2px;
+    /* margin-right: 10px; */
+  }
   
+  #gravenav button:hover {
+    background-color: #6d6b6b98;
+  }
+
+  
+     
   #container-jahhweh {
     position: relative;
     display: flex;
@@ -122,7 +138,7 @@ a:link {
 
   #gravenav{
 
-font-size: 11px;
+font-size: 14px;
 
   }
 
@@ -131,10 +147,11 @@ font-size: 11px;
   /* THIS RIGHT HERE BREDDA */
 
 .graveNumber {
-    color: rgb(161, 161, 161);
+    color: rgb(247, 247, 247);
     font-size: 12px;
-    text-shadow: 0px 0px 8px rgb(0, 0, 0);
-    text-decoration: underline overline #6d6d6d
+    text-shadow: 0px 0px 4px rgb(0, 0, 0);
+    text-decoration: underline overline #6d6d6d;
+   
 }
 
 /* .graveNumber::before {
@@ -370,6 +387,7 @@ td > button {
 
 .address-container {
   font-size: small;
+  
 }
   
 
