@@ -2,7 +2,7 @@
 // crypt0-cemetery  //
 /////////////////////
 
-const contractAddress = "0x76031735A1af1E5BD1B19EB3e1e37a59F3eaD9fb";
+const contractAddress = "0xDfC9A2Bd1B4209611e7EF99b2B5135278829816F";
 const abi = [
 	{
 		"inputs": [],

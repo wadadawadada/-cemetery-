@@ -1,5 +1,5 @@
 Crypto Coffin is currently deployed:
-Mumbai: 0x76031735A1af1E5BD1B19EB3e1e37a59F3eaD9fb
+Mumbai: 0xDfC9A2Bd1B4209611e7EF99b2B5135278829816F
 
 resurrectTime is always stored as UTC unixtimestamp, not local client time.
 
@@ -177,21 +177,21 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
         );
         require(msg.sender == coffin.beneficiary, "Only Beneficiary can Resurrect");
         emit Resurrected(tokenId);
-        coffin.currentOwner = msg.sender;
         safeTransferFrom(coffin.currentOwner, coffin.beneficiary, tokenId, 1, "");
+        coffin.currentOwner = msg.sender;
+        coffin.isUpdated = false;
     }
 
     function updateCoffin(uint256 tokenId, uint256 newResurrectTime, address newBeneficiary) external {
         require(newBeneficiary != address(0), "Beneficiary address is required");
         Coffin storage coffin = _coffins[tokenId];
         require(msg.sender == coffin.beneficiary, "Only Beneficiary can update");
-        require(!coffin.isUpdated, "Coffin is buried");
+        require(!coffin.isUpdated, "Coffin is already buried");
 
         coffin.resurrectTime = newResurrectTime;
         coffin.beneficiary = newBeneficiary;
         coffin.dateBuried = block.timestamp;
         coffin.isUpdated = true;
-        coffin.currentOwner = msg.sender;
         coffin.buriedCounter++;
         emit Buried_Again(tokenId, newResurrectTime, newBeneficiary);
     }
