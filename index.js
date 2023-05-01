@@ -921,12 +921,21 @@ async function updateGraveNumbers() {
       const row = document.createElement("tr");
       for (let j = 0; j < 8; j++) {
           const cell = document.createElement("td");
+///////////////////////////////////////////////////////////
+        //   const skullSpan = document.createElement("span");
+        //   skullSpan.classList.add("skull");
+        //   const skull = document.createTextNode("☠");
+        //   skullSpan.appendChild(skull);
+		const skullSpan = document.createElement("span");
+        skullSpan.classList.add("skull");
+		const tombDiv = document.createElement("div");
+tombDiv.classList.add("tomb");
+skullSpan.appendChild(tombDiv);
 
-          const skullSpan = document.createElement("span");
-          skullSpan.classList.add("skull");
-          const skull = document.createTextNode("☠");
-          skullSpan.appendChild(skull);
 
+		
+
+/////////////////////////////////////////////////////////////
           const toolsSpan = document.createElement("span");
           toolsSpan.classList.add("tools");
           const tools = document.createTextNode("⚒");
