@@ -874,7 +874,7 @@ async function updateGraveNumbers() {
       row.appendChild(cell);
       console.log("help meeee: ", cell.textContent);
       //////////////////////////////////////////////////////
-      if (cell.textContent.length > 1) {
+      if (cell.textContent != "⚒") {
         link.textContent = "GRAVE";
         link.classList.add("graveButton"); // Add the graveButton CSS class
         const graveNumber = cell.textContent.replace("☠", "");
