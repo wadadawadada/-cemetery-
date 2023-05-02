@@ -134,6 +134,12 @@ a:link {
     padding: 60px;
     border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
+  
+  
+  border-image: url("border.png") /* source */ 46 / /* slice */ 12px 12px 12px
+  12px / /* width */ 6px 6px 6px 6px /* outset */ round; /* repeat */
+
+
   }
 
 
