@@ -770,9 +770,8 @@ async function setApprovalForAll(beneficiary) {
 }
 
 async function getNFTDetails(graveNumber) {
-  console.log("graveNumber: ", graveNumber);
-  setStatus("Looking at a grave.");
   try {
+	setStatus("Looking at a grave");
     const nftDetails = await window.contract.methods
       .tokenDetails(graveNumber)
       .call();
@@ -786,6 +785,11 @@ async function getNFTDetails(graveNumber) {
     closeDetailsModalButton.addEventListener("click", closeDetailsModal);
     tokenDetailsElement.appendChild(closeDetailsModalButton);
 
+	const detailsSpan = document.createElement("span");
+	detailsSpan.id = STATUS_ID;
+	detailsSpan.innerText = document.getElementById("status").innerText;
+	tokenDetailsElement.appendChild(detailsSpan);
+
     const coffinId = document.createElement("div");
     coffinId.innerText = `Grave: ${nftDetails.id}`;
     tokenDetailsElement.appendChild(coffinId);
@@ -793,12 +797,9 @@ async function getNFTDetails(graveNumber) {
 	const coffinDateBuriedCheck = document.createElement("div");
 	const gmtIndex = Date(nftDetails.dateBuried).indexOf("GMT");
 	const gmtFormatted = Date(nftDetails.dateBuried).slice(0,gmtIndex) + "UTC";
-	console.log(Date(nftDetails.dateBuried).indexOf("GMT"))
-	console.log(Date(nftDetails.dateBuried).slice(0,gmtIndex))
 
     coffinDateBuriedCheck.innerText = `Buried: ${gmtFormatted}`;
     tokenDetailsElement.appendChild(coffinDateBuriedCheck);
-
 
 	const coffinBuryCount = document.createElement("div");
 	coffinBuryCount.innerText = `This Coffin has been buried ${nftDetails.buriedCounter} times.`;
@@ -941,6 +942,7 @@ async function getNFTDetails(graveNumber) {
 }
 
 async function checkResurrectionAndTransfer(graveNumber) {
+	setStatus("Attempting Resurrection");
   const result = await window.contract.methods
     .checkForResurrectionAndTransfer(graveNumber)
     .send({ from: window.account });
@@ -966,7 +968,6 @@ async function mintNFT(
   beneficiary
 ) {
   try {
-    console.log("MINTING RES TIME: ", resurrectTime);
     const MINT_COST = window.web3.utils.toWei("0.001", "ether");
     await window.contract.methods
       .mint(occupant, birth, epitaph, metadata, resurrectTime, beneficiary)
