@@ -771,6 +771,7 @@ async function setApprovalForAll(beneficiary) {
 
 async function getNFTDetails(graveNumber) {
   console.log("graveNumber: ", graveNumber);
+  setStatus("Looking at a grave.");
   try {
     const nftDetails = await window.contract.methods
       .tokenDetails(graveNumber)
@@ -788,6 +789,24 @@ async function getNFTDetails(graveNumber) {
     const coffinId = document.createElement("div");
     coffinId.innerText = `Grave: ${nftDetails.id}`;
     tokenDetailsElement.appendChild(coffinId);
+
+	const coffinDateBuriedCheck = document.createElement("div");
+	const gmtIndex = Date(nftDetails.dateBuried).indexOf("GMT");
+	const gmtFormatted = Date(nftDetails.dateBuried).slice(0,gmtIndex) + "UTC";
+	console.log(Date(nftDetails.dateBuried).indexOf("GMT"))
+	console.log(Date(nftDetails.dateBuried).slice(0,gmtIndex))
+
+    coffinDateBuriedCheck.innerText = `Buried: ${gmtFormatted}`;
+    tokenDetailsElement.appendChild(coffinDateBuriedCheck);
+
+
+	const coffinBuryCount = document.createElement("div");
+	coffinBuryCount.innerText = `This Coffin has been buried ${nftDetails.buriedCounter} times.`;
+	tokenDetailsElement.appendChild(coffinBuryCount);
+
+	const currentOwner = document.createElement("div");
+	currentOwner.innerText = `Current Owner: ${nftDetails.currentOwner}`;
+	tokenDetailsElement.appendChild(currentOwner);
 
     const occupant = document.createElement("div");
     occupant.innerText = `Occupant: ${nftDetails.occupant}`;
@@ -811,8 +830,8 @@ async function getNFTDetails(graveNumber) {
 
     const resurrectTime = document.createElement("div");
     const date = new Date(nftDetails.resurrectTime * 1000);
-    const dateString = date.toLocaleString();
-    resurrectTime.innerText = `Resurrection: ${dateString} UTC`;
+    const dateString = date.toUTCString().replace("GMT","UTC");
+    resurrectTime.innerText = `Resurrection: ${dateString}`;
     tokenDetailsElement.appendChild(resurrectTime);
 
     const beneficiary = document.createElement("div");
@@ -915,7 +934,7 @@ async function getNFTDetails(graveNumber) {
     }
 
     showDetailsModal();
-    setStatus("Looking at graves");
+
   } catch (error) {
     console.error(error);
   }
@@ -952,9 +971,7 @@ async function mintNFT(
     await window.contract.methods
       .mint(occupant, birth, epitaph, metadata, resurrectTime, beneficiary)
       .send({ from: window.account, value: MINT_COST });
-    setStatus("Successfully buried coffin");
     updateGraveNumbers();
-    closeModal();
   } catch (error) {
     console.error(error);
     setStatus("Something went terribly wrong");
@@ -1068,8 +1085,9 @@ document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
       UTCResurrectTime,
       beneficiary
     );
+	setStatus("Approving Beneficiary...");
     await setApprovalForAll(beneficiary);
-    closeModal();
+	setStatus("The coffin is buried.");
   } else {
     setStatus("Please enter coffin details.");
   }
@@ -1080,11 +1098,6 @@ document.getElementById(CLOSE_DETAILS_MODAL_ID).addEventListener("click", closeD
 
 async function handleButtonClick(event) {
   showModal();
-}
-
-function setStatus(message) {
-  const statusElement = document.getElementById("status");
-  statusElement.textContent = message;
 }
 
 function removeConnectButton() {
