@@ -95,6 +95,7 @@ a:link {
      background-image: url("wall.gif");
      border-top-left-radius: 3px;
   border-top-right-radius: 3px;
+  
    } 
 
 
@@ -223,20 +224,24 @@ font-size: 14px;
 
 .address-container {
   font-size: small;
-  
+  vertical-align: middle;
+  height: 1.5vw;
 }
 
 #status{
   color: rgb(107, 194, 85);
   text-align: right;
   font-size: small;
+  vertical-align: middle;
+
   }
 
   #statsign{
     color: rgb(255, 255, 255);
     text-align: right;
     font-size: small;
-    
+    vertical-align: middle;
+
     }
 
 /* //////////////////////////////////////////////////////////////////////////// */
