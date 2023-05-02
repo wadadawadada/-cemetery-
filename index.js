@@ -657,20 +657,32 @@ const MODAL_RESURRECTTIME_ID = "modalResurrectTime";
 const MODAL_BENEFICIARY_ID = "modalBeneficiary";
 const MODAL_GRAVENUMBER_ID = "modalGraveNumber";
 const CONNECT_BUTTON_ID = "connectBtn";
-const connectBtn = document.createElement("button");
-
+const NEW_RESURRECTTIME_ID = "modalNewResurrectTime";
+const NEW_BENEFICIARY_ID = "modalNewBeneficiary";
 const RESURRECT_BUTTON_ID = "resurrectButton";
+const BURY_AGAIN_BUTTON_ID = "buryAgainButton";
+
 const resurrectButton = document.createElement("button");
 resurrectButton.textContent = "RESURRECT";
 resurrectButton.id = RESURRECT_BUTTON_ID;
 
-const BURY_AGAIN_BUTTON_ID = "buryAgainButton";
+
 const buryAgainButton = document.createElement("button");
 buryAgainButton.textContent = "BURY AGAIN";
 buryAgainButton.id = BURY_AGAIN_BUTTON_ID;
 
-const NEW_RESURRECTTIME_ID = "modalNewResurrectTime";
-const NEW_BENEFICIARY_ID = "modalNewBeneficiary";
+// Create the outer span element
+const statusBar = document.createElement('span');
+statusBar.setAttribute('id', 'statsign');
+// Create the text node for "Status: "
+const statusTextNode = document.createTextNode('Status: ');
+statusBar.appendChild(statusTextNode);
+// Create the inner span element
+const innerSpan = document.createElement('span');
+innerSpan.setAttribute('id', 'status');
+statusBar.appendChild(innerSpan);
+// Add the outer span to the DOM where you want to append it, e.g., inside the body
+// document.body.appendChild(statusBar);
 
 const SKEL_GIF_ID = "skelGif";
 const skelGif = document.createElement("img");
@@ -683,6 +695,7 @@ skelGif.style.transform = "translate(-50%, -50%)";
 skelGif.style.zIndex = 9999;
 document.body.appendChild(skelGif);
 
+
 const table = document.createElement("table");
 const tableBody = document.createElement("tbody");
 table.appendChild(tableBody);
@@ -694,6 +707,7 @@ const prevButton = document.createElement("button");
 const cemeteryNumber = document.createElement("span");
 const goButton = document.createElement("button");
 const cemeteryNumberInput = document.createElement("input");
+const connectBtn = document.createElement("button");
 
 nextButton.textContent = "NEXT";
 prevButton.textContent = "PREV";
@@ -709,8 +723,8 @@ buttonsContainer.appendChild(nextButton);
 buttonsContainer.appendChild(cemeteryNumberInput);
 buttonsContainer.appendChild(goButton);
 buttonsContainer.appendChild(connectBtn);
-
 document.getElementById("gravenav").appendChild(buttonsContainer);
+document.getElementById("statusBar").appendChild(statusBar);
 setStatus("Waiting for a connection");
 
 let startGraveNumber = 1;
@@ -778,17 +792,11 @@ async function getNFTDetails(graveNumber) {
 
     const tokenDetailsElement = document.getElementById("tokenDetailsModal");
     tokenDetailsElement.innerHTML = "";
-
     const closeDetailsModalButton = document.createElement("div");
     closeDetailsModalButton.classList.add("close-details-modal-button");
     closeDetailsModalButton.innerText = "X";
     closeDetailsModalButton.addEventListener("click", closeDetailsModal);
     tokenDetailsElement.appendChild(closeDetailsModalButton);
-
-	const detailsSpan = document.createElement("span");
-	detailsSpan.id = STATUS_ID;
-	detailsSpan.innerText = document.getElementById("status").innerText;
-	tokenDetailsElement.appendChild(detailsSpan);
 
     const coffinId = document.createElement("div");
     coffinId.innerText = `Grave: ${nftDetails.id}`;
@@ -943,20 +951,33 @@ async function getNFTDetails(graveNumber) {
 
 async function checkResurrectionAndTransfer(graveNumber) {
 	setStatus("Attempting Resurrection");
-  const result = await window.contract.methods
-    .checkForResurrectionAndTransfer(graveNumber)
-    .send({ from: window.account });
-    setStatus("Successfully resurrected coffin");
-  console.log(result);
+	try {
+		const result = await window.contract.methods
+		.checkForResurrectionAndTransfer(graveNumber)
+		.send({ from: window.account });
+		setStatus("Successfully resurrected coffin");
+	  console.log(result);
+	} catch(e) {
+		setStatus("Failed to resurrect coffin");
+		console.log(e)
+	}
+  
 }
 
 async function updateCoffin(graveNumber, resurrectTime, beneficiary) {
-  await setApprovalForAll(beneficiary)
-  const result = await window.contract.methods
-    .updateCoffin(graveNumber, resurrectTime, beneficiary)
-    .send({ from: window.account });
-    setStatus("Successfully buried coffin");
-  console.log(result);
+	try {
+		setStatus("Approving new Beneficiary");
+		await setApprovalForAll(beneficiary)
+		setStatus("Lowering coffin...");
+		const result = await window.contract.methods
+		  .updateCoffin(graveNumber, resurrectTime, beneficiary)
+		  .send({ from: window.account });
+		  setStatus("Successfully buried coffin");
+		console.log(result);
+	} catch(e) {
+		setStatus("Failed to approve new Beneficiary");
+		console.log(e)
+	}
 }
 
 async function mintNFT(
@@ -1115,23 +1136,26 @@ function removeConnectButton() {
 function showModal() {
   const modal = document.getElementById("modal");
   modal.style.display = "block";
-  setStatus("Preparing to bury");
+  modal.insertBefore(statusBar, modal.firstChild)
 }
 
 function closeModal() {
   const modal = document.getElementById("modal");
   modal.style.display = "none";
+  document.getElementById("statusBar").appendChild(statusBar);
   setStatus("Welcome to the cemetery");
 }
 
 function showDetailsModal() {
   const tokenDetailsModal = document.getElementById("tokenDetailsModal");
   tokenDetailsModal.style.display = "block";
+  tokenDetailsModal.insertBefore(statusBar, tokenDetailsModal.firstChild)
 }
 
 function closeDetailsModal() {
   const tokenDetailsModal = document.getElementById("tokenDetailsModal");
   tokenDetailsModal.style.display = "none";
+  document.getElementById("statusBar").appendChild(statusBar);
   setStatus("Welcome to the cemetery");
 }
 
