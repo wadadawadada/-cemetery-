@@ -4,638 +4,638 @@
 
 const contractAddress = "0xDfC9A2Bd1B4209611e7EF99b2B5135278829816F";
 const abi = [
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "account",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "bool",
-				"name": "approved",
-				"type": "bool"
-			}
-		],
-		"name": "ApprovalForAll",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "occupant",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "dateBorn",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "epitaph",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "metadata",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "dateBuried",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "resurrectTime",
-				"type": "uint256"
-			}
-		],
-		"name": "Buried",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "newResurrectTime",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "newBeneficiary",
-				"type": "address"
-			}
-		],
-		"name": "Buried_Again",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "checkForResurrectionAndTransfer",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "occupant",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "dateBorn",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "epitaph",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "metadata",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "resurrectTime",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "beneficiary",
-				"type": "address"
-			}
-		],
-		"name": "mint",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "previousOwner",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "OwnershipTransferred",
-		"type": "event"
-	},
-	{
-		"inputs": [],
-		"name": "renounceOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "Resurrected",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256[]",
-				"name": "ids",
-				"type": "uint256[]"
-			},
-			{
-				"internalType": "uint256[]",
-				"name": "amounts",
-				"type": "uint256[]"
-			},
-			{
-				"internalType": "bytes",
-				"name": "data",
-				"type": "bytes"
-			}
-		],
-		"name": "safeBatchTransferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bytes",
-				"name": "data",
-				"type": "bytes"
-			}
-		],
-		"name": "safeTransferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			},
-			{
-				"internalType": "bool",
-				"name": "approved",
-				"type": "bool"
-			}
-		],
-		"name": "setApprovalForAll",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256[]",
-				"name": "ids",
-				"type": "uint256[]"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256[]",
-				"name": "values",
-				"type": "uint256[]"
-			}
-		],
-		"name": "TransferBatch",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "transferOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "value",
-				"type": "uint256"
-			}
-		],
-		"name": "TransferSingle",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "newResurrectTime",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "newBeneficiary",
-				"type": "address"
-			}
-		],
-		"name": "updateCoffin",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "value",
-				"type": "string"
-			},
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "URI",
-		"type": "event"
-	},
-	{
-		"inputs": [],
-		"name": "withdraw",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "account",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "balanceOf",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address[]",
-				"name": "accounts",
-				"type": "address[]"
-			},
-			{
-				"internalType": "uint256[]",
-				"name": "ids",
-				"type": "uint256[]"
-			}
-		],
-		"name": "balanceOfBatch",
-		"outputs": [
-			{
-				"internalType": "uint256[]",
-				"name": "",
-				"type": "uint256[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "account",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			}
-		],
-		"name": "isApprovedForAll",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "MINT_COST",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes4",
-				"name": "interfaceId",
-				"type": "bytes4"
-			}
-		],
-		"name": "supportsInterface",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "tokenDetails",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "occupant",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "dateBorn",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "epitaph",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "metadata",
-				"type": "string"
-			},
-			{
-				"internalType": "address",
-				"name": "minter",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "dateBuried",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "resurrectTime",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "beneficiary",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "currentOwner",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "buriedCounter",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "totalSupply",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "uri",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
+  {
+    inputs: [],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "operator",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "bool",
+        name: "approved",
+        type: "bool",
+      },
+    ],
+    name: "ApprovalForAll",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "occupant",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "dateBorn",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "epitaph",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "metadata",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "dateBuried",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "resurrectTime",
+        type: "uint256",
+      },
+    ],
+    name: "Buried",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "newResurrectTime",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "newBeneficiary",
+        type: "address",
+      },
+    ],
+    name: "Buried_Again",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+    ],
+    name: "checkForResurrectionAndTransfer",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "occupant",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "dateBorn",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "epitaph",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "metadata",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "resurrectTime",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "beneficiary",
+        type: "address",
+      },
+    ],
+    name: "mint",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
+    inputs: [],
+    name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+    ],
+    name: "Resurrected",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        internalType: "uint256[]",
+        name: "ids",
+        type: "uint256[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "amounts",
+        type: "uint256[]",
+      },
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "safeBatchTransferFrom",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "safeTransferFrom",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "operator",
+        type: "address",
+      },
+      {
+        internalType: "bool",
+        name: "approved",
+        type: "bool",
+      },
+    ],
+    name: "setApprovalForAll",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "operator",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256[]",
+        name: "ids",
+        type: "uint256[]",
+      },
+      {
+        indexed: false,
+        internalType: "uint256[]",
+        name: "values",
+        type: "uint256[]",
+      },
+    ],
+    name: "TransferBatch",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "transferOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "operator",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "value",
+        type: "uint256",
+      },
+    ],
+    name: "TransferSingle",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "newResurrectTime",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "newBeneficiary",
+        type: "address",
+      },
+    ],
+    name: "updateCoffin",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "string",
+        name: "value",
+        type: "string",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+    ],
+    name: "URI",
+    type: "event",
+  },
+  {
+    inputs: [],
+    name: "withdraw",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+    ],
+    name: "balanceOf",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address[]",
+        name: "accounts",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "ids",
+        type: "uint256[]",
+      },
+    ],
+    name: "balanceOfBatch",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "operator",
+        type: "address",
+      },
+    ],
+    name: "isApprovedForAll",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "MINT_COST",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes4",
+        name: "interfaceId",
+        type: "bytes4",
+      },
+    ],
+    name: "supportsInterface",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+    ],
+    name: "tokenDetails",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "occupant",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "dateBorn",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "epitaph",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "metadata",
+        type: "string",
+      },
+      {
+        internalType: "address",
+        name: "minter",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "dateBuried",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "resurrectTime",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "beneficiary",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "currentOwner",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "buriedCounter",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "totalSupply",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "uri",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
 ];
 
 //////////
@@ -666,23 +666,17 @@ const resurrectButton = document.createElement("button");
 resurrectButton.textContent = "RESURRECT";
 resurrectButton.id = RESURRECT_BUTTON_ID;
 
-
 const buryAgainButton = document.createElement("button");
 buryAgainButton.textContent = "BURY AGAIN";
 buryAgainButton.id = BURY_AGAIN_BUTTON_ID;
 
-// Create the outer span element
-const statusBar = document.createElement('span');
-statusBar.setAttribute('id', 'statsign');
-// Create the text node for "Status: "
-const statusTextNode = document.createTextNode('Status: ');
+const statusBar = document.createElement("span");
+statusBar.setAttribute("id", "statsign");
+const statusTextNode = document.createTextNode("Status: ");
 statusBar.appendChild(statusTextNode);
-// Create the inner span element
-const innerSpan = document.createElement('span');
-innerSpan.setAttribute('id', 'status');
+const innerSpan = document.createElement("span");
+innerSpan.setAttribute("id", "status");
 statusBar.appendChild(innerSpan);
-// Add the outer span to the DOM where you want to append it, e.g., inside the body
-// document.body.appendChild(statusBar);
 
 const SKEL_GIF_ID = "skelGif";
 const skelGif = document.createElement("img");
@@ -694,12 +688,6 @@ skelGif.style.left = "50%";
 skelGif.style.transform = "translate(-50%, -50%)";
 skelGif.style.zIndex = 9999;
 document.body.appendChild(skelGif);
-
-
-const table = document.createElement("table");
-const tableBody = document.createElement("tbody");
-table.appendChild(tableBody);
-document.getElementById("container-jahhweh").appendChild(table);
 
 const buttonsContainer = document.createElement("div");
 const nextButton = document.createElement("button");
@@ -726,6 +714,11 @@ buttonsContainer.appendChild(connectBtn);
 document.getElementById("gravenav").appendChild(buttonsContainer);
 document.getElementById("statusBar").appendChild(statusBar);
 setStatus("Waiting for a connection");
+
+const table = document.createElement("table");
+const tableBody = document.createElement("tbody");
+table.appendChild(tableBody);
+document.getElementById("container-jahhweh").appendChild(table);
 
 let startGraveNumber = 1;
 
@@ -785,7 +778,7 @@ async function setApprovalForAll(beneficiary) {
 
 async function getNFTDetails(graveNumber) {
   try {
-	setStatus("Looking at a grave");
+    setStatus("Looking at a grave");
     const nftDetails = await window.contract.methods
       .tokenDetails(graveNumber)
       .call();
@@ -802,20 +795,20 @@ async function getNFTDetails(graveNumber) {
     coffinId.innerText = `Grave: ${nftDetails.id}`;
     tokenDetailsElement.appendChild(coffinId);
 
-	const coffinDateBuriedCheck = document.createElement("div");
-	const gmtIndex = Date(nftDetails.dateBuried).indexOf("GMT");
-	const gmtFormatted = Date(nftDetails.dateBuried).slice(0,gmtIndex) + "UTC";
+    const coffinDateBuriedCheck = document.createElement("div");
+    const gmtIndex = Date(nftDetails.dateBuried).indexOf("GMT");
+    const gmtFormatted = Date(nftDetails.dateBuried).slice(0, gmtIndex) + "UTC";
 
     coffinDateBuriedCheck.innerText = `Buried: ${gmtFormatted}`;
     tokenDetailsElement.appendChild(coffinDateBuriedCheck);
 
-	const coffinBuryCount = document.createElement("div");
-	coffinBuryCount.innerText = `This Coffin has been buried ${nftDetails.buriedCounter} times.`;
-	tokenDetailsElement.appendChild(coffinBuryCount);
+    const coffinBuryCount = document.createElement("div");
+    coffinBuryCount.innerText = `This Coffin has been buried ${nftDetails.buriedCounter} times.`;
+    tokenDetailsElement.appendChild(coffinBuryCount);
 
-	const currentOwner = document.createElement("div");
-	currentOwner.innerText = `Current Owner: ${nftDetails.currentOwner}`;
-	tokenDetailsElement.appendChild(currentOwner);
+    const currentOwner = document.createElement("div");
+    currentOwner.innerText = `Current Owner: ${nftDetails.currentOwner}`;
+    tokenDetailsElement.appendChild(currentOwner);
 
     const occupant = document.createElement("div");
     occupant.innerText = `Occupant: ${nftDetails.occupant}`;
@@ -839,7 +832,7 @@ async function getNFTDetails(graveNumber) {
 
     const resurrectTime = document.createElement("div");
     const date = new Date(nftDetails.resurrectTime * 1000);
-    const dateString = date.toUTCString().replace("GMT","UTC");
+    const dateString = date.toUTCString().replace("GMT", "UTC");
     resurrectTime.innerText = `Resurrection: ${dateString}`;
     tokenDetailsElement.appendChild(resurrectTime);
 
@@ -847,9 +840,11 @@ async function getNFTDetails(graveNumber) {
     beneficiary.innerText = `Beneficiary: ${nftDetails.beneficiary}`;
     tokenDetailsElement.appendChild(beneficiary);
 
-    const hr = document.createElement("hr")
+    const hr = document.createElement("hr");
     tokenDetailsElement.appendChild(hr);
-    const resInstructions = document.createTextNode("Only the Beneficiary can Resurrect: ")
+    const resInstructions = document.createTextNode(
+      "Only the Beneficiary can Resurrect: "
+    );
     tokenDetailsElement.appendChild(resInstructions);
 
     tokenDetailsElement.appendChild(resurrectButton);
@@ -857,19 +852,21 @@ async function getNFTDetails(graveNumber) {
       const graveNumberValue = graveNumber;
       checkResurrectionAndTransfer(graveNumberValue);
     });
-    const buryAgainDiv = document.createElement("div")
+    const buryAgainDiv = document.createElement("div");
     tokenDetailsElement.appendChild(buryAgainDiv);
-    const buryAgainInstructions = document.createTextNode("After resurrection, the Beneficiary can bury the coffin again with a new Beneficiary and Resurrection Time: ")
+    const buryAgainInstructions = document.createTextNode(
+      "After resurrection, the Beneficiary can bury the coffin again with a new Beneficiary and Resurrection Time: "
+    );
     tokenDetailsElement.appendChild(buryAgainInstructions);
     const br = document.createElement("br");
     tokenDetailsElement.appendChild(br);
 
     const newBeneficiary = document.createElement("input");
-	newBeneficiary.id = NEW_BENEFICIARY_ID;
-    newBeneficiary.type = "text"
+    newBeneficiary.id = NEW_BENEFICIARY_ID;
+    newBeneficiary.type = "text";
     const newResurrectTime = document.createElement("input");
-	newResurrectTime.id = NEW_RESURRECTTIME_ID;
-    newResurrectTime.type = "datetime-local"
+    newResurrectTime.id = NEW_RESURRECTTIME_ID;
+    newResurrectTime.type = "datetime-local";
 
     tokenDetailsElement.appendChild(newBeneficiary);
     tokenDetailsElement.appendChild(newResurrectTime);
@@ -877,9 +874,11 @@ async function getNFTDetails(graveNumber) {
 
     buryAgainButton.addEventListener("click", () => {
       const graveNumberValue = graveNumber;
-	  const newBeneficiaryValue = document.getElementById(NEW_BENEFICIARY_ID).value;
-	  const newResurrectTimeValue = document.getElementById(NEW_RESURRECTTIME_ID).value;
-	  const UTCNewResurrectTime = Date.parse(newResurrectTimeValue) / 1000;
+      const newBeneficiaryValue =
+        document.getElementById(NEW_BENEFICIARY_ID).value;
+      const newResurrectTimeValue =
+        document.getElementById(NEW_RESURRECTTIME_ID).value;
+      const UTCNewResurrectTime = Date.parse(newResurrectTimeValue) / 1000;
 
       updateCoffin(graveNumberValue, UTCNewResurrectTime, newBeneficiaryValue);
     });
@@ -943,41 +942,39 @@ async function getNFTDetails(graveNumber) {
     }
 
     showDetailsModal();
-
   } catch (error) {
     console.error(error);
   }
 }
 
 async function checkResurrectionAndTransfer(graveNumber) {
-	setStatus("Attempting Resurrection");
-	try {
-		const result = await window.contract.methods
-		.checkForResurrectionAndTransfer(graveNumber)
-		.send({ from: window.account });
-		setStatus("Successfully resurrected coffin");
-	  console.log(result);
-	} catch(e) {
-		setStatus("Failed to resurrect coffin");
-		console.log(e)
-	}
-  
+  setStatus("Attempting Resurrection");
+  try {
+    const result = await window.contract.methods
+      .checkForResurrectionAndTransfer(graveNumber)
+      .send({ from: window.account });
+    setStatus("Successfully resurrected coffin");
+    console.log(result);
+  } catch (e) {
+    setStatus("Failed to resurrect coffin");
+    console.log(e);
+  }
 }
 
 async function updateCoffin(graveNumber, resurrectTime, beneficiary) {
-	try {
-		setStatus("Approving new Beneficiary");
-		await setApprovalForAll(beneficiary)
-		setStatus("Lowering coffin...");
-		const result = await window.contract.methods
-		  .updateCoffin(graveNumber, resurrectTime, beneficiary)
-		  .send({ from: window.account });
-		  setStatus("Successfully buried coffin");
-		console.log(result);
-	} catch(e) {
-		setStatus("Failed to approve new Beneficiary");
-		console.log(e)
-	}
+  try {
+    setStatus("Approving new Beneficiary");
+    await setApprovalForAll(beneficiary);
+    setStatus("Lowering coffin...");
+    const result = await window.contract.methods
+      .updateCoffin(graveNumber, resurrectTime, beneficiary)
+      .send({ from: window.account });
+    setStatus("Successfully buried coffin");
+    console.log(result);
+  } catch (e) {
+    setStatus("Failed to approve new Beneficiary");
+    console.log(e);
+  }
 }
 
 async function mintNFT(
@@ -1075,10 +1072,12 @@ function setStatus(status) {
   document.getElementById("status").innerText = status;
 }
 
-document.getElementById(CONNECT_BUTTON_ID).addEventListener("click", async () => {
+document
+  .getElementById(CONNECT_BUTTON_ID)
+  .addEventListener("click", async () => {
     await window.ethereum.request({ method: "eth_requestAccounts" });
     await loadBlockchainData();
-});
+  });
 
 document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
   const occupant = document.getElementById(MODAL_OCCUPANT_ID).value;
@@ -1107,16 +1106,18 @@ document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
       UTCResurrectTime,
       beneficiary
     );
-	setStatus("Approving Beneficiary...");
+    setStatus("Approving Beneficiary...");
     await setApprovalForAll(beneficiary);
-	setStatus("The coffin is buried.");
+    setStatus("The coffin is buried.");
   } else {
     setStatus("Please enter coffin details.");
   }
 });
 
 document.getElementById(CLOSE_MODAL_ID).addEventListener("click", closeModal);
-document.getElementById(CLOSE_DETAILS_MODAL_ID).addEventListener("click", closeDetailsModal);
+document
+  .getElementById(CLOSE_DETAILS_MODAL_ID)
+  .addEventListener("click", closeDetailsModal);
 
 async function handleButtonClick(event) {
   showModal();
@@ -1136,7 +1137,7 @@ function removeConnectButton() {
 function showModal() {
   const modal = document.getElementById("modal");
   modal.style.display = "block";
-  modal.insertBefore(statusBar, modal.firstChild)
+  modal.insertBefore(statusBar, modal.firstChild);
 }
 
 function closeModal() {
@@ -1149,7 +1150,7 @@ function closeModal() {
 function showDetailsModal() {
   const tokenDetailsModal = document.getElementById("tokenDetailsModal");
   tokenDetailsModal.style.display = "block";
-  tokenDetailsModal.insertBefore(statusBar, tokenDetailsModal.firstChild)
+  tokenDetailsModal.insertBefore(statusBar, tokenDetailsModal.firstChild);
 }
 
 function closeDetailsModal() {
