@@ -795,24 +795,13 @@ async function getNFTDetails(graveNumber) {
     coffinId.innerText = `Grave: ${nftDetails.id}`;
     tokenDetailsElement.appendChild(coffinId);
 
-    const coffinDateBuriedCheck = document.createElement("div");
-    const gmtIndex = Date(nftDetails.dateBuried).indexOf("GMT");
-    const gmtFormatted = Date(nftDetails.dateBuried).slice(0, gmtIndex) + "UTC";
-
-    coffinDateBuriedCheck.innerText = `Buried: ${gmtFormatted}`;
-    tokenDetailsElement.appendChild(coffinDateBuriedCheck);
-
-    const coffinBuryCount = document.createElement("div");
-    coffinBuryCount.innerText = `This Coffin has been buried ${nftDetails.buriedCounter} times.`;
-    tokenDetailsElement.appendChild(coffinBuryCount);
-
-    const currentOwner = document.createElement("div");
-    currentOwner.innerText = `Current Owner: ${nftDetails.currentOwner}`;
-    tokenDetailsElement.appendChild(currentOwner);
-
     const occupant = document.createElement("div");
     occupant.innerText = `Occupant: ${nftDetails.occupant}`;
     tokenDetailsElement.appendChild(occupant);
+
+    const epitaph = document.createElement("div");
+    epitaph.innerText = `Epitaph: ${nftDetails.epitaph}`;
+    tokenDetailsElement.appendChild(epitaph);
 
     const dateBorn = document.createElement("div");
     const year = nftDetails.dateBorn.substring(0, 4);
@@ -822,13 +811,11 @@ async function getNFTDetails(graveNumber) {
     dateBorn.innerText = `Date Born: ${formattedDate}`;
     tokenDetailsElement.appendChild(dateBorn);
 
-    const epitaph = document.createElement("div");
-    epitaph.innerText = `Epitaph: ${nftDetails.epitaph}`;
-    tokenDetailsElement.appendChild(epitaph);
-
-    const metadata = document.createElement("div");
-    metadata.innerText = `Metadata: ${nftDetails.metadata}`;
-    tokenDetailsElement.appendChild(metadata);
+    const coffinDateBuriedCheck = document.createElement("div");
+    const gmtIndex = Date(nftDetails.dateBuried).indexOf("GMT");
+    const gmtFormatted = Date(nftDetails.dateBuried).slice(0, gmtIndex) + "UTC";
+    coffinDateBuriedCheck.innerText = `Buried: ${gmtFormatted}`;
+    tokenDetailsElement.appendChild(coffinDateBuriedCheck);
 
     const resurrectTime = document.createElement("div");
     const date = new Date(nftDetails.resurrectTime * 1000);
@@ -836,12 +823,18 @@ async function getNFTDetails(graveNumber) {
     resurrectTime.innerText = `Resurrection: ${dateString}`;
     tokenDetailsElement.appendChild(resurrectTime);
 
+    const currentOwner = document.createElement("div");
+    currentOwner.innerText = `Current Owner: ${nftDetails.currentOwner}`;
+    tokenDetailsElement.appendChild(currentOwner);
+
     const beneficiary = document.createElement("div");
     beneficiary.innerText = `Beneficiary: ${nftDetails.beneficiary}`;
     tokenDetailsElement.appendChild(beneficiary);
 
-    const hr = document.createElement("hr");
-    tokenDetailsElement.appendChild(hr);
+    const coffinBuryCount = document.createElement("div");
+    coffinBuryCount.innerText = `This Coffin has been buried ${nftDetails.buriedCounter} times.`;
+    tokenDetailsElement.appendChild(coffinBuryCount);
+
     const resInstructions = document.createTextNode(
       "Only the Beneficiary can Resurrect: "
     );
@@ -871,6 +864,16 @@ async function getNFTDetails(graveNumber) {
     tokenDetailsElement.appendChild(newBeneficiary);
     tokenDetailsElement.appendChild(newResurrectTime);
     tokenDetailsElement.appendChild(buryAgainButton);
+
+    const hr = document.createElement("hr");
+    tokenDetailsElement.appendChild(hr);
+
+    const metadata = document.createElement("div");
+    metadata.innerText = `Metadata: ${nftDetails.metadata}`;
+    tokenDetailsElement.appendChild(metadata);
+
+
+
 
     buryAgainButton.addEventListener("click", () => {
       const graveNumberValue = graveNumber;
@@ -1106,8 +1109,12 @@ document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
       UTCResurrectTime,
       beneficiary
     );
-    setStatus("Approving Beneficiary...");
-    await setApprovalForAll(beneficiary);
+    try {
+      setStatus("Approving Beneficiary...");
+      await setApprovalForAll(beneficiary);
+    } catch(e) {
+      setStatus("Failed to set Beneficiary.");
+    }
     setStatus("The coffin is buried.");
   } else {
     setStatus("Please enter coffin details.");
