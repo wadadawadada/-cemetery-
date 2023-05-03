@@ -824,11 +824,11 @@ async function getNFTDetails(graveNumber) {
     tokenDetailsElement.appendChild(resurrectTime);
 
     const currentOwner = document.createElement("div");
-    currentOwner.innerText = `Current Owner: ${nftDetails.currentOwner}`;
+    currentOwner.innerText = `Current Owner: ${nftDetails.currentOwner.slice(0,6) + '...' + nftDetails.currentOwner.slice(38,42)}`;
     tokenDetailsElement.appendChild(currentOwner);
 
     const beneficiary = document.createElement("div");
-    beneficiary.innerText = `Beneficiary: ${nftDetails.beneficiary}`;
+    beneficiary.innerText = `Beneficiary: ${nftDetails.beneficiary.slice(0,6) + '...' + nftDetails.beneficiary.slice(38,42)}`;
     tokenDetailsElement.appendChild(beneficiary);
 
     const coffinBuryCount = document.createElement("div");
