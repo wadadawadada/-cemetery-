@@ -680,7 +680,7 @@ statusBar.appendChild(innerSpan);
 
 const SKEL_GIF_ID = "skelGif";
 const skelGif = document.createElement("img");
-skelGif.src = "connect.gif";
+skelGif.src = "/img/connect.gif";
 skelGif.id = SKEL_GIF_ID;
 skelGif.style.position = "fixed";
 skelGif.style.top = "50%";
