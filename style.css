@@ -65,6 +65,7 @@ a:link {
     
   }
 
+  
 
   .nav-container {
     position: relative;
@@ -134,8 +135,7 @@ a:link {
     padding: 60px;
     border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
-  
-  
+   
   border-image: url("border.png") /* source */ 46 / /* slice */ 12px 12px 12px
   12px / /* width */ 6px 6px 6px 6px /* outset */ round; /* repeat */
 
@@ -400,21 +400,21 @@ td > button {
   top: 10px;
   background-color: rgba(0, 0, 0, 0.863); 
   color: #FFFFFF;
-  border: 1px solid white;
-  width: 20px;
+  border: 1px solid rgb(255, 255, 255);
+  width: 25px;
   height: 20px;
   text-align: center
 }
 
-.modal-close {
+.modal-close {   /*//////////////MINTING*/
   cursor: pointer;
   position: absolute; 
   right: 10px; 
   top: 10px;
   background-color: rgba(0, 0, 0, 0.863); 
-  color: #FFFFFF;
+  color: #ffffff;
   border: 1px solid white;
-  width: 20px;
+  width: 25px;
   height: 20px;
   text-align: center
 }
