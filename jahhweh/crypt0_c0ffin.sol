@@ -1,9 +1,9 @@
 Crypto Coffin is currently deployed:
-Mumbai: 0xDfC9A2Bd1B4209611e7EF99b2B5135278829816F
+Mumbai: 0xe26F935262A9df37dD5767e85dc9bBEC30920a95
 
 resurrectTime is always stored as UTC unixtimestamp, not local client time.
 
-// v0.5
+// v0.7
 // crypt0-c0ffin crypt0-c0ffin crypt0-c0ffin crypt0-c0ffin
 //         ▐█╩╩███▒▒▒▒▒╢▓╢╢▓╢▒▓▀-░░ └---████╩▀█`
 //         ▐█  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█▀▀█▀▀█▀▀▀▀═ ▐█`
@@ -44,8 +44,8 @@ resurrectTime is always stored as UTC unixtimestamp, not local client time.
 //             █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▌
 //
 //
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+// SPDX-License-Identifier: GNU AGPLv3
+pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -56,14 +56,16 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
     uint256 private _currentCoffinId = 1;
-    uint256 public MINT_COST = 0.001 ether;
+    uint256 public coffinCost = 0.001 ether;
 
     struct Coffin {
         uint256 tokenId;
         string occupant;
         uint256 dateBorn;
         string epitaph;
+        string mediaUrl;
         string metadata;
+        bool isOpen;
         address minter;
         uint256 dateBuried;
         uint256 resurrectTime;
@@ -80,12 +82,16 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
         string occupant,
         uint256 dateBorn,
         string epitaph,
-        string metadata,
+        string mediaUrl,
         uint256 dateBuried,
         uint256 resurrectTime
     );
     event Resurrected(uint256 tokenId);
-    event Buried_Again(uint256 tokenId, uint256 newResurrectTime, address newBeneficiary);
+    event Buried_Again(
+        uint256 tokenId,
+        uint256 newResurrectTime,
+        address newBeneficiary
+    );
 
     constructor() ERC1155("") {}
 
@@ -93,22 +99,23 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
         string memory occupant,
         uint256 dateBorn,
         string memory epitaph,
+        string memory mediaUrl,
         string memory metadata,
         uint256 resurrectTime,
         address beneficiary
     ) external payable nonReentrant {
-        require(msg.value >= MINT_COST, "Insufficient payment for coffin");
+        require(msg.value >= coffinCost, "Insufficient payment for coffin");
         require(beneficiary != address(0), "Beneficiary address is required");
-
         uint256 tokenId = _currentCoffinId++;
-
         _mint(msg.sender, tokenId, 1, "");
         _coffins[tokenId] = Coffin(
             tokenId,
             occupant,
             dateBorn,
             epitaph,
+            mediaUrl,
             metadata,
+            false,
             msg.sender,
             block.timestamp,
             resurrectTime,
@@ -123,7 +130,7 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
             occupant,
             dateBorn,
             epitaph,
-            metadata,
+            mediaUrl,
             block.timestamp,
             resurrectTime
         );
@@ -137,7 +144,8 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
             string memory occupant,
             uint256 dateBorn,
             string memory epitaph,
-            string memory metadata,
+            string memory mediaUrl,
+            bool isOpen,
             address minter,
             uint256 dateBuried,
             uint256 resurrectTime,
@@ -152,13 +160,29 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
         occupant = coffin.occupant;
         dateBorn = coffin.dateBorn;
         epitaph = coffin.epitaph;
-        metadata = coffin.metadata;
+        mediaUrl = coffin.mediaUrl;
+        isOpen = coffin.isOpen;
         minter = coffin.minter;
         dateBuried = coffin.dateBuried;
         resurrectTime = coffin.resurrectTime;
         beneficiary = coffin.beneficiary;
         currentOwner = coffin.currentOwner;
         buriedCounter = coffin.buriedCounter;
+    }
+
+    function getMetadata(uint256 tokenId)
+        external
+        returns (string memory metadata)
+    {
+        require(_exists(tokenId), "Coffin does not exist");
+        Coffin storage coffin = _coffins[tokenId];
+        require(
+            msg.sender == coffin.currentOwner,
+            "Only Owner can recover Metadata"
+        );
+        metadata = coffin.metadata;
+        coffin.isOpen = true;
+        return metadata;
     }
 
     function totalSupply() public view returns (uint256) {
@@ -175,19 +199,37 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
             coffin.resurrectTime <= block.timestamp,
             "Incorrect time for resurrection"
         );
-        require(msg.sender == coffin.beneficiary, "Only Beneficiary can Resurrect");
+        require(
+            msg.sender == coffin.beneficiary,
+            "Only Beneficiary can Resurrect"
+        );
         emit Resurrected(tokenId);
-        safeTransferFrom(coffin.currentOwner, coffin.beneficiary, tokenId, 1, "");
+        safeTransferFrom(
+            coffin.currentOwner,
+            coffin.beneficiary,
+            tokenId,
+            1,
+            ""
+        );
         coffin.currentOwner = msg.sender;
         coffin.isUpdated = false;
     }
 
-    function updateCoffin(uint256 tokenId, uint256 newResurrectTime, address newBeneficiary) external {
-        require(newBeneficiary != address(0), "Beneficiary address is required");
+    function updateCoffin(
+        uint256 tokenId,
+        uint256 newResurrectTime,
+        address newBeneficiary
+    ) external {
+        require(
+            newBeneficiary != address(0),
+            "Beneficiary address is required"
+        );
         Coffin storage coffin = _coffins[tokenId];
-        require(msg.sender == coffin.beneficiary, "Only Beneficiary can update");
+        require(
+            msg.sender == coffin.beneficiary,
+            "Only Beneficiary can update"
+        );
         require(!coffin.isUpdated, "Coffin is already buried");
-
         coffin.resurrectTime = newResurrectTime;
         coffin.beneficiary = newBeneficiary;
         coffin.dateBuried = block.timestamp;

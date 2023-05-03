@@ -59,7 +59,7 @@
 			{
 				"indexed": false,
 				"internalType": "string",
-				"name": "metadata",
+				"name": "mediaUrl",
 				"type": "string"
 			},
 			{
@@ -119,6 +119,25 @@
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "getMetadata",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "metadata",
+				"type": "string"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "string",
 				"name": "occupant",
 				"type": "string"
@@ -131,6 +150,11 @@
 			{
 				"internalType": "string",
 				"name": "epitaph",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "mediaUrl",
 				"type": "string"
 			},
 			{
@@ -462,6 +486,19 @@
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "coffinCost",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -480,19 +517,6 @@
 				"internalType": "bool",
 				"name": "",
 				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "MINT_COST",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -562,8 +586,13 @@
 			},
 			{
 				"internalType": "string",
-				"name": "metadata",
+				"name": "mediaUrl",
 				"type": "string"
+			},
+			{
+				"internalType": "bool",
+				"name": "isOpen",
+				"type": "bool"
 			},
 			{
 				"internalType": "address",
