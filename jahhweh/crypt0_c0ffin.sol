@@ -1,9 +1,9 @@
 Crypto Coffin is currently deployed:
-Mumbai: 0x8887b0C690aD14529C7066f9E475a44AEba36Bd7
+Mumbai: 0xAca8337cD0E3c2426f280fF28aA323fc852253c8
 
 resurrectTime is always stored as UTC unixtimestamp, not local client time.
 
-// v0.8
+// v1.0
 // crypt0-c0ffin crypt0-c0ffin crypt0-c0ffin crypt0-c0ffin
 //         ▐█╩╩███▒▒▒▒▒╢▓╢╢▓╢▒▓▀-░░ └---████╩▀█`
 //         ▐█  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█▀▀█▀▀█▀▀▀▀═ ▐█`
@@ -45,6 +45,7 @@ resurrectTime is always stored as UTC unixtimestamp, not local client time.
 //
 //
 // SPDX-License-Identifier: GNU AGPLv3
+// Devs: jahhweh.eth, wadada.eth
 pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
@@ -86,7 +87,9 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
         uint256 dateBuried,
         uint256 resurrectTime
     );
+    
     event Resurrected(uint256 tokenId);
+    event Unlocked(string occupant, uint256 dateBorn, address beneficiary, string mediaUrl, string metadata);
     event Buried_Again(
         uint256 tokenId,
         uint256 newResurrectTime,
@@ -177,7 +180,12 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
             msg.sender == coffin.currentOwner,
             "Only Owner can unlock Metadata"
         );
+        require(
+            msg.sender == coffin.beneficiary,
+            "Only Beneficiary can unlock Metadata"
+        );
         coffin.isOpen = true;
+        emit Unlocked(coffin.occupant, coffin.dateBorn, coffin.beneficiary, coffin.mediaUrl, coffin.metadata);
     }
 
     function exposeMetadata(uint256 tokenId)
@@ -187,10 +195,6 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
     {
         require(_exists(tokenId), "Coffin does not exist");
         Coffin storage coffin = _coffins[tokenId];
-        require(
-            msg.sender == coffin.currentOwner,
-            "Only Owner can unlock Metadata"
-        );
         require(coffin.isOpen == true, "Metadata is still locked");
         return coffin.metadata;
     }
@@ -207,7 +211,7 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
         Coffin storage coffin = _coffins[tokenId];
         require(
             coffin.resurrectTime <= block.timestamp,
-            "Incorrect time for resurrection"
+            "Not yet time for Resurrection"
         );
         require(
             msg.sender == coffin.beneficiary,
