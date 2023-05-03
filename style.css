@@ -417,7 +417,91 @@ td > button {
   border-radius: 3px;
 }
 
+/*///////////////////CONTENT MINTED //////////////////*/
 
+.coffinId{
+
+font-size: medium;
+padding-bottom: 22px;
+padding-top: 22px;
+}
+
+
+.occupant{
+
+  font-size: large;
+  padding-bottom: 22px;  
+  }
+
+
+  .epitaph{
+
+    font-size: small;
+      
+    }
+
+
+    .dateBorn{
+
+      font-size: small;
+        
+      }
+
+
+      .coffinDateBuriedCheck{
+
+        font-size: small;
+          
+        }
+
+
+        .resurrectTime{
+
+          font-size: small;
+            
+          }
+
+
+          .currentOwner{
+
+            font-size: small;
+             padding-top: 22px; 
+             color: rgb(158, 88, 66);
+            }
+
+
+            .beneficiary{
+
+              font-size: small;
+                padding-bottom: 22px;
+                color:rgb(129, 129, 129)
+              }
+
+
+
+              .coffinBuryCount{
+
+                font-size: small;
+                font-style: italic;
+                  
+                }
+
+
+                .resurrectTime{
+
+                  font-size: small;
+                    
+                  }
+
+
+
+                  .resurrectTime{
+
+                    font-size: small;
+                      
+                    }
+
+/*///////////////////////////////////////////////////////*/
 
 .close-details-modal-button {
   cursor: pointer;
