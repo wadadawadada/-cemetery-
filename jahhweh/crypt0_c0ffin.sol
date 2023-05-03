@@ -1,9 +1,9 @@
 Crypto Coffin is currently deployed:
-Mumbai: 0xe26F935262A9df37dD5767e85dc9bBEC30920a95
+Mumbai: 0x8887b0C690aD14529C7066f9E475a44AEba36Bd7
 
 resurrectTime is always stored as UTC unixtimestamp, not local client time.
 
-// v0.7
+// v0.8
 // crypt0-c0ffin crypt0-c0ffin crypt0-c0ffin crypt0-c0ffin
 //         ▐█╩╩███▒▒▒▒▒╢▓╢╢▓╢▒▓▀-░░ └---████╩▀█`
 //         ▐█  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█▀▀█▀▀█▀▀▀▀═ ▐█`
@@ -170,19 +170,29 @@ contract Crypt0C0ffin is ERC1155, Ownable, ReentrancyGuard {
         buriedCounter = coffin.buriedCounter;
     }
 
-    function getMetadata(uint256 tokenId)
-        external
+    function unlockMetadata(uint256 tokenId) external {
+        require(_exists(tokenId), "Coffin does not exist");
+        Coffin storage coffin = _coffins[tokenId];
+        require(
+            msg.sender == coffin.currentOwner,
+            "Only Owner can unlock Metadata"
+        );
+        coffin.isOpen = true;
+    }
+
+    function exposeMetadata(uint256 tokenId)
+        public
+        view
         returns (string memory metadata)
     {
         require(_exists(tokenId), "Coffin does not exist");
         Coffin storage coffin = _coffins[tokenId];
         require(
             msg.sender == coffin.currentOwner,
-            "Only Owner can recover Metadata"
+            "Only Owner can unlock Metadata"
         );
-        metadata = coffin.metadata;
-        coffin.isOpen = true;
-        return metadata;
+        require(coffin.isOpen == true, "Metadata is still locked");
+        return coffin.metadata;
     }
 
     function totalSupply() public view returns (uint256) {

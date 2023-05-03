@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>crypto cemetery</title>
   <link rel="stylesheet" type="text/css" href="style.css">
@@ -48,11 +48,15 @@
       <text for="modalEpitaph">Epitaph:</text>
       <input type="text" id="modalEpitaph" />
       <br><br>
+      <text for="modalMediaUrl">Media:</text>
+      <input type="text" id="modalMediaUrl" />
+      <br>
+      <text style= "font-size:12px"><i>Media file must begin with "ipfs://".</i></text>
+      <br><br>
       <text for="modalMetadata">Metadata:</text>
       <input type="text" id="modalMetadata" />
       <br>
-      <text style= "font-size:12px"><i>Metadata must begin with "ipfs://" and point to a json or media file. Just be sure to include the full
-        CID!</i></text>
+      <text style= "font-size:12px"><i>Metadata file must begin with "ipfs://".</i></text>
       <br><br>
       <text for="modalResurrectTime">Resurrection:</text>
       <input type="datetime-local" id="modalResurrectTime" />
