@@ -38,7 +38,7 @@
   <div id="container-jahhweh">
     <div id="modal" class="modal-style">
       <button id="closeModal" class="modal-close">X</button>
-      <br>
+      <br><br><br>
       <text for="modalOccupant">Occupant:</text>
       <input type="text" id="modalOccupant" />
       <br><br>
@@ -51,19 +51,19 @@
       <text for="modalMetadata">Metadata:</text>
       <input type="text" id="modalMetadata" />
       <br>
-      <text>Metadata must begin with "ipfs://" and point to a json or media file. Just be sure to include the full
-        CID!</text>
+      <text style= "font-size:12px"><i>Metadata must begin with "ipfs://" and point to a json or media file. Just be sure to include the full
+        CID!</i></text>
       <br><br>
       <text for="modalResurrectTime">Resurrection:</text>
       <input type="datetime-local" id="modalResurrectTime" />
       <br><br>
       <text for="modalBeneficiary">Beneficiary:</text>
       <input type="text" id="modalBeneficiary" />
+      <br>
+      <text style= "font-size:12px"><i>Beneficiary must be an ethereum address (0x...)</i></text>
       <br><br>
-      <text>Beneficiary must be an ethereum address (0x...)</text>
       <br><br>
-      <br><br>
-      <text>You will be asked to sign 2 transactions. The first transaction will bury your coffin. The second
+      <text style="color:#ffd000">ⓘ You will be asked to sign 2 transactions. The first transaction will bury your coffin. The second
         transaction gives the beneficiary approval to resurrect any of your coffins.</text>
       <br><br>
       <button id="submitModal">BURY</button>
