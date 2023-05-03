@@ -784,6 +784,7 @@ async function getNFTDetails(graveNumber) {
       .call();
 
     const tokenDetailsElement = document.getElementById("tokenDetailsModal");
+    tokenDetailsElement.classList.add("token-details-modal");
     tokenDetailsElement.innerHTML = "";
     const closeDetailsModalButton = document.createElement("div");
     closeDetailsModalButton.classList.add("close-details-modal-button");
