@@ -932,7 +932,6 @@ async function getNFTDetails(graveNumber) {
     const month = nftDetails.dateBorn.substring(4, 6);
     const day = nftDetails.dateBorn.substring(6, 8);
     const formattedDate = `${year}-${month}-${day}`;
-	formattedDate.classList.add("formattedDate");
     dateBorn.innerText = `Date Born: ${formattedDate}`;
     tokenDetailsElement.appendChild(dateBorn);
 
@@ -940,7 +939,6 @@ async function getNFTDetails(graveNumber) {
 	coffinDateBuriedCheck.classList.add("coffinDateBuriedCheck");
     const gmtIndex = Date(nftDetails.dateBuried).indexOf("GMT");
     const gmtFormatted = Date(nftDetails.dateBuried).slice(0, gmtIndex) + "UTC";
-	gmtFormatted.classList.add("gmtFormatted");
     coffinDateBuriedCheck.innerText = `Buried: ${gmtFormatted}`;
     tokenDetailsElement.appendChild(coffinDateBuriedCheck);
 
@@ -948,7 +946,6 @@ async function getNFTDetails(graveNumber) {
 	resurrectTime.classList.add("resurrectTime");
     const date = new Date(nftDetails.resurrectTime * 1000);
     const dateString = date.toUTCString().replace("GMT", "UTC");
-	dateString.classList.add("dateString");
     resurrectTime.innerText = `Resurrection: ${dateString}`;
     tokenDetailsElement.appendChild(resurrectTime);
 
@@ -970,7 +967,6 @@ async function getNFTDetails(graveNumber) {
     const resInstructions = document.createTextNode(
       "Only the Beneficiary can Resurrect: "
     );
-	resInstructions.classList.add("resInstructions")
     tokenDetailsElement.appendChild(resInstructions);
 
     tokenDetailsElement.appendChild(resurrectButton);
@@ -1090,7 +1086,6 @@ async function getNFTDetails(graveNumber) {
     const metadataInstructions = document.createTextNode(
       "Each coffin contains locked metadata. Once unlocked, the metadata is forever exposed."
     );
-	metadataInstructions.classList.add("metadataInstructions")
     tokenDetailsElement.appendChild(metadataInstructions);
         // add metadata button and listener
         tokenDetailsElement.appendChild(unlockMetadataButton);
