@@ -466,7 +466,7 @@ padding-top: 22px;
 
             font-size: small;
              padding-top: 22px; 
-             color: rgb(158, 88, 66);
+             color: rgb(107, 194, 85);
             }
 
 
@@ -474,16 +474,16 @@ padding-top: 22px;
 
               font-size: small;
                 padding-bottom: 22px;
-                color:rgb(129, 129, 129)
+                color:rgb(255, 208, 0)
               }
 
 
 
               .coffinBuryCount{
-
+                
                 font-size: small;
                 font-style: italic;
-                  
+                padding-bottom: 22px;
                 }
 
 
