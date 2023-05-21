@@ -565,3 +565,13 @@ font-size: x-large;
 border-radius: 3px;
 
 }
+
+/* Drag and Drop */
+.dropzone {
+  border: 2px dashed #aaa;
+  border-radius: 4px;
+  padding: 20px;
+  text-align: center;
+  min-height: 100px;
+  margin-bottom: 20px;
+}
