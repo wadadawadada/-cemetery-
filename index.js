@@ -1099,18 +1099,18 @@ async function mintNFT(
 }
 
 async function getNFTDetails(graveNumber) {
-	try {
-		setStatus("Looking at a grave");
+    try {
+        setStatus("Looking at a grave");
 
-		const nftDetails = await window.contract.methods
-			.tokenDetails(graveNumber)
-			.call();
+        const nftDetails = await window.contract.methods
+            .tokenDetails(graveNumber)
+            .call();
 
-		const tokenDetailsElement = document.getElementById("tokenDetailsModal");
-		tokenDetailsElement.classList.add("token-details-modal");
-		tokenDetailsElement.innerHTML = "";
+        const tokenDetailsElement = document.getElementById("tokenDetailsModal");
+        tokenDetailsElement.classList.add("token-details-modal");
+        tokenDetailsElement.innerHTML = "";
 
-		const elements = [
+	const elements = [
 			{
 				class: "close-details-modal-button",
 				text: "X",
@@ -1218,88 +1218,10 @@ async function getNFTDetails(graveNumber) {
 		mediaUrl.innerText = `Media: ${nftDetails.mediaUrl}`;
 		tokenDetailsElement.appendChild(mediaUrl);
 
-		if (nftDetails.mediaUrl.endsWith(".json")) {
-			fetch("https://ipfs.io/ipfs/" + nftDetails.mediaUrl.slice(7))
-				.then((response) => response.json())
-				.then((jsonData) => {
-					for (const [key, value] of Object.entries(jsonData)) {
-						const dataElement = createDivWithClass("dataElement");
-						if (key === "image") {
-							const imgElement = document.createElement("img");
-							imgElement.classList.add("imgElement");
-							imgElement.src = "https://ipfs.io/ipfs/" + value.slice(7);
-							imgElement.alt = "image";
-							imgElement.style.maxWidth = "420px";
-							imgElement.style.maxHeight = "420px";
-							imgElement.style.display = "block";
-							imgElement.style.margin = "0 auto";
-							dataElement.appendChild(imgElement);
-						} else {
-							dataElement.innerText = `${key}: ${value}`;
-						}
-						tokenDetailsElement.appendChild(dataElement);
-					}
-				})
-				.catch((error) => {
-					console.error("Error fetching JSON data:", error);
-				});
-		}
-
-		function createMediaElement(mediaUrl) {
-			const videoElement = document.createElement("video");
-			const audioElement = document.createElement("audio");
-			const imgElement = document.createElement("img");
-			const commonAttributes = {
-				src: mediaUrl,
-				controls: "",
-				class: "mediaElement",
-				style: {
-					maxWidth: "420px",
-					maxHeight: "420px",
-					display: "block",
-					margin: "0 auto",
-				},
-			};
-
-			function applyAttributes(element, attributes) {
-				for (const key in attributes) {
-					if (key === "style") {
-						for (const styleKey in attributes[key]) {
-							element.style[styleKey] = attributes[key][styleKey];
-						}
-					} else {
-						element.setAttribute(key, attributes[key]);
-					}
-				}
-			}
-			function displayAudio(event) {
-				applyAttributes(audioElement, commonAttributes);
-				event.target.parentNode.replaceChild(audioElement, event.target);
-			}
-			function displayImage(event) {
-				applyAttributes(imgElement, commonAttributes);
-				imgElement.setAttribute("alt", "Error finding media");
-				event.target.parentNode.replaceChild(imgElement, event.target);
-			}
-			applyAttributes(videoElement, commonAttributes);
-			videoElement.addEventListener("error", displayAudio);
-			audioElement.addEventListener("error", displayImage);
-			return videoElement;
-		}
-
-		function displayMedia(nftDetails, tokenDetailsElement) {
-			if (nftDetails.mediaUrl.startsWith("ipfs://")) {
-				const mediaContainer = document.createElement("div");
-				mediaContainer.classList.add("mediaContainer");
-				mediaContainer.style.textAlign = "center";
-				const mediaUrl = `https://ipfs.io/ipfs/${nftDetails.mediaUrl.slice(7)}`;
-				const mediaElement = createMediaElement(mediaUrl);
-				mediaContainer.appendChild(mediaElement);
-				tokenDetailsElement.appendChild(mediaContainer);
-			}
-		}
-
-		displayMedia(nftDetails, tokenDetailsElement);
+        if (nftDetails.mediaUrl.startsWith("ipfs://")) {
+            const mediaUrl = `https://ipfs.io/ipfs/${nftDetails.mediaUrl.slice(7)}`;
+            displayMedia(mediaUrl, tokenDetailsElement);
+        }
 
 		const hr2 = document.createElement("hr");
 		tokenDetailsElement.appendChild(hr2);
@@ -1330,6 +1252,50 @@ async function getNFTDetails(graveNumber) {
 	} catch (error) {
 		console.error("Error in getNFTDetails:", error);
 	}
+}
+
+
+function displayMedia(mediaUrl, tokenDetailsElement) {
+    fetch(mediaUrl)
+        .then((response) => {
+            if (response.ok) {
+                const contentType = response.headers.get("content-type");
+                const mediaContainer = document.createElement("div");
+                mediaContainer.classList.add("mediaContainer");
+                mediaContainer.style.textAlign = "center";
+                let mediaElement;
+
+                if (contentType.startsWith("image")) {
+                    mediaElement = document.createElement("img");
+                    mediaElement.src = mediaUrl;
+                    mediaElement.alt = "image";
+                } else if (contentType.startsWith("video")) {
+                    mediaElement = document.createElement("video");
+                    mediaElement.src = mediaUrl;
+                    mediaElement.controls = true;
+                } else if (contentType.startsWith("audio")) {
+                    mediaElement = document.createElement("audio");
+                    mediaElement.src = mediaUrl;
+                    mediaElement.controls = true;
+                } else {
+                    throw new Error("Unsupported media format");
+                }
+
+                mediaElement.classList.add("mediaElement");
+                mediaElement.style.maxWidth = "420px";
+                mediaElement.style.maxHeight = "420px";
+                mediaElement.style.display = "block";
+                mediaElement.style.margin = "0 auto";
+
+                mediaContainer.appendChild(mediaElement);
+                tokenDetailsElement.appendChild(mediaContainer);
+            } else {
+                throw new Error("Error finding media");
+            }
+        })
+        .catch((error) => {
+            console.error("Error displaying media:", error);
+        });
 }
 
 async function getPFPDetails(graveNumber) {
@@ -1371,10 +1337,10 @@ async function updateGraveNumbers() {
 				graveNumberSpan.classList.add("graveNumber");
 				const graveNumber = document.createTextNode(graveCounter);
 				graveNumberSpan.appendChild(graveNumber);
-
+			
 				const mediaContainer = document.createElement("div");
 				mediaContainer.classList.add("mediaContainer");
-
+			
 				getPFPDetails(graveCounter).then((nftDetails) => {
 					const mediaUrl = `https://ipfs.io/ipfs/${nftDetails.mediaUrl.slice(7)}`;
 					let mediaElement = document.createElement("img");
@@ -1382,9 +1348,15 @@ async function updateGraveNumbers() {
 					mediaElement.classList.add("mediaElement");
 					mediaElement.style.maxWidth = "50px";
 					mediaElement.style.maxHeight = "50px";
+					
+					// Check if mediaElement is displayed as a broken icon
+					mediaElement.onerror = () => {
+						mediaElement.setAttribute("src", './img/pfp.gif');
+					};
+					
 					mediaContainer.appendChild(mediaElement);
 				})
-
+			
 				cell.appendChild(graveNumberSpan);
 				tombDiv.appendChild(mediaContainer);
 				cell.appendChild(document.createElement("br"));
