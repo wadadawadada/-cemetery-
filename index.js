@@ -741,7 +741,7 @@ const NEW_RESURRECTTIME_ID = "modalNewResurrectTime";
 const NEW_BENEFICIARY_ID = "modalNewBeneficiary";
 const RESURRECT_BUTTON_ID = "resurrectButton";
 const BURY_AGAIN_BUTTON_ID = "buryAgainButton";
-const UNLOCK_METADATA_BUTTON_ID = "unlockMetadataButton"
+const UNLOCK_METADATA_BUTTON_ID = "unlockMetadataButton";
 const EXPOSE_METADATA_BUTTON_ID = "exposeMetadataButton";
 
 const resurrectButton = document.createElement("button");
@@ -824,6 +824,159 @@ document.getElementById("container-jahhweh").appendChild(table);
 
 let startGraveNumber = 1;
 
+function setStatus(status) {
+	document.getElementById("status").innerText = status;
+}
+
+document
+	.getElementById(CONNECT_BUTTON_ID)
+	.addEventListener("click", async () => {
+		await window.ethereum.request({ method: "eth_requestAccounts" });
+		await loadBlockchainData();
+	});
+
+document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
+	const occupant = document.getElementById(MODAL_OCCUPANT_ID).value;
+	const birth = document.getElementById(MODAL_BIRTH_ID).value;
+	const epitaph = document.getElementById(MODAL_EPITAPH_ID).value;
+	const mediaUrl = document.getElementById(MODAL_MEDIA_URL_ID).value;
+	const metadata = document.getElementById(MODAL_METADATA_ID).value;
+	const resurrectTime = document.getElementById(MODAL_RESURRECTTIME_ID).value;
+	const UTCResurrectTime = Date.parse(resurrectTime) / 1000;
+	const beneficiary = document.getElementById(MODAL_BENEFICIARY_ID).value;
+	const nBirth = birth.replaceAll("-", "");
+
+	if (
+		occupant &&
+		nBirth &&
+		epitaph &&
+		mediaUrl &&
+		metadata &&
+		UTCResurrectTime &&
+		beneficiary
+	) {
+		setStatus("Lowering coffin...");
+		await mintNFT(
+			occupant,
+			nBirth,
+			epitaph,
+			mediaUrl,
+			metadata,
+			UTCResurrectTime,
+			beneficiary
+		);
+
+		try {
+			setStatus("Approving Beneficiary...");
+			await setApprovalForAll(beneficiary);
+		} catch (e) {
+			setStatus("Failed to set Beneficiary.");
+		}
+
+		setStatus("The coffin is buried.");
+	} else {
+		setStatus("Please enter coffin details.");
+	}
+});
+
+document.getElementById(CLOSE_MODAL_ID).addEventListener("click", closeModal);
+document
+	.getElementById(CLOSE_DETAILS_MODAL_ID)
+	.addEventListener("click", closeDetailsModal);
+
+function createDivWithClass(className) {
+	const div = document.createElement("div");
+	div.classList.add(className);
+	return div;
+}
+
+function appendTextInTokenDetailsElement(tokenDetailsElement, text) {
+	const textNode = document.createTextNode(text);
+	tokenDetailsElement.appendChild(textNode);
+}
+
+async function handleButtonClick(event) {
+	showModal();
+}
+
+function removeConnectButton() {
+	const connectBtn = document.getElementById(CONNECT_BUTTON_ID);
+	const skelGif = document.getElementById(SKEL_GIF_ID);
+	if (connectBtn) {
+		connectBtn.parentNode.removeChild(connectBtn);
+	}
+	if (skelGif) {
+		skelGif.parentNode.removeChild(skelGif);
+	}
+}
+
+function toggleModal(modalId, isShow) {
+	const modal = document.getElementById(modalId);
+	modal.style.display = isShow ? "block" : "none";
+	const statusBarContainer = isShow ? modal : document.getElementById("statusBar");
+	statusBarContainer.insertBefore(statusBar, statusBarContainer.firstChild);
+	setStatus(isShow ? "Peering into an empty grave" : "Welcome to the cemetery");
+  }
+  
+  function showModal() {
+	toggleModal(MODAL_ID, true);
+  }
+  
+  function closeModal() {
+	toggleModal(MODAL_ID, false);
+  }
+  
+  function showDetailsModal() {
+	toggleModal(TOKEN_DETAILS_MODAL_ID, true);
+  }
+  
+  function closeDetailsModal() {
+	toggleModal(TOKEN_DETAILS_MODAL_ID, false);
+  }
+
+function clearTableBody() {
+	while (tableBody.firstChild) {
+		tableBody.removeChild(tableBody.firstChild);
+	}
+}
+
+function updateTableNumber() {
+	const tableIndex = Math.ceil(startGraveNumber / 64);
+	cemeteryNumber.textContent = ` Cemetery ${tableIndex} `;
+}
+
+async function onNextButtonClick() {
+    startGraveNumber += 64;
+    await updateGraveNumbers();
+}
+
+async function onPrevButtonClick() {
+    startGraveNumber = Math.max(1, startGraveNumber - 64);
+    await updateGraveNumbers();
+}
+
+async function onGoButtonClick() {
+    const requestedTableNumber = parseInt(cemeteryNumberInput.value);
+    if (requestedTableNumber > 0) {
+        startGraveNumber = (requestedTableNumber - 1) * 64 + 1;
+        await updateGraveNumbers();
+    } else {
+        requestedTableNumber = 1;
+    }
+}
+
+function addEventListeners(eventList) {
+    eventList.forEach(([element, eventName, eventHandler]) => {
+        element.addEventListener(eventName, eventHandler);
+    });
+}
+
+addEventListeners([
+    [nextButton, "click", onNextButtonClick],
+    [prevButton, "click", onPrevButtonClick],
+    [goButton, "click", onGoButtonClick],
+]);
+
 async function loadWeb3() {
 	if (window.ethereum) {
 		window.web3 = new Web3(window.ethereum);
@@ -894,279 +1047,6 @@ async function setApprovalForAll(beneficiary) {
 	}
 }
 
-async function getNFTDetails(graveNumber) {
-	try {
-		setStatus("Looking at a grave");
-		const nftDetails = await window.contract.methods
-			.tokenDetails(graveNumber)
-			.call();
-		const tokenDetailsElement = document.getElementById("tokenDetailsModal");
-		tokenDetailsElement.classList.add("token-details-modal");
-		tokenDetailsElement.innerHTML = "";
-		const closeDetailsModalButton = document.createElement("div");
-		closeDetailsModalButton.classList.add("close-details-modal-button");
-		closeDetailsModalButton.innerText = "X";
-		closeDetailsModalButton.addEventListener("click", closeDetailsModal);
-		tokenDetailsElement.appendChild(closeDetailsModalButton);
-		const coffinId = document.createElement("div");
-		coffinId.classList.add("coffinId");
-		coffinId.innerText = `Grave: ${nftDetails.id}`;
-		tokenDetailsElement.appendChild(coffinId);
-		const occupant = document.createElement("div");
-		occupant.classList.add("occupant")
-		occupant.innerText = `Occupant: ${nftDetails.occupant}`;
-		tokenDetailsElement.appendChild(occupant);
-		const epitaph = document.createElement("div");
-		epitaph.classList.add("epitaph")
-		epitaph.innerText = `Epitaph: ${nftDetails.epitaph}`;
-		tokenDetailsElement.appendChild(epitaph);
-		const dateBorn = document.createElement("div");
-		dateBorn.classList.add("dateBorn")
-		const year = nftDetails.dateBorn.substring(0, 4);
-		const month = nftDetails.dateBorn.substring(4, 6);
-		const day = nftDetails.dateBorn.substring(6, 8);
-		const formattedDate = `${year}-${month}-${day}`;
-		dateBorn.innerText = `Date Born: ${formattedDate}`;
-		tokenDetailsElement.appendChild(dateBorn);
-		const coffinDateBuriedCheck = document.createElement("div");
-		coffinDateBuriedCheck.classList.add("coffinDateBuriedCheck");
-		const gmtIndex = Date(nftDetails.dateBuried).indexOf("GMT");
-		const gmtFormatted = Date(nftDetails.dateBuried).slice(0, gmtIndex) + "UTC";
-		coffinDateBuriedCheck.innerText = `Buried: ${gmtFormatted}`;
-		tokenDetailsElement.appendChild(coffinDateBuriedCheck);
-		const resurrectTime = document.createElement("div");
-		resurrectTime.classList.add("resurrectTime");
-		const date = new Date(nftDetails.resurrectTime * 1000);
-		const dateString = date.toUTCString().replace("GMT", "UTC");
-		resurrectTime.innerText = `Resurrection: ${dateString}`;
-		tokenDetailsElement.appendChild(resurrectTime);
-		const currentOwner = document.createElement("div");
-		currentOwner.classList.add("currentOwner");
-		currentOwner.innerText = `Current Owner: ${nftDetails.currentOwner.slice(0, 6) + '...' + nftDetails.currentOwner.slice(38, 42)}`;
-		tokenDetailsElement.appendChild(currentOwner);
-		const beneficiary = document.createElement("div");
-		beneficiary.classList.add("beneficiary");
-		beneficiary.innerText = `Beneficiary: ${nftDetails.beneficiary.slice(0, 6) + '...' + nftDetails.beneficiary.slice(38, 42)}`;
-		tokenDetailsElement.appendChild(beneficiary);
-		const coffinBuryCount = document.createElement("div");
-		coffinBuryCount.classList.add("coffinBuryCount");
-		coffinBuryCount.innerText = `This Coffin has been buried ${nftDetails.buriedCounter} times.`;
-		tokenDetailsElement.appendChild(coffinBuryCount);
-		const resInstructions = document.createTextNode(
-			"Only the Beneficiary can Resurrect: "
-		);
-		tokenDetailsElement.appendChild(resInstructions);
-		tokenDetailsElement.appendChild(resurrectButton);
-		resurrectButton.addEventListener("click", () => {
-			const graveNumberValue = graveNumber;
-			checkResurrectionAndTransfer(graveNumberValue);
-		});
-		const buryAgainDiv = document.createElement("div");
-		tokenDetailsElement.appendChild(buryAgainDiv);
-		const buryAgainInstructions = document.createTextNode(
-			"After resurrection, the Beneficiary can bury the coffin again with a new Beneficiary and Resurrection Time: "
-		);
-		tokenDetailsElement.appendChild(buryAgainInstructions);
-		const br = document.createElement("br");
-		tokenDetailsElement.appendChild(br);
-		const newBeneficiary = document.createElement("input");
-		newBeneficiary.id = NEW_BENEFICIARY_ID;
-		newBeneficiary.type = "text";
-		newBeneficiary.classList.add("newBeneficiary")
-		const newResurrectTime = document.createElement("input");
-		newResurrectTime.id = NEW_RESURRECTTIME_ID;
-		newResurrectTime.type = "datetime-local";
-		newResurrectTime.classList.add("newResurrectTime")
-		tokenDetailsElement.appendChild(newBeneficiary);
-		tokenDetailsElement.appendChild(newResurrectTime);
-		tokenDetailsElement.appendChild(buryAgainButton);
-		buryAgainButton.addEventListener("click", () => {
-			const graveNumberValue = graveNumber;
-			const newBeneficiaryValue =
-				document.getElementById(NEW_BENEFICIARY_ID).value;
-			const newResurrectTimeValue =
-				document.getElementById(NEW_RESURRECTTIME_ID).value;
-			const UTCNewResurrectTime = Date.parse(newResurrectTimeValue) / 1000;
-			updateCoffin(graveNumberValue, UTCNewResurrectTime, newBeneficiaryValue);
-		});
-
-
-		const hr = document.createElement("hr");
-		tokenDetailsElement.appendChild(hr);
-
-		const mediaUrl = document.createElement("div");
-		mediaUrl.classList.add("mediaUrl")
-		mediaUrl.innerText = `Media: ${nftDetails.mediaUrl}`;
-		tokenDetailsElement.appendChild(mediaUrl);
-
-		if (nftDetails.mediaUrl.endsWith(".json")) {
-			fetch("https://ipfs.io/ipfs/" + nftDetails.mediaUrl.slice(7))
-				.then((response) => response.json())
-				.then((jsonData) => {
-					for (const [key, value] of Object.entries(jsonData)) {
-						const dataElement = document.createElement("div");
-						dataElement.classList.add("dataElement")
-
-						if (key === "image") {
-							const imgElement = document.createElement("img");
-							imgElement.classList.add("imgElement")
-							imgElement.src = "https://ipfs.io/ipfs/" + value.slice(7);
-							imgElement.alt = "image";
-							imgElement.style.maxWidth = "420px";
-							imgElement.style.maxHeight = "420px";
-							imgElement.style.display = "block";
-							imgElement.style.margin = "0 auto";
-							dataElement.appendChild(imgElement);
-						} else {
-							dataElement.innerText = `${key}: ${value}`;
-						}
-
-						tokenDetailsElement.appendChild(dataElement);
-					}
-				})
-				.catch((error) => {
-					console.error("Error fetching JSON data:", error);
-				});
-		}
-
-		if (nftDetails.mediaUrl.startsWith("ipfs://")) {
-			const mediaContainer = document.createElement("div");
-			mediaContainer.classList.add("mediaContainer");
-			mediaContainer.style.textAlign = "center";
-			const mediaUrl = `https://ipfs.io/ipfs/${nftDetails.mediaUrl.slice(7)}`;
-			const mediaType = mediaUrl.split(".").pop().toLowerCase();
-			let mediaElement;
-			if (["mp4", "webm", "ogv"].includes(mediaType)) {
-				mediaElement = document.createElement("video");
-				mediaElement.setAttribute("controls", "");
-			} else if (["mp3", "wav", "ogg"].includes(mediaType)) {
-				mediaElement = document.createElement("audio");
-				mediaElement.setAttribute("controls", "");
-			} else {
-				mediaElement = document.createElement("img");
-				mediaElement.setAttribute("alt", "-->Error finding media ");
-			}
-			mediaElement.setAttribute("src", mediaUrl);
-			mediaElement.classList.add("mediaElement");
-			mediaElement.style.maxWidth = "420px";
-			mediaElement.style.maxHeight = "420px";
-			mediaElement.style.display = "block";
-			mediaElement.style.margin = "0 auto";
-			mediaContainer.appendChild(mediaElement);
-			tokenDetailsElement.appendChild(mediaContainer);
-		}
-		const hr2 = document.createElement("hr");
-		tokenDetailsElement.appendChild(hr2);
-		const isOpen = document.createElement("div");
-		isOpen.classList.add("isOpen")
-		isOpen.innerText = `Metadata Exposed: ${nftDetails.isOpen}`;
-		tokenDetailsElement.appendChild(isOpen);
-		const metadataInstructions = document.createTextNode(
-			"Each coffin contains locked metadata. Once unlocked, the metadata is forever exposed."
-		);
-		tokenDetailsElement.appendChild(metadataInstructions);
-		tokenDetailsElement.appendChild(unlockMetadataButton);
-		unlockMetadataButton.addEventListener("click", async () => {
-			await unlockCoffinMetadata(graveNumber);
-		});
-
-		tokenDetailsElement.appendChild(exposeMetadataButton);
-		exposeMetadataButton.addEventListener("click", async () => {
-			const metadata = await exposeCoffinMetadata(graveNumber);
-			displayMetadata.textContent = `Metadata: ${metadata}`;
-		});
-
-		const displayMetadata = document.createElement("div");
-		displayMetadata.classList.add("displayMetadata")
-		tokenDetailsElement.appendChild(displayMetadata);
-
-
-		showDetailsModal();
-		return nftDetails;
-	} catch (error) {
-		console.error(error);
-	}
-}
-
-async function getPFPDetails(graveNumber) {
-	try {
-		const pfpDetails = await window.contract.methods
-			.tokenDetails(graveNumber)
-			.call();
-		const tokenDetailsElement = document.getElementById("tokenDetailsModal");
-		tokenDetailsElement.classList.add("token-details-modal");
-		tokenDetailsElement.innerHTML = "";
-
-		const hr = document.createElement("hr");
-		tokenDetailsElement.appendChild(hr);
-
-		const mediaUrl = document.createElement("div");
-		mediaUrl.classList.add("mediaUrl")
-		mediaUrl.innerText = `Media: ${pfpDetails.mediaUrl}`;
-		tokenDetailsElement.appendChild(mediaUrl);
-
-		if (pfpDetails.mediaUrl.endsWith(".json")) {
-			fetch("https://ipfs.io/ipfs/" + pfpDetails.mediaUrl.slice(7))
-				.then((response) => response.json())
-				.then((jsonData) => {
-					for (const [key, value] of Object.entries(jsonData)) {
-						const dataElement = document.createElement("div");
-						dataElement.classList.add("dataElement")
-
-						if (key === "image") {
-							const imgElement = document.createElement("img");
-							imgElement.classList.add("imgElement")
-							imgElement.src = "https://ipfs.io/ipfs/" + value.slice(7);
-							imgElement.alt = "image";
-							imgElement.style.maxWidth = "420px";
-							imgElement.style.maxHeight = "420px";
-							imgElement.style.display = "block";
-							imgElement.style.margin = "0 auto";
-							dataElement.appendChild(imgElement);
-						} else {
-							dataElement.innerText = `${key}: ${value}`;
-						}
-
-						tokenDetailsElement.appendChild(dataElement);
-					}
-				})
-				.catch((error) => {
-					console.error("Error fetching JSON data:", error);
-				});
-		}
-
-		if (pfpDetails.mediaUrl.startsWith("ipfs://")) {
-			const mediaContainer = document.createElement("div");
-			mediaContainer.classList.add("mediaContainer");
-			mediaContainer.style.textAlign = "center";
-			const mediaUrl = `https://ipfs.io/ipfs/${pfpDetails.mediaUrl.slice(7)}`;
-			const mediaType = mediaUrl.split(".").pop().toLowerCase();
-			let mediaElement;
-			if (["mp4", "webm", "ogv"].includes(mediaType)) {
-				mediaElement = document.createElement("video");
-				mediaElement.setAttribute("controls", "");
-			} else if (["mp3", "wav", "ogg"].includes(mediaType)) {
-				mediaElement = document.createElement("audio");
-				mediaElement.setAttribute("controls", "");
-			} else {
-				mediaElement = document.createElement("img");
-				mediaElement.setAttribute("alt", "-->Error finding media ");
-			}
-			mediaElement.setAttribute("src", mediaUrl);
-			mediaElement.classList.add("mediaElement");
-			mediaElement.style.maxWidth = "420px";
-			mediaElement.style.maxHeight = "420px";
-			mediaElement.style.display = "block";
-			mediaElement.style.margin = "0 auto";
-			mediaContainer.appendChild(mediaElement);
-			tokenDetailsElement.appendChild(mediaContainer);
-		}
-		return pfpDetails;
-	} catch (error) {
-		console.error(error);
-	}
-}
-
 async function checkResurrectionAndTransfer(graveNumber) {
 	setStatus("Attempting Resurrection");
 	try {
@@ -1218,6 +1098,251 @@ async function mintNFT(
 	}
 }
 
+async function getNFTDetails(graveNumber) {
+	try {
+		setStatus("Looking at a grave");
+
+		const nftDetails = await window.contract.methods
+			.tokenDetails(graveNumber)
+			.call();
+
+		const tokenDetailsElement = document.getElementById("tokenDetailsModal");
+		tokenDetailsElement.classList.add("token-details-modal");
+		tokenDetailsElement.innerHTML = "";
+
+		const elements = [
+			{
+				class: "close-details-modal-button",
+				text: "X",
+				onClick: closeDetailsModal,
+			},
+			{ class: "coffinId", text: `Grave: ${nftDetails.id}` },
+			{ class: "occupant", text: `Occupant: ${nftDetails.occupant}` },
+			{ class: "epitaph", text: `Epitaph: ${nftDetails.epitaph}` },
+			{
+				class: "dateBorn",
+				text: `Date Born: ${nftDetails.dateBorn.substring(0, 4)}-${nftDetails.dateBorn.substring(4, 6)}-${nftDetails.dateBorn.substring(6, 8)}`,
+			},
+			{
+				class: "coffinDateBuriedCheck",
+				text: `Buried: ${new Date(
+					nftDetails.dateBuried
+				).toUTCString().replace("GMT", "UTC")}`,
+			},
+			{
+				class: "resurrectTime",
+				text: `Resurrection: ${new Date(
+					nftDetails.resurrectTime * 1000
+				).toUTCString().replace("GMT", "UTC")}`,
+			},
+			{
+				class: "currentOwner",
+				text: `Current Owner: ${nftDetails.currentOwner.slice(
+					0,
+					6
+				)}...${nftDetails.currentOwner.slice(38, 42)}`,
+			},
+			{
+				class: "beneficiary",
+				text: `Beneficiary: ${nftDetails.beneficiary.slice(
+					0,
+					6
+				)}...${nftDetails.beneficiary.slice(38, 42)}`,
+			},
+			{
+				class: "coffinBuryCount",
+				text: `This Coffin has been buried ${nftDetails.buriedCounter} times.`,
+			},
+		];
+
+		elements.forEach((el) => {
+			const div = createDivWithClass(el.class);
+			div.innerText = el.text;
+			if (el.onClick) div.addEventListener("click", el.onClick);
+			tokenDetailsElement.appendChild(div);
+		});
+
+		appendTextInTokenDetailsElement(
+			tokenDetailsElement,
+			"Only the Beneficiary can Resurrect: "
+		);
+		tokenDetailsElement.appendChild(resurrectButton);
+		resurrectButton.addEventListener("click", () => {
+			const graveNumberValue = graveNumber;
+			checkResurrectionAndTransfer(graveNumberValue);
+		});
+
+		const buryAgainDiv = createDivWithClass("buryAgainDiv");
+		tokenDetailsElement.appendChild(buryAgainDiv);
+		appendTextInTokenDetailsElement(
+			tokenDetailsElement,
+			"After resurrection, the Beneficiary can bury the coffin again with a new Beneficiary and Resurrection Time: "
+		);
+
+		const br = document.createElement("br");
+		tokenDetailsElement.appendChild(br);
+
+		const newBeneficiary = document.createElement("input");
+		newBeneficiary.id = NEW_BENEFICIARY_ID;
+		newBeneficiary.type = "text";
+		newBeneficiary.classList.add("newBeneficiary");
+
+		const newResurrectTime = document.createElement("input");
+		newResurrectTime.id = NEW_RESURRECTTIME_ID;
+		newResurrectTime.type = "datetime-local";
+		newResurrectTime.classList.add("newResurrectTime");
+
+		tokenDetailsElement.appendChild(newBeneficiary);
+		tokenDetailsElement.appendChild(newResurrectTime);
+		tokenDetailsElement.appendChild(buryAgainButton);
+		buryAgainButton.addEventListener("click", () => {
+			const graveNumberValue = graveNumber;
+			const newBeneficiaryValue = document.getElementById(
+				NEW_BENEFICIARY_ID
+			).value;
+			const newResurrectTimeValue = document.getElementById(
+				NEW_RESURRECTTIME_ID
+			).value;
+			const UTCNewResurrectTime = Date.parse(newResurrectTimeValue) / 1000;
+			updateCoffin(
+				graveNumberValue,
+				UTCNewResurrectTime,
+				newBeneficiaryValue
+			);
+		});
+
+		const hr = document.createElement("hr");
+		tokenDetailsElement.appendChild(hr);
+
+		const mediaUrl = createDivWithClass("mediaUrl");
+		mediaUrl.innerText = `Media: ${nftDetails.mediaUrl}`;
+		tokenDetailsElement.appendChild(mediaUrl);
+
+		if (nftDetails.mediaUrl.endsWith(".json")) {
+			fetch("https://ipfs.io/ipfs/" + nftDetails.mediaUrl.slice(7))
+				.then((response) => response.json())
+				.then((jsonData) => {
+					for (const [key, value] of Object.entries(jsonData)) {
+						const dataElement = createDivWithClass("dataElement");
+						if (key === "image") {
+							const imgElement = document.createElement("img");
+							imgElement.classList.add("imgElement");
+							imgElement.src = "https://ipfs.io/ipfs/" + value.slice(7);
+							imgElement.alt = "image";
+							imgElement.style.maxWidth = "420px";
+							imgElement.style.maxHeight = "420px";
+							imgElement.style.display = "block";
+							imgElement.style.margin = "0 auto";
+							dataElement.appendChild(imgElement);
+						} else {
+							dataElement.innerText = `${key}: ${value}`;
+						}
+						tokenDetailsElement.appendChild(dataElement);
+					}
+				})
+				.catch((error) => {
+					console.error("Error fetching JSON data:", error);
+				});
+		}
+
+		function createMediaElement(mediaUrl) {
+			const videoElement = document.createElement("video");
+			const audioElement = document.createElement("audio");
+			const imgElement = document.createElement("img");
+			const commonAttributes = {
+				src: mediaUrl,
+				controls: "",
+				class: "mediaElement",
+				style: {
+					maxWidth: "420px",
+					maxHeight: "420px",
+					display: "block",
+					margin: "0 auto",
+				},
+			};
+
+			function applyAttributes(element, attributes) {
+				for (const key in attributes) {
+					if (key === "style") {
+						for (const styleKey in attributes[key]) {
+							element.style[styleKey] = attributes[key][styleKey];
+						}
+					} else {
+						element.setAttribute(key, attributes[key]);
+					}
+				}
+			}
+			function displayAudio(event) {
+				applyAttributes(audioElement, commonAttributes);
+				event.target.parentNode.replaceChild(audioElement, event.target);
+			}
+			function displayImage(event) {
+				applyAttributes(imgElement, commonAttributes);
+				imgElement.setAttribute("alt", "Error finding media");
+				event.target.parentNode.replaceChild(imgElement, event.target);
+			}
+			applyAttributes(videoElement, commonAttributes);
+			videoElement.addEventListener("error", displayAudio);
+			audioElement.addEventListener("error", displayImage);
+			return videoElement;
+		}
+
+		function displayMedia(nftDetails, tokenDetailsElement) {
+			if (nftDetails.mediaUrl.startsWith("ipfs://")) {
+				const mediaContainer = document.createElement("div");
+				mediaContainer.classList.add("mediaContainer");
+				mediaContainer.style.textAlign = "center";
+				const mediaUrl = `https://ipfs.io/ipfs/${nftDetails.mediaUrl.slice(7)}`;
+				const mediaElement = createMediaElement(mediaUrl);
+				mediaContainer.appendChild(mediaElement);
+				tokenDetailsElement.appendChild(mediaContainer);
+			}
+		}
+
+		displayMedia(nftDetails, tokenDetailsElement);
+
+		const hr2 = document.createElement("hr");
+		tokenDetailsElement.appendChild(hr2);
+		const isOpen = document.createElement("div");
+		isOpen.classList.add("isOpen")
+		isOpen.innerText = `Metadata Exposed: ${nftDetails.isOpen}`;
+		tokenDetailsElement.appendChild(isOpen);
+		const metadataInstructions = document.createTextNode(
+			"Each coffin contains locked metadata. Once unlocked, the metadata is forever exposed."
+		);
+		tokenDetailsElement.appendChild(metadataInstructions);
+		tokenDetailsElement.appendChild(unlockMetadataButton);
+		unlockMetadataButton.addEventListener("click", async () => {
+			await unlockCoffinMetadata(graveNumber);
+		});
+
+		tokenDetailsElement.appendChild(exposeMetadataButton);
+		exposeMetadataButton.addEventListener("click", async () => {
+			const metadata = await exposeCoffinMetadata(graveNumber);
+			displayMetadata.textContent = `Metadata: ${metadata}`;
+		});
+
+		const displayMetadata = document.createElement("div");
+		displayMetadata.classList.add("displayMetadata")
+		tokenDetailsElement.appendChild(displayMetadata);
+
+		showDetailsModal();
+	} catch (error) {
+		console.error("Error in getNFTDetails:", error);
+	}
+}
+
+async function getPFPDetails(graveNumber) {
+	try {
+		const pfpDetails = await window.contract.methods
+			.tokenDetails(graveNumber)
+			.call();
+		return pfpDetails;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
 async function updateGraveNumbers() {
 	clearTableBody();
 	const totalSupply = await getTotalSupply();
@@ -1249,21 +1374,10 @@ async function updateGraveNumbers() {
 
 				const mediaContainer = document.createElement("div");
 				mediaContainer.classList.add("mediaContainer");
+
 				getPFPDetails(graveCounter).then((nftDetails) => {
 					const mediaUrl = `https://ipfs.io/ipfs/${nftDetails.mediaUrl.slice(7)}`;
-					const mediaType = mediaUrl.split(".").pop().toLowerCase();
-					let mediaElement;
-
-					if (["mp4", "webm", "ogv"].includes(mediaType)) {
-						mediaElement = document.createElement("video");
-						mediaElement.setAttribute("controls", "");
-					} else if (["mp3", "wav", "ogg"].includes(mediaType)) {
-						mediaElement = document.createElement("audio");
-						mediaElement.setAttribute("controls", "");
-					} else {
-						mediaElement = document.createElement("img");
-						mediaElement.setAttribute("alt", " ");
-					}
+					let mediaElement = document.createElement("img");
 					mediaElement.setAttribute("src", mediaUrl);
 					mediaElement.classList.add("mediaElement");
 					mediaElement.style.maxWidth = "50px";
@@ -1272,7 +1386,7 @@ async function updateGraveNumbers() {
 				})
 
 				cell.appendChild(graveNumberSpan);
-				tombDiv.appendChild(mediaContainer); // Add media URL span to the cell
+				tombDiv.appendChild(mediaContainer);
 				cell.appendChild(document.createElement("br"));
 				graveCounter++;
 				cell.appendChild(skullSpan);
@@ -1307,131 +1421,3 @@ async function updateGraveNumbers() {
 	}
 	updateTableNumber();
 }
-
-function setStatus(status) {
-	document.getElementById("status").innerText = status;
-}
-
-document
-	.getElementById(CONNECT_BUTTON_ID)
-	.addEventListener("click", async () => {
-		await window.ethereum.request({ method: "eth_requestAccounts" });
-		await loadBlockchainData();
-	});
-
-document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
-	const occupant = document.getElementById(MODAL_OCCUPANT_ID).value;
-	const birth = document.getElementById(MODAL_BIRTH_ID).value;
-	const epitaph = document.getElementById(MODAL_EPITAPH_ID).value;
-	const mediaUrl = document.getElementById(MODAL_MEDIA_URL_ID).value;
-	const metadata = document.getElementById(MODAL_METADATA_ID).value;
-	const resurrectTime = document.getElementById(MODAL_RESURRECTTIME_ID).value;
-	const UTCResurrectTime = Date.parse(resurrectTime) / 1000;
-	const beneficiary = document.getElementById(MODAL_BENEFICIARY_ID).value;
-	const nBirth = birth.replaceAll("-", "");
-
-	if (
-		occupant &&
-		nBirth &&
-		epitaph &&
-		mediaUrl &&
-		metadata &&
-		UTCResurrectTime &&
-		beneficiary
-	) {
-		setStatus("Lowering coffin...");
-		await mintNFT(
-			occupant,
-			nBirth,
-			epitaph,
-			mediaUrl,
-			metadata,
-			UTCResurrectTime,
-			beneficiary
-		);
-		try {
-			setStatus("Approving Beneficiary...");
-			await setApprovalForAll(beneficiary);
-		} catch (e) {
-			setStatus("Failed to set Beneficiary.");
-		}
-		setStatus("The coffin is buried.");
-	} else {
-		setStatus("Please enter coffin details.");
-	}
-});
-
-document.getElementById(CLOSE_MODAL_ID).addEventListener("click", closeModal);
-document.getElementById(CLOSE_DETAILS_MODAL_ID).addEventListener("click", closeDetailsModal);
-
-async function handleButtonClick(event) {
-	showModal();
-}
-
-function removeConnectButton() {
-	const connectBtn = document.getElementById(CONNECT_BUTTON_ID);
-	const skelGif = document.getElementById(SKEL_GIF_ID);
-	if (connectBtn) {
-		connectBtn.parentNode.removeChild(connectBtn);
-	}
-	if (skelGif) {
-		skelGif.parentNode.removeChild(skelGif);
-	}
-}
-
-function showModal() {
-	const modal = document.getElementById("modal");
-	modal.style.display = "block";
-	modal.insertBefore(statusBar, modal.firstChild);
-}
-
-function closeModal() {
-	const modal = document.getElementById("modal");
-	modal.style.display = "none";
-	document.getElementById("statusBar").appendChild(statusBar);
-	setStatus("Welcome to the cemetery");
-}
-
-function showDetailsModal() {
-	const tokenDetailsModal = document.getElementById("tokenDetailsModal");
-	tokenDetailsModal.style.display = "block";
-	tokenDetailsModal.insertBefore(statusBar, tokenDetailsModal.firstChild);
-}
-
-function closeDetailsModal() {
-	const tokenDetailsModal = document.getElementById("tokenDetailsModal");
-	tokenDetailsModal.style.display = "none";
-	document.getElementById("statusBar").appendChild(statusBar);
-	setStatus("Welcome to the cemetery");
-}
-
-function clearTableBody() {
-	while (tableBody.firstChild) {
-		tableBody.removeChild(tableBody.firstChild);
-	}
-}
-
-function updateTableNumber() {
-	const tableIndex = Math.ceil(startGraveNumber / 64);
-	cemeteryNumber.textContent = ` Cemetery ${tableIndex} `;
-}
-
-nextButton.addEventListener("click", async () => {
-	startGraveNumber += 64;
-	await updateGraveNumbers();
-});
-
-prevButton.addEventListener("click", async () => {
-	startGraveNumber = Math.max(1, startGraveNumber - 64);
-	await updateGraveNumbers();
-});
-
-goButton.addEventListener("click", async () => {
-	const requestedTableNumber = parseInt(cemeteryNumberInput.value);
-	if (requestedTableNumber > 0) {
-		startGraveNumber = (requestedTableNumber - 1) * 64 + 1;
-		await updateGraveNumbers();
-	} else {
-		requestedTableNumber = 1;
-	}
-});
