@@ -1350,7 +1350,10 @@ async function updateGraveNumbers() {
 					mediaElement.style.maxWidth = "50px";
 					mediaElement.style.maxHeight = "50px";
 					mediaElement.style.borderRadius = "4px";
+					mediaElement.style.borderWidth = "0px";
+					
 
+					// Check if mediaElement is displayed as a broken icon
 					mediaElement.onerror = () => {
 						mediaElement.setAttribute("src", './img/pfp.gif');
 					};
