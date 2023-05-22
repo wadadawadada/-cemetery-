@@ -944,24 +944,24 @@ function clearTableBody() {
 }
 
 function updateTableNumber() {
-	const tableIndex = Math.ceil(startGraveNumber / 64);
+	const tableIndex = Math.ceil(startGraveNumber / 40);
 	cemeteryNumber.textContent = ` Cemetery ${tableIndex} `;
 }
 
 async function onNextButtonClick() {
-	startGraveNumber += 64;
+	startGraveNumber += 40;
 	await updateGraveNumbers();
 }
 
 async function onPrevButtonClick() {
-	startGraveNumber = Math.max(1, startGraveNumber - 64);
+	startGraveNumber = Math.max(1, startGraveNumber - 40);
 	await updateGraveNumbers();
 }
 
 async function onGoButtonClick() {
 	const requestedTableNumber = parseInt(cemeteryNumberInput.value);
 	if (requestedTableNumber > 0) {
-		startGraveNumber = (requestedTableNumber - 1) * 64 + 1;
+		startGraveNumber = (requestedTableNumber - 1) * 40 + 1;
 		await updateGraveNumbers();
 	} else {
 		requestedTableNumber = 1;
@@ -1116,9 +1116,14 @@ async function mintNFT(
 
 async function getNFTDetails(graveNumber) {
 	try {
-		const nftDetails = await window.contract.methods
-			.tokenDetails(graveNumber)
-			.call();
+		const userAddress = (await window.web3.eth.getAccounts())[0];
+    const nftDetails = await window.contract.methods
+      .tokenDetails(graveNumber)
+      .call();
+
+    const isUserOwnerOrBeneficiary =
+      userAddress === nftDetails.currentOwner ||
+      userAddress === nftDetails.beneficiary;
 
 		const tokenDetailsElement = document.getElementById("tokenDetailsModal");
 		tokenDetailsElement.classList.add("token-details-modal");
@@ -1180,10 +1185,12 @@ async function getNFTDetails(graveNumber) {
 			tokenDetailsElement,
 			"Only the Beneficiary can Resurrect: "
 		);
+		
 		tokenDetailsElement.appendChild(resurrectButton);
+		resurrectButton.disabled = !isUserOwnerOrBeneficiary;
 		resurrectButton.addEventListener("click", () => {
-			const graveNumberValue = graveNumber;
-			checkResurrectionAndTransfer(graveNumberValue);
+		  const graveNumberValue = graveNumber;
+		  checkResurrectionAndTransfer(graveNumberValue);
 		});
 
 		const buryAgainDiv = createDivWithClass("buryAgainDiv");
@@ -1206,24 +1213,21 @@ async function getNFTDetails(graveNumber) {
 		newResurrectTime.type = "datetime-local";
 		newResurrectTime.classList.add("newResurrectTime");
 
+		
 		tokenDetailsElement.appendChild(newBeneficiary);
+		newBeneficiary.disabled = !isUserOwnerOrBeneficiary;
 		tokenDetailsElement.appendChild(newResurrectTime);
+    	newResurrectTime.disabled = !isUserOwnerOrBeneficiary;
+
 		tokenDetailsElement.appendChild(buryAgainButton);
-		buryAgainButton.addEventListener("click", () => {
-			const graveNumberValue = graveNumber;
-			const newBeneficiaryValue = document.getElementById(
-				NEW_BENEFICIARY_ID
-			).value;
-			const newResurrectTimeValue = document.getElementById(
-				NEW_RESURRECTTIME_ID
-			).value;
-			const UTCNewResurrectTime = Date.parse(newResurrectTimeValue) / 1000;
-			updateCoffin(
-				graveNumberValue,
-				UTCNewResurrectTime,
-				newBeneficiaryValue
-			);
-		});
+		buryAgainButton.disabled = !isUserOwnerOrBeneficiary;
+    buryAgainButton.addEventListener("click", () => {
+      const graveNumberValue = graveNumber;
+      const newBeneficiaryValue = document.getElementById(NEW_BENEFICIARY_ID).value;
+      const newResurrectTimeValue = document.getElementById(NEW_RESURRECTTIME_ID).value;
+      const UTCNewResurrectTime = Date.parse(newResurrectTimeValue) / 1000;
+      updateCoffin(graveNumberValue, UTCNewResurrectTime, newBeneficiaryValue);
+    });
 
 		const hr = document.createElement("hr");
 		tokenDetailsElement.appendChild(hr);
@@ -1246,16 +1250,19 @@ async function getNFTDetails(graveNumber) {
 		const metadataInstructions = document.createTextNode(
 			"Each coffin contains locked metadata. Once unlocked, the metadata is forever exposed."
 		);
+		
 		tokenDetailsElement.appendChild(metadataInstructions);
 		tokenDetailsElement.appendChild(unlockMetadataButton);
-		unlockMetadataButton.addEventListener("click", async () => {
-			await unlockCoffinMetadata(graveNumber);
-		});
+		unlockMetadataButton.disabled = !isUserOwnerOrBeneficiary;
+    	unlockMetadataButton.addEventListener("click", async () => {
+      		await unlockCoffinMetadata(graveNumber);
+    	});
 
 		tokenDetailsElement.appendChild(exposeMetadataButton);
+		exposeMetadataButton.disabled = !isUserOwnerOrBeneficiary;
 		exposeMetadataButton.addEventListener("click", async () => {
-			const metadata = await exposeCoffinMetadata(graveNumber);
-			displayMetadata.textContent = `Metadata: ${metadata}`;
+		  const metadata = await exposeCoffinMetadata(graveNumber);
+		  displayMetadata.textContent = `Metadata: ${metadata}`;
 		});
 
 		const displayMetadata = document.createElement("div");
