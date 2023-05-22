@@ -1348,7 +1348,7 @@ async function updateGraveNumbers() {
 					mediaElement.classList.add("mediaElement");
 					mediaElement.style.maxWidth = "50px";
 					mediaElement.style.maxHeight = "50px";
-					mediaElement.style.borderRadius = "4px";
+					mediaElement.style.borderRadius = "5px";
 					mediaElement.style.borderWidth = "0px";
 					
 
