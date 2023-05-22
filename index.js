@@ -915,24 +915,27 @@ function toggleModal(modalId, isShow) {
 	modal.style.display = isShow ? "block" : "none";
 	const statusBarContainer = isShow ? modal : document.getElementById("statusBar");
 	statusBarContainer.insertBefore(statusBar, statusBarContainer.firstChild);
-	setStatus(isShow ? "Peering into an empty grave" : "Welcome to the cemetery");
-  }
-  
-  function showModal() {
+}
+
+function showModal() {
 	toggleModal(MODAL_ID, true);
-  }
-  
-  function closeModal() {
+	setStatus("Peering into an empty grave");
+}
+
+function closeModal() {
 	toggleModal(MODAL_ID, false);
-  }
-  
-  function showDetailsModal() {
+	setStatus("Welcome to the cemetery");
+}
+
+function showDetailsModal() {
 	toggleModal(TOKEN_DETAILS_MODAL_ID, true);
-  }
-  
-  function closeDetailsModal() {
+	setStatus("Viewing tomb");
+}
+
+function closeDetailsModal() {
 	toggleModal(TOKEN_DETAILS_MODAL_ID, false);
-  }
+	setStatus("Welcome to the cemetery");
+}
 
 function clearTableBody() {
 	while (tableBody.firstChild) {
@@ -946,35 +949,35 @@ function updateTableNumber() {
 }
 
 async function onNextButtonClick() {
-    startGraveNumber += 64;
-    await updateGraveNumbers();
+	startGraveNumber += 64;
+	await updateGraveNumbers();
 }
 
 async function onPrevButtonClick() {
-    startGraveNumber = Math.max(1, startGraveNumber - 64);
-    await updateGraveNumbers();
+	startGraveNumber = Math.max(1, startGraveNumber - 64);
+	await updateGraveNumbers();
 }
 
 async function onGoButtonClick() {
-    const requestedTableNumber = parseInt(cemeteryNumberInput.value);
-    if (requestedTableNumber > 0) {
-        startGraveNumber = (requestedTableNumber - 1) * 64 + 1;
-        await updateGraveNumbers();
-    } else {
-        requestedTableNumber = 1;
-    }
+	const requestedTableNumber = parseInt(cemeteryNumberInput.value);
+	if (requestedTableNumber > 0) {
+		startGraveNumber = (requestedTableNumber - 1) * 64 + 1;
+		await updateGraveNumbers();
+	} else {
+		requestedTableNumber = 1;
+	}
 }
 
 function addEventListeners(eventList) {
-    eventList.forEach(([element, eventName, eventHandler]) => {
-        element.addEventListener(eventName, eventHandler);
-    });
+	eventList.forEach(([element, eventName, eventHandler]) => {
+		element.addEventListener(eventName, eventHandler);
+	});
 }
 
 addEventListeners([
-    [nextButton, "click", onNextButtonClick],
-    [prevButton, "click", onPrevButtonClick],
-    [goButton, "click", onGoButtonClick],
+	[nextButton, "click", onNextButtonClick],
+	[prevButton, "click", onPrevButtonClick],
+	[goButton, "click", onGoButtonClick],
 ]);
 
 async function loadWeb3() {
@@ -1099,18 +1102,16 @@ async function mintNFT(
 }
 
 async function getNFTDetails(graveNumber) {
-    try {
-        setStatus("Looking at a grave");
+	try {
+		const nftDetails = await window.contract.methods
+			.tokenDetails(graveNumber)
+			.call();
 
-        const nftDetails = await window.contract.methods
-            .tokenDetails(graveNumber)
-            .call();
+		const tokenDetailsElement = document.getElementById("tokenDetailsModal");
+		tokenDetailsElement.classList.add("token-details-modal");
+		tokenDetailsElement.innerHTML = "";
 
-        const tokenDetailsElement = document.getElementById("tokenDetailsModal");
-        tokenDetailsElement.classList.add("token-details-modal");
-        tokenDetailsElement.innerHTML = "";
-
-	const elements = [
+		const elements = [
 			{
 				class: "close-details-modal-button",
 				text: "X",
@@ -1218,10 +1219,10 @@ async function getNFTDetails(graveNumber) {
 		mediaUrl.innerText = `Media: ${nftDetails.mediaUrl}`;
 		tokenDetailsElement.appendChild(mediaUrl);
 
-        if (nftDetails.mediaUrl.startsWith("ipfs://")) {
-            const mediaUrl = `https://ipfs.io/ipfs/${nftDetails.mediaUrl.slice(7)}`;
-            displayMedia(mediaUrl, tokenDetailsElement);
-        }
+		if (nftDetails.mediaUrl.startsWith("ipfs://")) {
+			const mediaUrl = `https://ipfs.io/ipfs/${nftDetails.mediaUrl.slice(7)}`;
+			displayMedia(mediaUrl, tokenDetailsElement);
+		}
 
 		const hr2 = document.createElement("hr");
 		tokenDetailsElement.appendChild(hr2);
@@ -1256,46 +1257,46 @@ async function getNFTDetails(graveNumber) {
 
 
 function displayMedia(mediaUrl, tokenDetailsElement) {
-    fetch(mediaUrl)
-        .then((response) => {
-            if (response.ok) {
-                const contentType = response.headers.get("content-type");
-                const mediaContainer = document.createElement("div");
-                mediaContainer.classList.add("mediaContainer");
-                mediaContainer.style.textAlign = "center";
-                let mediaElement;
+	fetch(mediaUrl)
+		.then((response) => {
+			if (response.ok) {
+				const contentType = response.headers.get("content-type");
+				const mediaContainer = document.createElement("div");
+				mediaContainer.classList.add("mediaContainer");
+				mediaContainer.style.textAlign = "center";
+				let mediaElement;
 
-                if (contentType.startsWith("image")) {
-                    mediaElement = document.createElement("img");
-                    mediaElement.src = mediaUrl;
-                    mediaElement.alt = "image";
-                } else if (contentType.startsWith("video")) {
-                    mediaElement = document.createElement("video");
-                    mediaElement.src = mediaUrl;
-                    mediaElement.controls = true;
-                } else if (contentType.startsWith("audio")) {
-                    mediaElement = document.createElement("audio");
-                    mediaElement.src = mediaUrl;
-                    mediaElement.controls = true;
-                } else {
-                    throw new Error("Unsupported media format");
-                }
+				if (contentType.startsWith("image")) {
+					mediaElement = document.createElement("img");
+					mediaElement.src = mediaUrl;
+					mediaElement.alt = "image";
+				} else if (contentType.startsWith("video")) {
+					mediaElement = document.createElement("video");
+					mediaElement.src = mediaUrl;
+					mediaElement.controls = true;
+				} else if (contentType.startsWith("audio")) {
+					mediaElement = document.createElement("audio");
+					mediaElement.src = mediaUrl;
+					mediaElement.controls = true;
+				} else {
+					throw new Error("Unsupported media format");
+				}
 
-                mediaElement.classList.add("mediaElement");
-                mediaElement.style.maxWidth = "420px";
-                mediaElement.style.maxHeight = "420px";
-                mediaElement.style.display = "block";
-                mediaElement.style.margin = "0 auto";
+				mediaElement.classList.add("mediaElement");
+				mediaElement.style.maxWidth = "420px";
+				mediaElement.style.maxHeight = "420px";
+				mediaElement.style.display = "block";
+				mediaElement.style.margin = "0 auto";
 
-                mediaContainer.appendChild(mediaElement);
-                tokenDetailsElement.appendChild(mediaContainer);
-            } else {
-                throw new Error("Error finding media");
-            }
-        })
-        .catch((error) => {
-            console.error("Error displaying media:", error);
-        });
+				mediaContainer.appendChild(mediaElement);
+				tokenDetailsElement.appendChild(mediaContainer);
+			} else {
+				throw new Error("Error finding media");
+			}
+		})
+		.catch((error) => {
+			console.error("Error displaying media:", error);
+		});
 }
 
 async function getPFPDetails(graveNumber) {
@@ -1337,10 +1338,10 @@ async function updateGraveNumbers() {
 				graveNumberSpan.classList.add("graveNumber");
 				const graveNumber = document.createTextNode(graveCounter);
 				graveNumberSpan.appendChild(graveNumber);
-			
+
 				const mediaContainer = document.createElement("div");
 				mediaContainer.classList.add("mediaContainer");
-			
+
 				getPFPDetails(graveCounter).then((nftDetails) => {
 					const mediaUrl = `https://ipfs.io/ipfs/${nftDetails.mediaUrl.slice(7)}`;
 					let mediaElement = document.createElement("img");
@@ -1348,15 +1349,15 @@ async function updateGraveNumbers() {
 					mediaElement.classList.add("mediaElement");
 					mediaElement.style.maxWidth = "50px";
 					mediaElement.style.maxHeight = "50px";
-					
-					// Check if mediaElement is displayed as a broken icon
+					mediaElement.style.borderRadius = "4px";
+
 					mediaElement.onerror = () => {
 						mediaElement.setAttribute("src", './img/pfp.gif');
 					};
-					
+
 					mediaContainer.appendChild(mediaElement);
 				})
-			
+
 				cell.appendChild(graveNumberSpan);
 				tombDiv.appendChild(mediaContainer);
 				cell.appendChild(document.createElement("br"));
