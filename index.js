@@ -1053,77 +1053,77 @@ async function setApprovalForAll(beneficiary) {
 }
 
 async function checkResurrectionAndTransfer(graveNumber) {
-    setStatus("Attempting Resurrection");
-    try {
-        const nonce = await window.web3.eth.getTransactionCount(window.account);
-        const result = await window.contract.methods
-            .checkForResurrectionAndTransfer(graveNumber)
-            .send({ from: window.account, nonce });
-        setStatus("Successfully resurrected coffin");
-        console.log(result);
-    } catch (e) {
-        setStatus("Failed to resurrect coffin");
-        console.log(e);
-    }
+	setStatus("Attempting Resurrection");
+	try {
+		const nonce = await window.web3.eth.getTransactionCount(window.account);
+		const result = await window.contract.methods
+			.checkForResurrectionAndTransfer(graveNumber)
+			.send({ from: window.account, nonce });
+		setStatus("Successfully resurrected coffin");
+		console.log(result);
+	} catch (e) {
+		setStatus("Failed to resurrect coffin");
+		console.log(e);
+	}
 }
 
 async function updateCoffin(graveNumber, resurrectTime, beneficiary) {
-    try {
-        setStatus("Approving new Beneficiary");
-        await setApprovalForAll(beneficiary);
-        setStatus("Lowering coffin...");
-        const nonce = await window.web3.eth.getTransactionCount(window.account);
-        const result = await window.contract.methods
-            .updateCoffin(graveNumber, resurrectTime, beneficiary)
-            .send({ from: window.account, nonce });
-        setStatus("Successfully buried coffin");
-        console.log(result);
-    } catch (e) {
-        setStatus("Failed to approve new Beneficiary");
-        console.log(e);
-    }
+	try {
+		setStatus("Approving new Beneficiary");
+		await setApprovalForAll(beneficiary);
+		setStatus("Lowering coffin...");
+		const nonce = await window.web3.eth.getTransactionCount(window.account);
+		const result = await window.contract.methods
+			.updateCoffin(graveNumber, resurrectTime, beneficiary)
+			.send({ from: window.account, nonce });
+		setStatus("Successfully buried coffin");
+		console.log(result);
+	} catch (e) {
+		setStatus("Failed to approve new Beneficiary");
+		console.log(e);
+	}
 }
 
 async function mintNFT(
-    occupant,
-    birth,
-    epitaph,
-    mediaUrl,
-    metadata,
-    resurrectTime,
-    beneficiary
+	occupant,
+	birth,
+	epitaph,
+	mediaUrl,
+	metadata,
+	resurrectTime,
+	beneficiary
 ) {
-    try {
-        const MINT_COST = window.web3.utils.toWei("0.001", "ether");
-        const nonce = await window.web3.eth.getTransactionCount(window.account);
-        await window.contract.methods
-            .mint(
-                occupant,
-                birth,
-                epitaph,
-                mediaUrl,
-                metadata,
-                resurrectTime,
-                beneficiary
-            )
-            .send({ from: window.account, value: MINT_COST, nonce });
-        updateGraveNumbers();
-    } catch (error) {
-        console.error(error);
-        setStatus("Something went terribly wrong");
-    }
+	try {
+		const MINT_COST = window.web3.utils.toWei("0.001", "ether");
+		const nonce = await window.web3.eth.getTransactionCount(window.account);
+		await window.contract.methods
+			.mint(
+				occupant,
+				birth,
+				epitaph,
+				mediaUrl,
+				metadata,
+				resurrectTime,
+				beneficiary
+			)
+			.send({ from: window.account, value: MINT_COST, nonce });
+		updateGraveNumbers();
+	} catch (error) {
+		console.error(error);
+		setStatus("Something went terribly wrong");
+	}
 }
 
 async function getNFTDetails(graveNumber) {
 	try {
 		const userAddress = (await window.web3.eth.getAccounts())[0];
-    const nftDetails = await window.contract.methods
-      .tokenDetails(graveNumber)
-      .call();
+		const nftDetails = await window.contract.methods
+			.tokenDetails(graveNumber)
+			.call();
 
-    const isUserOwnerOrBeneficiary =
-      userAddress === nftDetails.currentOwner ||
-      userAddress === nftDetails.beneficiary;
+		const isUserOwnerOrBeneficiary =
+			userAddress === nftDetails.currentOwner ||
+			userAddress === nftDetails.beneficiary;
 
 		const tokenDetailsElement = document.getElementById("tokenDetailsModal");
 		tokenDetailsElement.classList.add("token-details-modal");
@@ -1185,12 +1185,12 @@ async function getNFTDetails(graveNumber) {
 			tokenDetailsElement,
 			"Only the Beneficiary can Resurrect: "
 		);
-		
+
 		tokenDetailsElement.appendChild(resurrectButton);
 		resurrectButton.disabled = !isUserOwnerOrBeneficiary;
 		resurrectButton.addEventListener("click", () => {
-		  const graveNumberValue = graveNumber;
-		  checkResurrectionAndTransfer(graveNumberValue);
+			const graveNumberValue = graveNumber;
+			checkResurrectionAndTransfer(graveNumberValue);
 		});
 
 		const buryAgainDiv = createDivWithClass("buryAgainDiv");
@@ -1213,21 +1213,21 @@ async function getNFTDetails(graveNumber) {
 		newResurrectTime.type = "datetime-local";
 		newResurrectTime.classList.add("newResurrectTime");
 
-		
+
 		tokenDetailsElement.appendChild(newBeneficiary);
 		newBeneficiary.disabled = !isUserOwnerOrBeneficiary;
 		tokenDetailsElement.appendChild(newResurrectTime);
-    	newResurrectTime.disabled = !isUserOwnerOrBeneficiary;
+		newResurrectTime.disabled = !isUserOwnerOrBeneficiary;
 
 		tokenDetailsElement.appendChild(buryAgainButton);
 		buryAgainButton.disabled = !isUserOwnerOrBeneficiary;
-    buryAgainButton.addEventListener("click", () => {
-      const graveNumberValue = graveNumber;
-      const newBeneficiaryValue = document.getElementById(NEW_BENEFICIARY_ID).value;
-      const newResurrectTimeValue = document.getElementById(NEW_RESURRECTTIME_ID).value;
-      const UTCNewResurrectTime = Date.parse(newResurrectTimeValue) / 1000;
-      updateCoffin(graveNumberValue, UTCNewResurrectTime, newBeneficiaryValue);
-    });
+		buryAgainButton.addEventListener("click", () => {
+			const graveNumberValue = graveNumber;
+			const newBeneficiaryValue = document.getElementById(NEW_BENEFICIARY_ID).value;
+			const newResurrectTimeValue = document.getElementById(NEW_RESURRECTTIME_ID).value;
+			const UTCNewResurrectTime = Date.parse(newResurrectTimeValue) / 1000;
+			updateCoffin(graveNumberValue, UTCNewResurrectTime, newBeneficiaryValue);
+		});
 
 		const hr = document.createElement("hr");
 		tokenDetailsElement.appendChild(hr);
@@ -1250,19 +1250,19 @@ async function getNFTDetails(graveNumber) {
 		const metadataInstructions = document.createTextNode(
 			"Each coffin contains locked metadata. Once unlocked, the metadata is forever exposed."
 		);
-		
+
 		tokenDetailsElement.appendChild(metadataInstructions);
 		tokenDetailsElement.appendChild(unlockMetadataButton);
 		unlockMetadataButton.disabled = !isUserOwnerOrBeneficiary;
-    	unlockMetadataButton.addEventListener("click", async () => {
-      		await unlockCoffinMetadata(graveNumber);
-    	});
+		unlockMetadataButton.addEventListener("click", async () => {
+			await unlockCoffinMetadata(graveNumber);
+		});
 
 		tokenDetailsElement.appendChild(exposeMetadataButton);
 		exposeMetadataButton.disabled = !isUserOwnerOrBeneficiary;
 		exposeMetadataButton.addEventListener("click", async () => {
-		  const metadata = await exposeCoffinMetadata(graveNumber);
-		  displayMetadata.textContent = `Metadata: ${metadata}`;
+			const metadata = await exposeCoffinMetadata(graveNumber);
+			displayMetadata.textContent = `Metadata: ${metadata}`;
 		});
 
 		const displayMetadata = document.createElement("div");
@@ -1371,7 +1371,7 @@ async function updateGraveNumbers() {
 					mediaElement.style.maxHeight = "50px";
 					mediaElement.style.borderRadius = "4px";
 					mediaElement.style.borderWidth = "0px";
-					
+
 
 					// Check if mediaElement is displayed as a broken icon
 					mediaElement.onerror = () => {
