@@ -1018,17 +1018,19 @@ async function getTotalSupply() {
 }
 
 async function unlockCoffinMetadata(graveNumber) {
+	const nonce = await window.web3.eth.getTransactionCount(window.account);
 	const tx = await window.contract.methods
 		.unlockMetadata(graveNumber)
-		.send({ from: window.account });
+		.send({ from: window.account, nonce });
 	console.log(tx);
 	return tx;
 }
 
 async function exposeCoffinMetadata(graveNumber) {
+	const nonce = await window.web3.eth.getTransactionCount(window.account);
 	const tx2 = await window.contract.methods
 		.exposeMetadata(graveNumber)
-		.call({ from: window.account });
+		.call({ from: window.account, nonce });
 	console.log(tx2);
 	return tx2;
 }
@@ -1051,54 +1053,65 @@ async function setApprovalForAll(beneficiary) {
 }
 
 async function checkResurrectionAndTransfer(graveNumber) {
-	setStatus("Attempting Resurrection");
-	try {
-		const result = await window.contract.methods
-			.checkForResurrectionAndTransfer(graveNumber)
-			.send({ from: window.account });
-		setStatus("Successfully resurrected coffin");
-		console.log(result);
-	} catch (e) {
-		setStatus("Failed to resurrect coffin");
-		console.log(e);
-	}
+    setStatus("Attempting Resurrection");
+    try {
+        const nonce = await window.web3.eth.getTransactionCount(window.account);
+        const result = await window.contract.methods
+            .checkForResurrectionAndTransfer(graveNumber)
+            .send({ from: window.account, nonce });
+        setStatus("Successfully resurrected coffin");
+        console.log(result);
+    } catch (e) {
+        setStatus("Failed to resurrect coffin");
+        console.log(e);
+    }
 }
 
 async function updateCoffin(graveNumber, resurrectTime, beneficiary) {
-	try {
-		setStatus("Approving new Beneficiary");
-		await setApprovalForAll(beneficiary);
-		setStatus("Lowering coffin...");
-		const result = await window.contract.methods
-			.updateCoffin(graveNumber, resurrectTime, beneficiary)
-			.send({ from: window.account });
-		setStatus("Successfully buried coffin");
-		console.log(result);
-	} catch (e) {
-		setStatus("Failed to approve new Beneficiary");
-		console.log(e);
-	}
+    try {
+        setStatus("Approving new Beneficiary");
+        await setApprovalForAll(beneficiary);
+        setStatus("Lowering coffin...");
+        const nonce = await window.web3.eth.getTransactionCount(window.account);
+        const result = await window.contract.methods
+            .updateCoffin(graveNumber, resurrectTime, beneficiary)
+            .send({ from: window.account, nonce });
+        setStatus("Successfully buried coffin");
+        console.log(result);
+    } catch (e) {
+        setStatus("Failed to approve new Beneficiary");
+        console.log(e);
+    }
 }
 
 async function mintNFT(
-	occupant,
-	birth,
-	epitaph,
-	mediaUrl,
-	metadata,
-	resurrectTime,
-	beneficiary
+    occupant,
+    birth,
+    epitaph,
+    mediaUrl,
+    metadata,
+    resurrectTime,
+    beneficiary
 ) {
-	try {
-		const MINT_COST = window.web3.utils.toWei("0.001", "ether");
-		await window.contract.methods
-			.mint(occupant, birth, epitaph, mediaUrl, metadata, resurrectTime, beneficiary)
-			.send({ from: window.account, value: MINT_COST });
-		updateGraveNumbers();
-	} catch (error) {
-		console.error(error);
-		setStatus("Something went terribly wrong");
-	}
+    try {
+        const MINT_COST = window.web3.utils.toWei("0.001", "ether");
+        const nonce = await window.web3.eth.getTransactionCount(window.account);
+        await window.contract.methods
+            .mint(
+                occupant,
+                birth,
+                epitaph,
+                mediaUrl,
+                metadata,
+                resurrectTime,
+                beneficiary
+            )
+            .send({ from: window.account, value: MINT_COST, nonce });
+        updateGraveNumbers();
+    } catch (error) {
+        console.error(error);
+        setStatus("Something went terribly wrong");
+    }
 }
 
 async function getNFTDetails(graveNumber) {
@@ -1127,7 +1140,7 @@ async function getNFTDetails(graveNumber) {
 			{
 				class: "coffinDateBuriedCheck",
 				text: `Buried: ${new Date(
-					nftDetails.dateBuried
+					nftDetails.dateBuried * 1000
 				).toUTCString().replace("GMT", "UTC")}`,
 			},
 			{
