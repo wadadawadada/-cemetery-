@@ -35,7 +35,7 @@
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "tokenId",
+				"name": "c0ffinId",
 				"type": "uint256"
 			},
 			{
@@ -61,60 +61,10 @@
 				"internalType": "string",
 				"name": "mediaUrl",
 				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "dateBuried",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "resurrectTime",
-				"type": "uint256"
 			}
 		],
 		"name": "Buried",
 		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "newResurrectTime",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "newBeneficiary",
-				"type": "address"
-			}
-		],
-		"name": "Buried_Again",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "checkForResurrectionAndTransfer",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
 	},
 	{
 		"inputs": [
@@ -142,21 +92,18 @@
 				"internalType": "string",
 				"name": "metadata",
 				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "resurrectTime",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "beneficiary",
-				"type": "address"
 			}
 		],
-		"name": "mint",
+		"name": "bury",
 		"outputs": [],
 		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "cemeteryGate",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -184,19 +131,6 @@
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "Resurrected",
-		"type": "event"
 	},
 	{
 		"inputs": [
@@ -278,6 +212,19 @@
 			}
 		],
 		"name": "setApprovalForAll",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "newC0ffinCost",
+				"type": "uint256"
+			}
+		],
+		"name": "setC0ffinCost",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -370,19 +317,6 @@
 		"type": "event"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "unlockMetadata",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -400,66 +334,6 @@
 		],
 		"name": "URI",
 		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "occupant",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "dateBorn",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "beneficiary",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "mediaUrl",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "metadata",
-				"type": "string"
-			}
-		],
-		"name": "Unlocked",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "newResurrectTime",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "newBeneficiary",
-				"type": "address"
-			}
-		],
-		"name": "updateCoffin",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
 	},
 	{
 		"inputs": [],
@@ -518,7 +392,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "coffinCost",
+		"name": "c0ffinCost",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -530,19 +404,13 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "exposeMetadata",
+		"inputs": [],
+		"name": "gates0pen",
 		"outputs": [
 			{
-				"internalType": "string",
-				"name": "metadata",
-				"type": "string"
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -588,37 +456,13 @@
 	{
 		"inputs": [
 			{
-				"internalType": "bytes4",
-				"name": "interfaceId",
-				"type": "bytes4"
-			}
-		],
-		"name": "supportsInterface",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
 				"internalType": "uint256",
-				"name": "tokenId",
+				"name": "c0ffinId",
 				"type": "uint256"
 			}
 		],
-		"name": "tokenDetails",
+		"name": "readC0ffin",
 		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
 			{
 				"internalType": "string",
 				"name": "occupant",
@@ -640,9 +484,9 @@
 				"type": "string"
 			},
 			{
-				"internalType": "bool",
-				"name": "isOpen",
-				"type": "bool"
+				"internalType": "string",
+				"name": "metadata",
+				"type": "string"
 			},
 			{
 				"internalType": "address",
@@ -653,26 +497,25 @@
 				"internalType": "uint256",
 				"name": "dateBuried",
 				"type": "uint256"
-			},
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "resurrectTime",
-				"type": "uint256"
-			},
+				"internalType": "bytes4",
+				"name": "interfaceId",
+				"type": "bytes4"
+			}
+		],
+		"name": "supportsInterface",
+		"outputs": [
 			{
-				"internalType": "address",
-				"name": "beneficiary",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "currentOwner",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "buriedCounter",
-				"type": "uint256"
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -695,7 +538,7 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "",
+				"name": "c0ffinId",
 				"type": "uint256"
 			}
 		],

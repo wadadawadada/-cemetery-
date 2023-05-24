@@ -1,13 +1,14 @@
 html,
 .cemetery {
-	background-color: rgb(0, 0, 0);
-	color: rgb(255, 255, 255);
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
   font-family: "Lucida Console", "Courier New", monospace;
   display: flex;
   /* align-items: center; */
   justify-content: center;
   /* height: 100%; */
-  overflow: visible; /* arooooooooo */
+  overflow: visible;
+  /* arooooooooo */
   background-image: url("/img/sky.gif");
 }
 
@@ -18,147 +19,157 @@ html,
 }
 
 a:link {
-    color: rgb(255, 255, 255);
-  }
-  
-  /* visited link */
-  a:visited {
-    color: rgb(255, 255, 255);
-  }
-  
-  /* mouse over link */
-  a:hover {
-    color: rgb(255, 255, 255);
-  }
-  
-  /* selected link */
-  a:active {
-    color: rgb(255, 255, 255);
-  }
+  color: rgb(255, 255, 255);
+}
+
+/* visited link */
+a:visited {
+  color: rgb(255, 255, 255);
+}
+
+/* mouse over link */
+a:hover {
+  color: rgb(255, 255, 255);
+}
+
+/* selected link */
+a:active {
+  color: rgb(255, 255, 255);
+}
 
 #logo {
-    
+
   position: relative;
   display: flex;
   left: 0%;
-    border: 1px solid rgb(255, 255, 255);
-    padding: 10px;
-    height: min-content;
-    width: max-content;
-    border-top-left-radius: 3px;
+  border: 1px solid rgb(255, 255, 255);
+  padding: 10px;
+  height: min-content;
+  width: max-content;
+  border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-    /* margin-left: 25%; */
-  }
+  /* margin-left: 25%; */
+}
 
-  #about {
-    
-    position: relative;
+#about {
+
+  position: relative;
   display: flex;
   left: 15%;
-    /* border: 1px solid rgb(255, 255, 255); */
-    padding: 10px;
-    height: min-content;
-    width: max-content;
-    margin-left: 16%;
-    font-size: small;
-    margin-top: -2.7vw;
-    
-  }
+  /* border: 1px solid rgb(255, 255, 255); */
+  padding: 10px;
+  height: min-content;
+  width: max-content;
+  margin-left: 16%;
+  font-size: small;
+  margin-top: -2.7vw;
 
-  
+}
 
-  .nav-container {
-    position: relative;
-    display: flex;
-    left: 0%;
-    width: 100%; 
-    height: 100px;
-    /* min-width: 100%; */
-    max-width: 900px;
-    /* max-height: 800px; */
-    text-align: center;
-    margin-top: 0vw;
-    margin-left: 0%;
-    margin-right: 0%;
-    padding: 10px;
-    font-size: large;
-    /* z-index: 2; */
-    background-color: #0000009d;
-    align-items: center;
-    justify-content: center; /* выравнивание по горизонтали */
-    align-items: center; /* выравнивание по вертикали */
-     display: flex;
-     flex-direction: row;
-     /* width: fit-content; */
-     gap: 40px;
-     /* justify-content: left; */
-     /* border: 1px solid rgb(255, 255, 255); */
-     background-image: url("/img/wall.gif");
-     border-top-left-radius: 3px;
+
+
+.nav-container {
+  position: relative;
+  display: flex;
+  left: 0%;
+  width: 100%;
+  height: 100px;
+  /* min-width: 100%; */
+  max-width: 900px;
+  /* max-height: 800px; */
+  text-align: center;
+  margin-top: 0vw;
+  margin-left: 0%;
+  margin-right: 0%;
+  padding: 10px;
+  font-size: large;
+  /* z-index: 2; */
+  background-color: #0000009d;
+  align-items: center;
+  justify-content: center;
+  /* выравнивание по горизонтали */
+  align-items: center;
+  /* выравнивание по вертикали */
+  display: flex;
+  flex-direction: row;
+  /* width: fit-content; */
+  gap: 40px;
+  /* justify-content: left; */
+  /* border: 1px solid rgb(255, 255, 255); */
+  background-image: url("/img/wall.gif");
+  border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  
-   } 
+
+}
 
 
 
-   #gravenav button {
-    background-color: #55555598;
-    color: rgb(255, 255, 255);
-    font-size: 12px;
-    padding: 2px;
-    /* margin-right: 10px; */
-  }
-  
-  #gravenav button:hover {
-    background-color: #6d6b6b98;
-  }
+#gravenav button {
+  background-color: #55555598;
+  color: rgb(255, 255, 255);
+  font-size: 12px;
+  padding: 2px;
+  /* margin-right: 10px; */
+}
 
-  
-     
-  #container-jahhweh {
-    position: relative;
-    display: flex;
-    left: 0%;
-    /* padding: 10px; */
-    /* padding-top: 25px; */
-    /* border: 1px solid rgb(255, 255, 255); */
-    background-color: #0000009d;
-    text-align: center;
-    font-size: small;
-    justify-content: center;
-    max-width: 820px;
-    min-width: 800px;
-    min-height: 600px;
-    /* margin-left: 25%; */
-    /* margin-right: 0vw; */
-    background-image: url("/img/grass.gif");
-    padding: 60px;
-    border-bottom-left-radius: 3px;
+#gravenav button:hover {
+  background-color: #6d6b6b98;
+}
+
+
+
+#cemeteryContainer {
+  position: relative;
+  display: flex;
+  left: 0%;
+  /* padding: 10px; */
+  /* padding-top: 25px; */
+  /* border: 1px solid rgb(255, 255, 255); */
+  background-color: #0000009d;
+  text-align: center;
+  font-size: small;
+  justify-content: center;
+  max-width: 820px;
+  min-width: 800px;
+  min-height: 600px;
+  /* margin-left: 25%; */
+  /* margin-right: 0vw; */
+  background-image: url("/img/grass.gif");
+  padding: 60px;
+  border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
-   
-  border-image: url("/img/border.png") /* source */ 46 / /* slice */ 12px 12px 12px
-  12px / /* width */ 6px 6px 6px 6px /* outset */ round; /* repeat */
+
+  border-image: url("/img/border.png")
+    /* source */
+    46 /
+    /* slice */
+    12px 12px 12px 12px /
+    /* width */
+    6px 6px 6px 6px
+    /* outset */
+    round;
+  /* repeat */
 
 
-  }
+}
 
 
-  #gravenav{
+#gravenav {
 
-font-size: 14px;
+  font-size: 14px;
 
-  }
+}
 
- 
 
-  /* THIS RIGHT HERE BREDDA */
+
+/* THIS RIGHT HERE BREDDA */
 
 .graveNumber {
-    color: rgb(247, 247, 247);
-    font-size: 12px;
-    text-shadow: 0px 0px 4px rgb(0, 0, 0);
-    text-decoration: underline overline #6d6d6d;
-   
+  color: rgb(247, 247, 247);
+  font-size: 12px;
+  text-shadow: 0px 0px 4px rgb(0, 0, 0);
+  text-decoration: underline overline #6d6d6d;
+
 }
 
 /* .graveNumber::before {
@@ -170,55 +181,57 @@ font-size: 14px;
   display: none;
 } */
 
-.skull {     /*pfp*/
-    color: rgb(255, 255, 255);
-    font-size: 22px;
-    
-    }
+.skull {
+  /*pfp*/
+  color: rgb(255, 255, 255);
+  font-size: 22px;
+
+}
 
 
 
 .tools {
-    color: rgb(255, 255, 255);
-    font-size: 22px;
-   padding-bottom: 30px;
+  color: rgb(255, 255, 255);
+  font-size: 22px;
+  padding-bottom: 30px;
 }
+
 .graveButton {
-    background-color: rgba(0, 0, 0, 0);
-    color: rgb(173, 173, 173);
-    /* position: relative; */
+  background-color: rgba(0, 0, 0, 0);
+  color: rgb(173, 173, 173);
+  /* position: relative; */
 }
 
 
 .buryButton {
-    background-color: rgba(0, 0, 0, 0);
-    color: rgb(255, 255, 255);
-    /* position: relative; */
-    bottom: 2px;
-    
+  background-color: rgba(0, 0, 0, 0);
+  color: rgb(255, 255, 255);
+  /* position: relative; */
+  bottom: 2px;
+
 }
 
 .button {
-    background-color: rgb(0, 0, 0);
-    color: white;
+  background-color: rgb(0, 0, 0);
+  color: white;
 }
 
 
-  /* /////////////  MINTING  /////////////////////////////////////////////////// */
+/* /////////////  MINTING  /////////////////////////////////////////////////// */
 
 
 #modalOccupant {
   width: 100%;
   height: 20px;
   text-align: left;
-  
+
 }
 
 #modalEpitaph {
   width: 100%;
   height: 20px;
   text-align: left;
-  
+
 
 }
 
@@ -229,53 +242,54 @@ font-size: 14px;
 }
 
 .address-container {
-  position:relative;
+  position: relative;
   font-size: small;
   vertical-align: middle;
   /* height: 1.5vw; */
-  top:0px;
+  top: 0px;
 }
 
 
-#status{
-  position:relative;
+#status {
+  position: relative;
   color: rgb(107, 194, 85);
   text-align: right;
   font-size: small;
-    
-  }
 
-  #statsign{
-    position:relative;
-    color: rgb(255, 255, 255);
-    text-align: right;
-    font-size: small;
-    top:-10px;
-    }
+}
+
+#statsign {
+  position: relative;
+  color: rgb(255, 255, 255);
+  text-align: right;
+  font-size: small;
+  top: -10px;
+}
 
 /* //////////////////////////////////////////////////////////////////////////// */
 
 
-  #skel {
-    position: absolute;
-    display: flex;
-    pointer-events: none;   /* this element will not catch any events */
-    width: 200px;
-    height: 12vh;
-    text-align: center;
-    margin-top: 1vw;
-    margin-left: 37vw;
-    z-index: 2;
-  }
+#skel {
+  position: absolute;
+  display: flex;
+  pointer-events: none;
+  /* this element will not catch any events */
+  width: 200px;
+  height: 12vh;
+  text-align: center;
+  margin-top: 1vw;
+  margin-left: 37vw;
+  z-index: 2;
+}
 
 
 
- 
 
 
 
 
- 
+
+
 
 /* td:hover {
     background-color: rgb(0, 0, 0);
@@ -297,17 +311,17 @@ font-size: 14px;
   background-position: center;
   opacity: 1.0;
   border-width: 0px;
-  box-shadow: inset 0px 0px 6px 5px rgba(24, 23, 23, 0); 
+  box-shadow: inset 0px 0px 6px 5px rgba(24, 23, 23, 0);
 }
 
-.tomb { /*PFP*/
+.tomb {
+  /*PFP*/
   display: inline-block;
   width: 50px;
   height: 50px;
   background-size: 100%;
-border-radius: 5px;
-box-shadow: inset 0px 0px 15px 0px rgba(0, 0, 0, 0.596)
-
+  border-radius: 5px;
+  box-shadow: inset 0px 0px 15px 0px rgba(0, 0, 0, 0.596)
 }
 
 
@@ -321,23 +335,24 @@ box-shadow: inset 0px 0px 15px 0px rgba(0, 0, 0, 0.596)
   border-bottom-right-radius: 3px;
 }
 
-.grave > button {
+.grave>button {
   background-color: rgba(0, 0, 0, 0.363);
 }
 
-.bury > button {
+.bury>button {
   background-color: rgba(66, 4, 4, 0.479);
-  
+
 }
 
-td, tr {
+td,
+tr {
   border: 2px solid rgb(46, 46, 46);
   width: 70px;
   height: 100px;
   min-height: 100px;
   min-width: 70px;
-  
-  }
+
+}
 
 
 .bury {
@@ -359,16 +374,16 @@ td {
   background-position: 50% 50%;
   background-size: cover;
   box-shadow: inset 0px 0px 6px 5px rgba(24, 23, 23, 0.7);
-  
+
 }
 
 
 
-td > button {
+td>button {
   font-size: 14px;
   color: rgb(255, 255, 255);
   background-color: black;
-  
+
 }
 
 
@@ -377,15 +392,15 @@ td > button {
 /* JAHHWEH STYLEE */
 
 .modal-style {
-  display: none; 
-  position: fixed; 
-  top: 50vh; 
-  left: 50vw; 
+  display: none;
+  position: fixed;
+  top: 50vh;
+  left: 50vw;
   width: 50vw;
   height: 80%;
   overflow: auto;
-  transform: translate(-50%, -50%); 
-  background-color: rgba(0, 0, 0, 0.863); 
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.863);
   padding: 40px;
   text-align: left;
   line-height: 22px;
@@ -397,16 +412,17 @@ td > button {
 
 }
 
-.token-details-modal{   /*MINTED modal*/
-  display: none; 
-  position: fixed; 
-  top: 50vh; 
-  left: 50vw; 
+.token-details-modal {
+  /*MINTED modal*/
+  display: none;
+  position: fixed;
+  top: 50vh;
+  left: 50vw;
   width: 50vw;
   height: 80%;
   overflow: auto;
-  transform: translate(-50%, -50%); 
-  background-color: rgba(0, 0, 0, 0.863); 
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.863);
   padding: 40px;
   text-align: left;
   line-height: 22px;
@@ -419,110 +435,110 @@ td > button {
 
 /*///////////////////CONTENT MINTED //////////////////*/
 
-.coffinId{
+.coffinId {
 
-font-size: medium;
-padding-bottom: 22px;
-padding-top: 22px;
+  font-size: medium;
+  padding-bottom: 22px;
+  padding-top: 22px;
 }
 
 
-.occupant{
+.occupant {
 
   font-size: large;
-  padding-bottom: 22px;  
-  }
+  padding-bottom: 22px;
+}
 
 
-  .epitaph{
+.epitaph {
 
-    font-size: small;
-      
-    }
+  font-size: small;
 
-
-    .dateBorn{
-
-      font-size: small;
-        
-      }
+}
 
 
-      .coffinDateBuriedCheck{
+.dateBorn {
 
-        font-size: small;
-          
-        }
+  font-size: small;
 
-
-        .resurrectTime{
-
-          font-size: small;
-            
-          }
+}
 
 
-          .currentOwner{
+.coffinDateBuriedCheck {
 
-            font-size: small;
-             padding-top: 22px; 
-             color: rgb(107, 194, 85);
-            }
+  font-size: small;
 
-
-            .beneficiary{
-
-              font-size: small;
-                padding-bottom: 22px;
-                color:rgb(255, 208, 0)
-              }
+}
 
 
+.resurrectTime {
 
-              .coffinBuryCount{
-                
-                font-size: small;
-                font-style: italic;
-                padding-bottom: 22px;
-                }
+  font-size: small;
+
+}
 
 
-                .resurrectTime{
+.currentOwner {
 
-                  font-size: small;
-                    
-                  }
+  font-size: small;
+  padding-top: 22px;
+  color: rgb(107, 194, 85);
+}
+
+
+.beneficiary {
+
+  font-size: small;
+  padding-bottom: 22px;
+  color: rgb(255, 208, 0)
+}
 
 
 
-                  .resurrectTime{
+.coffinBuryCount {
 
-                    font-size: small;
-                      
-                    }
+  font-size: small;
+  font-style: italic;
+  padding-bottom: 22px;
+}
+
+
+.resurrectTime {
+
+  font-size: small;
+
+}
+
+
+
+.resurrectTime {
+
+  font-size: small;
+
+}
 
 /*///////////////////////////////////////////////////////*/
 
 .close-details-modal-button {
   cursor: pointer;
-  position: absolute; 
-  right: 10px; 
+  position: absolute;
+  right: 10px;
   top: 10px;
-  background-color: rgba(0, 0, 0, 0.863); 
+  background-color: rgba(0, 0, 0, 0.863);
   color: #FFFFFF;
   border: 1px solid rgb(255, 255, 255);
   width: 25px;
   height: 20px;
   text-align: center
-  
 }
 
-.modal-close {   /*//////////////MINTING*/
+.modal-close {
+  /*//////////////MINTING*/
   cursor: pointer;
-  position: absolute; 
-  right: 10px; 
+  position: absolute;
+  right: 10px;
   top: 10px;
-  background-color: rgba(0, 0, 0, 0.863); 
+  background-color: rgba(0, 0, 0, 0.863);
   color: #ffffff;
   border: 1px solid white;
   width: 25px;
@@ -531,7 +547,7 @@ padding-top: 22px;
 }
 
 
-  
+
 
 /* .main-container {
   display: flex;
@@ -540,29 +556,29 @@ padding-top: 22px;
 
 #submitModal {
   cursor: pointer;
-  position: absolute; 
-left: 1vw;
-width: 95%;
-height: 50px;
-background-color: #00000081;
-color: #FFFFFF;
-font-size: x-large;
-border-width: 1px;
-border-color: #FFFFFF;
-border-radius: 3px;
+  position: absolute;
+  left: 1vw;
+  width: 95%;
+  height: 50px;
+  background-color: #00000081;
+  color: #FFFFFF;
+  font-size: x-large;
+  border-width: 1px;
+  border-color: #FFFFFF;
+  border-radius: 3px;
 
 }
 
 #submitModal:hover {
   cursor: pointer;
-  position: absolute; 
+  position: absolute;
   left: 1vw;
-width: 95%;
-height: 50px;
-background-color: #25361b9d;
-color: #FFFFFF;
-font-size: x-large;
-border-radius: 3px;
+  width: 95%;
+  height: 50px;
+  background-color: #25361b9d;
+  color: #FFFFFF;
+  font-size: x-large;
+  border-radius: 3px;
 
 }
 

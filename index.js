@@ -2,7 +2,7 @@
 // crypt0-cemetery  //
 /////////////////////
 
-const contractAddress = "0xAca8337cD0E3c2426f280fF28aA323fc852253c8";
+const contractAddress = "0xce896C526d0baFD33b15457992aC0a7Ef14c258a";
 const abi = [
 	{
 		"inputs": [],
@@ -40,7 +40,7 @@ const abi = [
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "tokenId",
+				"name": "c0ffinId",
 				"type": "uint256"
 			},
 			{
@@ -66,18 +66,6 @@ const abi = [
 				"internalType": "string",
 				"name": "mediaUrl",
 				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "dateBuried",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "resurrectTime",
-				"type": "uint256"
 			}
 		],
 		"name": "Buried",
@@ -87,38 +75,160 @@ const abi = [
 		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "newResurrectTime",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
+				"indexed": true,
 				"internalType": "address",
-				"name": "newBeneficiary",
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwner",
 				"type": "address"
 			}
 		],
-		"name": "Buried_Again",
+		"name": "OwnershipTransferred",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256[]",
+				"name": "ids",
+				"type": "uint256[]"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256[]",
+				"name": "values",
+				"type": "uint256[]"
+			}
+		],
+		"name": "TransferBatch",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "TransferSingle",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "value",
+				"type": "string"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "URI",
 		"type": "event"
 	},
 	{
 		"inputs": [
 			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			},
+			{
 				"internalType": "uint256",
-				"name": "tokenId",
+				"name": "id",
 				"type": "uint256"
 			}
 		],
-		"name": "checkForResurrectionAndTransfer",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address[]",
+				"name": "accounts",
+				"type": "address[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "ids",
+				"type": "uint256[]"
+			}
+		],
+		"name": "balanceOfBatch",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -147,41 +257,131 @@ const abi = [
 				"internalType": "string",
 				"name": "metadata",
 				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "resurrectTime",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "beneficiary",
-				"type": "address"
 			}
 		],
-		"name": "mint",
+		"name": "bury",
 		"outputs": [],
 		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
-		"anonymous": false,
+		"inputs": [],
+		"name": "c0ffinCost",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "cemeteryGate",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "gates0pen",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
-				"indexed": true,
 				"internalType": "address",
-				"name": "previousOwner",
+				"name": "account",
 				"type": "address"
 			},
 			{
-				"indexed": true,
 				"internalType": "address",
-				"name": "newOwner",
+				"name": "operator",
 				"type": "address"
 			}
 		],
-		"name": "OwnershipTransferred",
-		"type": "event"
+		"name": "isApprovedForAll",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "c0ffinId",
+				"type": "uint256"
+			}
+		],
+		"name": "readC0ffin",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "occupant",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "dateBorn",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "epitaph",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "mediaUrl",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "metadata",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "minter",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "dateBuried",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
 	},
 	{
 		"inputs": [],
@@ -189,19 +389,6 @@ const abi = [
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "Resurrected",
-		"type": "event"
 	},
 	{
 		"inputs": [
@@ -288,306 +475,16 @@ const abi = [
 		"type": "function"
 	},
 	{
-		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256[]",
-				"name": "ids",
-				"type": "uint256[]"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256[]",
-				"name": "values",
-				"type": "uint256[]"
+				"internalType": "uint256",
+				"name": "newC0ffinCost",
+				"type": "uint256"
 			}
 		],
-		"name": "TransferBatch",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "transferOwnership",
+		"name": "setC0ffinCost",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "value",
-				"type": "uint256"
-			}
-		],
-		"name": "TransferSingle",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "unlockMetadata",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "value",
-				"type": "string"
-			},
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "URI",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "occupant",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "dateBorn",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "beneficiary",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "mediaUrl",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "metadata",
-				"type": "string"
-			}
-		],
-		"name": "Unlocked",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "newResurrectTime",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "newBeneficiary",
-				"type": "address"
-			}
-		],
-		"name": "updateCoffin",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "withdraw",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "account",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "balanceOf",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address[]",
-				"name": "accounts",
-				"type": "address[]"
-			},
-			{
-				"internalType": "uint256[]",
-				"name": "ids",
-				"type": "uint256[]"
-			}
-		],
-		"name": "balanceOfBatch",
-		"outputs": [
-			{
-				"internalType": "uint256[]",
-				"name": "",
-				"type": "uint256[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "coffinCost",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "exposeMetadata",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "metadata",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "account",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			}
-		],
-		"name": "isApprovedForAll",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -610,80 +507,6 @@ const abi = [
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "tokenDetails",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "occupant",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "dateBorn",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "epitaph",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "mediaUrl",
-				"type": "string"
-			},
-			{
-				"internalType": "bool",
-				"name": "isOpen",
-				"type": "bool"
-			},
-			{
-				"internalType": "address",
-				"name": "minter",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "dateBuried",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "resurrectTime",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "beneficiary",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "currentOwner",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "buriedCounter",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"name": "totalSupply",
 		"outputs": [
@@ -699,8 +522,21 @@ const abi = [
 	{
 		"inputs": [
 			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "uint256",
-				"name": "",
+				"name": "c0ffinId",
 				"type": "uint256"
 			}
 		],
@@ -714,35 +550,42 @@ const abi = [
 		],
 		"stateMutability": "view",
 		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "withdraw",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	}
 ];
 
 //////////
 
-const CONTAINER_ID = "container-jahhweh";
+const CONTAINER_ID = "cemeteryContainer";
 const GRAVENAV_ID = "gravenav";
 const STATUS_ID = "status";
+const CONNECT_BUTTON_ID = "connectBtn";
 const ADDRESS_ID = "address";
 const MODAL_ID = "modal";
-const TOKEN_DETAILS_MODAL_ID = "tokenDetailsModal";
 const SUBMIT_MODAL_ID = "submitModal";
 const CLOSE_MODAL_ID = "closeModal";
+const TOKEN_DETAILS_MODAL_ID = "tokenDetailsModal";
 const CLOSE_DETAILS_MODAL_ID = "closeDetailsModal";
+const MODAL_GRAVENUMBER_ID = "modalGraveNumber";
 const MODAL_OCCUPANT_ID = "modalOccupant";
 const MODAL_BIRTH_ID = "modalBirth";
 const MODAL_EPITAPH_ID = "modalEpitaph";
 const MODAL_MEDIA_URL_ID = "modalMediaUrl";
 const MODAL_METADATA_ID = "modalMetadata";
-const MODAL_RESURRECTTIME_ID = "modalResurrectTime";
-const MODAL_BENEFICIARY_ID = "modalBeneficiary";
-const MODAL_GRAVENUMBER_ID = "modalGraveNumber";
-const CONNECT_BUTTON_ID = "connectBtn";
-const NEW_RESURRECTTIME_ID = "modalNewResurrectTime";
-const NEW_BENEFICIARY_ID = "modalNewBeneficiary";
-const RESURRECT_BUTTON_ID = "resurrectButton";
-const BURY_AGAIN_BUTTON_ID = "buryAgainButton";
-const UNLOCK_METADATA_BUTTON_ID = "unlockMetadataButton";
-const EXPOSE_METADATA_BUTTON_ID = "exposeMetadataButton";
+// const MODAL_RESURRECTTIME_ID = "modalResurrectTime";
+// const MODAL_BENEFICIARY_ID = "modalBeneficiary";
+// const NEW_RESURRECTTIME_ID = "modalNewResurrectTime";
+// const NEW_BENEFICIARY_ID = "modalNewBeneficiary";
+// const RESURRECT_BUTTON_ID = "resurrectButton";
+// const BURY_AGAIN_BUTTON_ID = "buryAgainButton";
+// const UNLOCK_METADATA_BUTTON_ID = "unlockMetadataButton";
+// const EXPOSE_METADATA_BUTTON_ID = "exposeMetadataButton";
 
 const statusBar = document.createElement("span");
 statusBar.setAttribute("id", "statsign");
@@ -800,7 +643,7 @@ setStatus("Waiting for a connection");
 const table = document.createElement("table");
 const tableBody = document.createElement("tbody");
 table.appendChild(tableBody);
-document.getElementById("container-jahhweh").appendChild(table);
+document.getElementById("cemeteryContainer").appendChild(table);
 
 let startGraveNumber = 1;
 
@@ -821,9 +664,9 @@ document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
 	const epitaph = document.getElementById(MODAL_EPITAPH_ID).value;
 	const mediaUrl = document.getElementById(MODAL_MEDIA_URL_ID).value;
 	const metadata = document.getElementById(MODAL_METADATA_ID).value;
-	const resurrectTime = document.getElementById(MODAL_RESURRECTTIME_ID).value;
-	const UTCResurrectTime = Date.parse(resurrectTime) / 1000;
-	const beneficiary = document.getElementById(MODAL_BENEFICIARY_ID).value;
+	// const resurrectTime = document.getElementById(MODAL_RESURRECTTIME_ID).value;
+	// const UTCResurrectTime = Date.parse(resurrectTime) / 1000;
+	// const beneficiary = document.getElementById(MODAL_BENEFICIARY_ID).value;
 	const nBirth = birth.replaceAll("-", "");
 
 	if (
@@ -831,9 +674,9 @@ document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
 		nBirth &&
 		epitaph &&
 		mediaUrl &&
-		metadata &&
-		UTCResurrectTime &&
-		beneficiary
+		metadata
+		// UTCResurrectTime &&
+		// beneficiary
 	) {
 		setStatus("Lowering coffin...");
 		await mintNFT(
@@ -841,17 +684,17 @@ document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
 			nBirth,
 			epitaph,
 			mediaUrl,
-			metadata,
-			UTCResurrectTime,
-			beneficiary
+			metadata
+			// UTCResurrectTime,
+			// beneficiary
 		);
 
-		try {
-			setStatus("Approving Beneficiary...");
-			await setApprovalForAll(beneficiary);
-		} catch (e) {
-			setStatus("Failed to set Beneficiary.");
-		}
+		// try {
+		// 	setStatus("Approving Beneficiary...");
+		// 	await setApprovalForAll(beneficiary);
+		// } catch (e) {
+		// 	setStatus("Failed to set Beneficiary.");
+		// }
 
 		setStatus("The coffin is buried.");
 	} else {
@@ -962,21 +805,21 @@ addEventListeners([
 
 async function loadBlockchainData() {
 	if (window.ethereum) {
-        window.web3 = new Web3(window.ethereum);
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-    } else {
-        alert("Please install MetaMask to use this site.");
-    }
-    const accounts = await web3.eth.getAccounts();
-    window.account = accounts[0];
-    window.contract = new web3.eth.Contract(abi, contractAddress);
-    document.getElementById("address").textContent = `Connected: ${window.account}`;
+		window.web3 = new Web3(window.ethereum);
+		await window.ethereum.request({ method: "eth_requestAccounts" });
+	} else {
+		alert("Please install MetaMask to use this site.");
+	}
+	const accounts = await web3.eth.getAccounts();
+	window.account = accounts[0];
+	window.contract = new web3.eth.Contract(abi, contractAddress);
+	document.getElementById("address").textContent = `Connected: ${window.account}`;
 
-    const networkId = await web3.eth.net.getId();
-    setStatus(networkId !== 80001 ? "Switch to Mumbai" : "Welcome to the cemetery");
+	const networkId = await web3.eth.net.getId();
+	setStatus(networkId !== 137 ? "Switch to Polygon" : "Welcome to the cemetery");
 
-    updateGraveNumbers();
-    removeConnectButton();
+	updateGraveNumbers();
+	removeConnectButton();
 }
 
 async function initApp() {
@@ -984,86 +827,101 @@ async function initApp() {
 }
 
 async function getTotalSupply() {
-    const totalSupply = await window.contract.methods.totalSupply().call();
-    return totalSupply;
+	const totalSupply = await window.contract.methods.totalSupply().call();
+	return totalSupply;
 }
 
-async function unlockCoffinMetadata(graveNumber) {
-    const nonce = await window.web3.eth.getTransactionCount(window.account);
-    const tx = await window.contract.methods.unlockMetadata(graveNumber).send({ from: window.account, nonce });
-    console.log(tx);
-    return tx;
-}
 
-async function exposeCoffinMetadata(graveNumber) {
-    const nonce = await window.web3.eth.getTransactionCount(window.account);
-    const tx = await window.contract.methods.exposeMetadata(graveNumber).call({ from: window.account, nonce });
-    console.log(tx);
-    return tx;
-}
+// functions for cryptochamber
 
-async function setApprovalForAll(beneficiary) {
-    try {
-        const userAddress = window.account;
-        const tx = await contract.methods.setApprovalForAll(beneficiary, true).send({ from: userAddress });
-        console.log("Transaction:", tx);
-        return tx;
-    } catch (error) {
-        console.error("Error setting approval for all", error);
-        throw error;
-    }
-}
+// async function unlockCoffinMetadata(graveNumber) {
+//     const nonce = await window.web3.eth.getTransactionCount(window.account);
+//     const tx = await window.contract.methods.unlockMetadata(graveNumber).send({ from: window.account, nonce });
+//     console.log(tx);
+//     return tx;
+// }
 
-async function checkResurrectionAndTransfer(graveNumber) {
-    setStatus("Attempting Resurrection");
-    try {
-        const nonce = await window.web3.eth.getTransactionCount(window.account);
-        const tx = await window.contract.methods.checkForResurrectionAndTransfer(graveNumber).send({ from: window.account, nonce });
-        setStatus("Successfully resurrected coffin");
-        console.log(tx);
-    } catch (e) {
-        setStatus("Failed to resurrect coffin");
-        console.log(e);
-    }
-}
+// async function exposeCoffinMetadata(graveNumber) {
+//     const nonce = await window.web3.eth.getTransactionCount(window.account);
+//     const tx = await window.contract.methods.exposeMetadata(graveNumber).call({ from: window.account, nonce });
+//     console.log(tx);
+//     return tx;
+// }
 
-async function updateCoffin(graveNumber, resurrectTime, beneficiary) {
-    try {
-        setStatus("Approving new Beneficiary");
-        await setApprovalForAll(beneficiary);
-        setStatus("Lowering coffin...");
-        const nonce = await window.web3.eth.getTransactionCount(window.account);
-        const tx = await window.contract.methods.updateCoffin(graveNumber, resurrectTime, beneficiary).send({ from: window.account, nonce });
-        setStatus("Successfully buried coffin");
-        console.log(tx);
-    } catch (e) {
-        setStatus("Failed to approve new Beneficiary");
-        console.log(e);
-    }
-}
+// async function setApprovalForAll(beneficiary) {
+//     try {
+//         const userAddress = window.account;
+//         const tx = await contract.methods.setApprovalForAll(beneficiary, true).send({ from: userAddress });
+//         console.log("Transaction:", tx);
+//         return tx;
+//     } catch (error) {
+//         console.error("Error setting approval for all", error);
+//         throw error;
+//     }
+// }
 
-async function mintNFT(occupant, birth, epitaph, mediaUrl, metadata, resurrectTime, beneficiary) {
-    try {
-        const MINT_COST = window.web3.utils.toWei("0.001", "ether");
-        const nonce = await window.web3.eth.getTransactionCount(window.account);
-        await window.contract.methods.mint(occupant, birth, epitaph, mediaUrl, metadata, resurrectTime, beneficiary).send({ from: window.account, value: MINT_COST, nonce });
-        updateGraveNumbers();
-    } catch (error) {
-        console.error(error);
-        setStatus("Something went terribly wrong");
-    }
+// async function checkResurrectionAndTransfer(graveNumber) {
+//     setStatus("Attempting Resurrection");
+//     try {
+//         const nonce = await window.web3.eth.getTransactionCount(window.account);
+//         const tx = await window.contract.methods.checkForResurrectionAndTransfer(graveNumber).send({ from: window.account, nonce });
+//         setStatus("Successfully resurrected coffin");
+//         console.log(tx);
+//     } catch (e) {
+//         setStatus("Failed to resurrect coffin");
+//         console.log(e);
+//     }
+// }
+
+// async function updateCoffin(graveNumber, resurrectTime, beneficiary) {
+//     try {
+//         setStatus("Approving new Beneficiary");
+//         await setApprovalForAll(beneficiary);
+//         setStatus("Lowering coffin...");
+//         const nonce = await window.web3.eth.getTransactionCount(window.account);
+//         const tx = await window.contract.methods.updateCoffin(graveNumber, resurrectTime, beneficiary).send({ from: window.account, nonce });
+//         setStatus("Successfully buried coffin");
+//         console.log(tx);
+//     } catch (e) {
+//         setStatus("Failed to approve new Beneficiary");
+//         console.log(e);
+//     }
+// }
+
+// async function mintNFT(occupant, birth, epitaph, mediaUrl, metadata, resurrectTime, beneficiary) {
+//     try {
+//         const MINT_COST = window.web3.utils.toWei("0.1", "ether");
+//         const nonce = await window.web3.eth.getTransactionCount(window.account);
+//         await window.contract.methods.mint(occupant, birth, epitaph, mediaUrl, metadata, resurrectTime, beneficiary).send({ from: window.account, value: MINT_COST, nonce });
+//         updateGraveNumbers();
+//     } catch (error) {
+//         console.error(error);
+//         setStatus("Something went terribly wrong");
+//     }
+// }
+
+async function mintNFT(occupant, birth, epitaph, mediaUrl, metadata) {
+	try {
+		const MINT_COST = window.web3.utils.toWei("0.1", "ether");
+		const nonce = await window.web3.eth.getTransactionCount(window.account);
+		await window.contract.methods.bury(occupant, birth, epitaph, mediaUrl, metadata).send({ from: window.account, value: MINT_COST, nonce });
+		updateGraveNumbers();
+	} catch (error) {
+		console.error(error);
+		setStatus("Something went terribly wrong");
+	}
 }
 
 async function getNFTDetails(graveNumber) {
 	try {
 		const userAddress = (await window.web3.eth.getAccounts())[0];
 		const nftDetails = await window.contract.methods
-			.tokenDetails(graveNumber)
+			.readC0ffin(graveNumber)
 			.call();
 
-		const isUserOwnerOrBeneficiary =
-			userAddress === nftDetails.currentOwner ||
-			userAddress === nftDetails.beneficiary;
+		// const isUserOwnerOrBeneficiary =
+		// 	userAddress === nftDetails.currentOwner ||
+		// 	userAddress === nftDetails.beneficiary;
 
 		const tokenDetailsElement = document.getElementById("tokenDetailsModal");
 		tokenDetailsElement.classList.add("token-details-modal");
@@ -1075,43 +933,43 @@ async function getNFTDetails(graveNumber) {
 				text: "X",
 				onClick: closeDetailsModal,
 			},
-			{ class: "coffinId", text: `Grave: ${nftDetails.id}` },
+			{ class: "coffinId", text: `Grave: ${graveNumber}` },
 			{ class: "occupant", text: `Occupant: ${nftDetails.occupant}` },
 			{ class: "epitaph", text: `Epitaph: ${nftDetails.epitaph}` },
 			{
 				class: "dateBorn",
-				text: `Date Born: ${nftDetails.dateBorn.substring(0, 4)}-${nftDetails.dateBorn.substring(4, 6)}-${nftDetails.dateBorn.substring(6, 8)}`,
+				text: `Date Born: ${nftDetails.dateBorn.substring(6, 8)}-${nftDetails.dateBorn.substring(4, 6)}-${nftDetails.dateBorn.substring(0, 4)}`,
 			},
 			{
 				class: "coffinDateBuriedCheck",
 				text: `Buried: ${new Date(
 					nftDetails.dateBuried * 1000
 				).toUTCString().replace("GMT", "UTC")}`,
-			},
-			{
-				class: "resurrectTime",
-				text: `Resurrection: ${new Date(
-					nftDetails.resurrectTime * 1000
-				).toUTCString().replace("GMT", "UTC")}`,
-			},
-			{
-				class: "currentOwner",
-				text: `Current Owner: ${nftDetails.currentOwner.slice(
-					0,
-					6
-				)}...${nftDetails.currentOwner.slice(38, 42)}`,
-			},
-			{
-				class: "beneficiary",
-				text: `Beneficiary: ${nftDetails.beneficiary.slice(
-					0,
-					6
-				)}...${nftDetails.beneficiary.slice(38, 42)}`,
-			},
-			{
-				class: "coffinBuryCount",
-				text: `This Coffin has been buried ${nftDetails.buriedCounter} times.`,
-			},
+			}
+			// {
+			// 	class: "resurrectTime",
+			// 	text: `Resurrection: ${new Date(
+			// 		nftDetails.resurrectTime * 1000
+			// 	).toUTCString().replace("GMT", "UTC")}`,
+			// },
+			// {
+			// 	class: "currentOwner",
+			// 	text: `Current Owner: ${nftDetails.currentOwner.slice(
+			// 		0,
+			// 		6
+			// 	)}...${nftDetails.currentOwner.slice(38, 42)}`,
+			// },
+			// {
+			// 	class: "beneficiary",
+			// 	text: `Beneficiary: ${nftDetails.beneficiary.slice(
+			// 		0,
+			// 		6
+			// 	)}...${nftDetails.beneficiary.slice(38, 42)}`,
+			// },
+			// {
+			// 	class: "coffinBuryCount",
+			// 	text: `This Coffin has been buried ${nftDetails.buriedCounter} times.`,
+			// },
 		];
 
 		elements.forEach((el) => {
@@ -1121,61 +979,61 @@ async function getNFTDetails(graveNumber) {
 			tokenDetailsElement.appendChild(div);
 		});
 
-		appendTextInTokenDetailsElement(
-			tokenDetailsElement,
-			"Only the Beneficiary can Resurrect: "
-		);
+		// appendTextInTokenDetailsElement(
+		// 	tokenDetailsElement,
+		// 	"Only the Beneficiary can Resurrect: "
+		// );
 
-		const resurrectButton = document.createElement("button");
-		resurrectButton.textContent = "RESURRECT";
-		resurrectButton.id = RESURRECT_BUTTON_ID;
-		resurrectButton.classList.add("resurrectButton")
-		tokenDetailsElement.appendChild(resurrectButton);
-		resurrectButton.disabled = !isUserOwnerOrBeneficiary;
-		resurrectButton.addEventListener("click", () => {
-			const graveNumberValue = graveNumber;
-			checkResurrectionAndTransfer(graveNumberValue);
-		});
+		// const resurrectButton = document.createElement("button");
+		// resurrectButton.textContent = "RESURRECT";
+		// resurrectButton.id = RESURRECT_BUTTON_ID;
+		// resurrectButton.classList.add("resurrectButton")
+		// tokenDetailsElement.appendChild(resurrectButton);
+		// resurrectButton.disabled = !isUserOwnerOrBeneficiary;
+		// resurrectButton.addEventListener("click", () => {
+		// 	const graveNumberValue = graveNumber;
+		// 	checkResurrectionAndTransfer(graveNumberValue);
+		// });
 
-		const buryAgainDiv = createDivWithClass("buryAgainDiv");
-		tokenDetailsElement.appendChild(buryAgainDiv);
-		appendTextInTokenDetailsElement(
-			tokenDetailsElement,
-			"After resurrection, the Beneficiary can bury the coffin again with a new Beneficiary and Resurrection Time: "
-		);
+		// const buryAgainDiv = createDivWithClass("buryAgainDiv");
+		// tokenDetailsElement.appendChild(buryAgainDiv);
+		// appendTextInTokenDetailsElement(
+		// 	tokenDetailsElement,
+		// 	"After resurrection, the Beneficiary can bury the coffin again with a new Beneficiary and Resurrection Time: "
+		// );
 
 		const br = document.createElement("br");
 		tokenDetailsElement.appendChild(br);
 
-		const newBeneficiary = document.createElement("input");
-		newBeneficiary.id = NEW_BENEFICIARY_ID;
-		newBeneficiary.type = "text";
-		newBeneficiary.classList.add("newBeneficiary");
+		// const newBeneficiary = document.createElement("input");
+		// newBeneficiary.id = NEW_BENEFICIARY_ID;
+		// newBeneficiary.type = "text";
+		// newBeneficiary.classList.add("newBeneficiary");
 
-		const newResurrectTime = document.createElement("input");
-		newResurrectTime.id = NEW_RESURRECTTIME_ID;
-		newResurrectTime.type = "datetime-local";
-		newResurrectTime.classList.add("newResurrectTime");
+		// const newResurrectTime = document.createElement("input");
+		// newResurrectTime.id = NEW_RESURRECTTIME_ID;
+		// newResurrectTime.type = "datetime-local";
+		// newResurrectTime.classList.add("newResurrectTime");
 
-		tokenDetailsElement.appendChild(newBeneficiary);
-		newBeneficiary.disabled = !isUserOwnerOrBeneficiary;
-		tokenDetailsElement.appendChild(newResurrectTime);
-		newResurrectTime.disabled = !isUserOwnerOrBeneficiary;
+		// tokenDetailsElement.appendChild(newBeneficiary);
+		// newBeneficiary.disabled = !isUserOwnerOrBeneficiary;
+		// tokenDetailsElement.appendChild(newResurrectTime);
+		// newResurrectTime.disabled = !isUserOwnerOrBeneficiary;
 
-		const buryAgainButton = document.createElement("button");
-		buryAgainButton.textContent = "BURY AGAIN";
-		buryAgainButton.id = BURY_AGAIN_BUTTON_ID;
-		buryAgainButton.classList.add("buryAgainButton")
+		// const buryAgainButton = document.createElement("button");
+		// buryAgainButton.textContent = "BURY AGAIN";
+		// buryAgainButton.id = BURY_AGAIN_BUTTON_ID;
+		// buryAgainButton.classList.add("buryAgainButton")
 
-		tokenDetailsElement.appendChild(buryAgainButton);
-		buryAgainButton.disabled = !isUserOwnerOrBeneficiary;
-		buryAgainButton.addEventListener("click", () => {
-			const graveNumberValue = graveNumber;
-			const newBeneficiaryValue = document.getElementById(NEW_BENEFICIARY_ID).value;
-			const newResurrectTimeValue = document.getElementById(NEW_RESURRECTTIME_ID).value;
-			const UTCNewResurrectTime = Date.parse(newResurrectTimeValue) / 1000;
-			updateCoffin(graveNumberValue, UTCNewResurrectTime, newBeneficiaryValue);
-		});
+		// tokenDetailsElement.appendChild(buryAgainButton);
+		// buryAgainButton.disabled = !isUserOwnerOrBeneficiary;
+		// buryAgainButton.addEventListener("click", () => {
+		// 	const graveNumberValue = graveNumber;
+		// 	const newBeneficiaryValue = document.getElementById(NEW_BENEFICIARY_ID).value;
+		// 	const newResurrectTimeValue = document.getElementById(NEW_RESURRECTTIME_ID).value;
+		// 	const UTCNewResurrectTime = Date.parse(newResurrectTimeValue) / 1000;
+		// 	updateCoffin(graveNumberValue, UTCNewResurrectTime, newBeneficiaryValue);
+		// });
 
 		const hr = document.createElement("hr");
 		tokenDetailsElement.appendChild(hr);
@@ -1189,44 +1047,65 @@ async function getNFTDetails(graveNumber) {
 			displayMedia(mediaUrl, tokenDetailsElement);
 		}
 
-		const hr2 = document.createElement("hr");
-		tokenDetailsElement.appendChild(hr2);
-		const isOpen = document.createElement("div");
-		isOpen.classList.add("isOpen")
-		isOpen.innerText = `Metadata Exposed: ${nftDetails.isOpen}`;
-		tokenDetailsElement.appendChild(isOpen);
-		const metadataInstructions = document.createTextNode(
-			"Each coffin contains locked metadata. Once unlocked, the metadata is forever exposed."
-		);
+		// const hr2 = document.createElement("hr");
+		// tokenDetailsElement.appendChild(hr2);
+		// const isOpen = document.createElement("div");
+		// isOpen.classList.add("isOpen")
+		// isOpen.innerText = `Metadata Exposed: ${nftDetails.isOpen}`;
+		// tokenDetailsElement.appendChild(isOpen);
+		// const metadataInstructions = document.createTextNode(
+		// 	"Each coffin contains locked metadata. Once unlocked, the metadata is forever exposed."
+		// );
 
-		tokenDetailsElement.appendChild(metadataInstructions);
+		// tokenDetailsElement.appendChild(metadataInstructions);
 
-		const unlockMetadataButton = document.createElement("button");
-		unlockMetadataButton.textContent = "UNLOCK METADATA";
-		unlockMetadataButton.id = UNLOCK_METADATA_BUTTON_ID;
-		unlockMetadataButton.classList.add("unlockMetadataButton")
-		tokenDetailsElement.appendChild(unlockMetadataButton);
-		unlockMetadataButton.disabled = !isUserOwnerOrBeneficiary;
-		unlockMetadataButton.addEventListener("click", async () => {
-			await unlockCoffinMetadata(graveNumber);
-		});
+		// const unlockMetadataButton = document.createElement("button");
+		// unlockMetadataButton.textContent = "UNLOCK METADATA";
+		// unlockMetadataButton.id = UNLOCK_METADATA_BUTTON_ID;
+		// unlockMetadataButton.classList.add("unlockMetadataButton")
+		// tokenDetailsElement.appendChild(unlockMetadataButton);
+		// unlockMetadataButton.disabled = !isUserOwnerOrBeneficiary;
+		// unlockMetadataButton.addEventListener("click", async () => {
+		// 	await unlockCoffinMetadata(graveNumber);
+		// });
 
-		const exposeMetadataButton = document.createElement("button");
-		exposeMetadataButton.textContent = "EXPOSE METADATA";
-		exposeMetadataButton.id = EXPOSE_METADATA_BUTTON_ID;
-		exposeMetadataButton.classList.add("exposeMetadataButton")
-		tokenDetailsElement.appendChild(exposeMetadataButton);
-		exposeMetadataButton.disabled = !isUserOwnerOrBeneficiary;
-		exposeMetadataButton.addEventListener("click", async () => {
-			const metadata = await exposeCoffinMetadata(graveNumber);
-			displayMetadata.textContent = `Metadata: ${metadata}`;
-		});
+		// const exposeMetadataButton = document.createElement("button");
+		// exposeMetadataButton.textContent = "EXPOSE METADATA";
+		// exposeMetadataButton.id = EXPOSE_METADATA_BUTTON_ID;
+		// exposeMetadataButton.classList.add("exposeMetadataButton")
+		// tokenDetailsElement.appendChild(exposeMetadataButton);
+		// exposeMetadataButton.disabled = !isUserOwnerOrBeneficiary;
 
-		const displayMetadata = document.createElement("div");
-		displayMetadata.classList.add("displayMetadata")
-		tokenDetailsElement.appendChild(displayMetadata);
+		if (nftDetails.metadata.endsWith(".json")) {
+			fetch("https://ipfs.io/ipfs/" + nftDetails.metadata.slice(7))
+				.then((response) => response.json())
+				.then((jsonData) => {
+					for (const [key, value] of Object.entries(jsonData)) {
+						const dataElement = document.createElement("div");
+
+						if (key === "image") {
+							const imgElement = document.createElement("img");
+							imgElement.src = "https://ipfs.io/ipfs/" + value.slice(7);
+							imgElement.alt = "image";
+							imgElement.style.maxWidth = "420px";
+							imgElement.style.maxHeight = "420px";
+							imgElement.style.display = "block";
+							imgElement.style.margin = "0 auto";
+							dataElement.appendChild(imgElement);
+						} else {
+							dataElement.innerText = `${key}: ${value}`;
+						}
+
+						tokenDetailsElement.appendChild(dataElement);
+					}
+				})
+				.catch((error) => {
+					console.error("Error fetching JSON data:", error);
+				});
+		}
 
 		showDetailsModal();
+
 	} catch (error) {
 		console.error("Error in getNFTDetails:", error);
 	}
@@ -1269,6 +1148,11 @@ function displayMedia(mediaUrl, tokenDetailsElement) {
 			} else {
 				throw new Error("Error finding media");
 			}
+			const hr2 = document.createElement("hr");
+			tokenDetailsElement.appendChild(hr2);
+			const metadataUrl = createDivWithClass("metadataUrl");
+			metadataUrl.innerText = `Metadata: `;
+			tokenDetailsElement.appendChild(metadataUrl);
 		})
 		.catch((error) => {
 			console.error("Error displaying media:", error);
@@ -1278,7 +1162,7 @@ function displayMedia(mediaUrl, tokenDetailsElement) {
 async function getPFPDetails(graveNumber) {
 	try {
 		const pfpDetails = await window.contract.methods
-			.tokenDetails(graveNumber)
+			.readC0ffin(graveNumber)
 			.call();
 		return pfpDetails;
 	} catch (error) {
@@ -1328,8 +1212,6 @@ async function updateGraveNumbers() {
 					mediaElement.style.borderRadius = "5px";
 					mediaElement.style.borderWidth = "0px";
 
-
-					// Check if mediaElement is displayed as a broken icon
 					mediaElement.onerror = () => {
 						mediaElement.setAttribute("src", './img/pfp.gif');
 					};
