@@ -1,0 +1,43 @@
+type token_id = nat
+type token_metadata = {
+  token_id: token_id;
+  symbol: string;
+  name: string;
+  decimals: nat;
+  extras: map(string, string);
+}
+
+type storage = {
+  next_token_id: nat;
+  ledger: map(nat, (string * string * string));
+  owners: map(nat, address);
+  total_supply: nat;
+  token_metadata_registry: address;
+}
+
+type action = Fa2 of Fa2Interface.action
+type parameter = Fa2Interface.parameter
+type fa2_entry_points = Fa2Interface.entry_points
+
+let mint (name, date, url: string * string * string) (storage: storage) : storage =
+  // Require a payment of 1 XTZ
+  if Tezos.amount <> 1000000mutez then
+    (failwith("1 XTZ required for minting NFT") : storage)
+  else
+    let token_id = storage.next_token_id + 1n in
+    let new_storage = storage.ledger <- Map.update(token_id, Some((name, date, url)), storage.ledger) in
+    let new_storage = new_storage.owners <- Map.update(token_id, Some(Contract.sender), storage.owners) in
+    { new_storage with next_token_id = token_id }
+
+let transfer (token_id, new_owner: nat * address) (storage: storage) : storage =
+  match Map.find_opt(token_id, storage.owners) with
+  | Some(current_owner) ->
+    if current_owner = Contract.sender then
+      let new_storage = storage.owners <- Map.update(token_id, Some(new_owner), storage.owners) in
+      new_storage
+    else (failwith("Not the token owner") : storage)
+  | None -> (failwith("Token doesn't exist") : storage)
+
+let main (action: entrypoint): entrypoint is
+  match action with
+  | Fa2(op) -> handle_fa2_entrypoint (op, storage)
