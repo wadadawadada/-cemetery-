@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Crypt0 Cemetery (Alpha)</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4-rc.1/web3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+</head>
+
+<body id="cemetery">
+
+  <p id="logo">
+    crypt0_cemetery v0.8.0
+  </p>
+
+  <p id="about">
+    <a href="/docs/FAQ.pdf" target="_blank">FAQ</a> &nbsp; &nbsp;
+    <a href="/docs/singularity_en.pdf" target="_blank">white paper</a> &nbsp; &nbsp;
+    <a href="https://twitter.com/GrandRisingCR" target="_blank">twitter</a>&nbsp; &nbsp;
+    <a href="https://discord.gg/gKVRDEHbYs" target="_blank">discord</a>
+  </p>
+
+  <div id="navContainer" class="nav-container">
+    <span id="gravenav"></span>
+    <div>
+      <div class="address-container">
+        <p><span id="address"></span></p>
+      </div>
+      <div id="statusBar"></div>
+    </div>
+  </div>
+
+  <div id="cemeteryContainer">
+    <div id="modal" class="modal-style">
+      <button id="closeModal" class="modal-close">X</button>
+      <br><br><br>
+      <text for="modalOccupant">Occupant:</text>
+      <input type="text" id="modalOccupant" />
+      <br><br>
+      <text for="modalBirth">Birth:</text>
+      <input type="date" id="modalBirth" />
+      <br><br>
+      <text for="modalEpitaph">Epitaph:</text>
+      <input type="text" id="modalEpitaph" />
+      <br><br>
+      <text for="modalMediaUrl">Media:</text>
+      <input type="text" id="modalMediaUrl" />
+      <br>
+      <text style="font-size:12px"><i>Media file must begin with "ipfs://".</i></text>
+      <br><br>
+      <text for="modalMetadata">Metadata:</text>
+      <input type="text" id="modalMetadata" />
+      <br>
+      <text style="font-size:12px"><i>Metadata file must begin with "ipfs://".</i></text>
+      <br><br>
+      <!-- <text for="modalResurrectTime">Resurrection:</text>
+      <input type="datetime-local" id="modalResurrectTime" />
+      <br><br>
+      <text for="modalBeneficiary">Beneficiary:</text>
+      <input type="text" id="modalBeneficiary" />
+      <br>
+      <text style="font-size:12px"><i>Beneficiary must be an ethereum address (0x...)</i></text>
+      <br><br>
+      <br><br>
+      <text style="color:#ffd000">ⓘ You will be asked to sign 2 transactions. The first transaction will bury your
+        coffin. The second
+        transaction gives the beneficiary approval to resurrect any of your coffins.</text>
+      <br><br> -->
+      <button id="submitModal">BURY</button>
+    </div>
+  </div>
+
+  <div id="tokenDetailsModal" class="modal-style">
+    <pre id="tokenDetails"></pre>
+    <button id="closeDetailsModal" class="modal-close">X</button>
+  </div>
+  <script src="index.js"></script>
+
+</body>
+
+</html>
