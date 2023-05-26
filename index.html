@@ -79,6 +79,80 @@
   </div>
   <script src="index.js"></script>
 
+  <hr>
+
+
+
+  <style>
+    #drop_zone {
+        border: 2px dashed #bbb;
+        border-radius: 5px;
+        width: 480px;
+        height: 320px;
+        padding: 32px;
+        text-align: center;
+        font-size: 24px;
+        color: #bbb;
+        background-color: #f0f0f0;
+        margin: 32px auto;
+    }
+</style>
+<script>
+            function init() {
+            const dropZone = document.getElementById('drop_zone');
+            dropZone.addEventListener('dragover', handleDragOver, false);
+            dropZone.addEventListener('drop', handleDrop, false);
+        }
+
+        function handleDragOver(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'copy';
+        }
+
+        async function handleDrop(event) {
+            event.stopPropagation();
+            event.preventDefault();
+
+            const file = event.dataTransfer.files[0];
+            if (!file.type.startsWith('image/')) {
+                alert('Please drop an image file.');
+                return;
+            }
+
+            const buffer = await file.arrayBuffer();
+            const url = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
+            const formData = new FormData();
+            formData.append('file', new Blob([buffer], { type: file.type }));
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'pinata_api_key': '3edcfb989ad2b8a716f9',  
+                    'pinata_secret_api_key': 'bdce1163f7b4acfaa9f4b7bc4f1885cea4f95753238cf18052aba3a295a9daf9'
+                },
+                body: formData,
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const cid = data.IpfsHash;
+                alert(`CID: ${cid}`);
+            } else {
+                alert('Error uploading file to IPFS.');       
+                return;
+            }
+        }
+
+</script>
+</head>
+<body onload="init()">
+<div id="drop_zone">
+    Drop image file here
+</div>
+</body>
+<hr>
+
 </body>
 
 </html>
