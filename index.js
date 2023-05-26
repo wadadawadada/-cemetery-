@@ -576,8 +576,8 @@ const MODAL_GRAVENUMBER_ID = "modalGraveNumber";
 const MODAL_OCCUPANT_ID = "modalOccupant";
 const MODAL_BIRTH_ID = "modalBirth";
 const MODAL_EPITAPH_ID = "modalEpitaph";
-const MODAL_MEDIA_URL_ID = "modalMediaUrl";
-const MODAL_METADATA_ID = "modalMetadata";
+const MODAL_MEDIA_URL_ID = 'media_input';
+const MODAL_METADATA_ID = 'metadata_input';
 // const MODAL_RESURRECTTIME_ID = "modalResurrectTime";
 // const MODAL_BENEFICIARY_ID = "modalBeneficiary";
 // const NEW_RESURRECTTIME_ID = "modalNewResurrectTime";
@@ -586,6 +586,7 @@ const MODAL_METADATA_ID = "modalMetadata";
 // const BURY_AGAIN_BUTTON_ID = "buryAgainButton";
 // const UNLOCK_METADATA_BUTTON_ID = "unlockMetadataButton";
 // const EXPOSE_METADATA_BUTTON_ID = "exposeMetadataButton";
+
 
 const statusBar = document.createElement("span");
 statusBar.setAttribute("id", "statsign");
@@ -1255,3 +1256,88 @@ async function updateGraveNumbers() {
 	}
 	updateTableNumber();
 }
+
+
+
+function mediaDropZone() {
+    const dropZone = document.getElementById('media_drop_zone');
+    dropZone.addEventListener('dragover', handleDragOver, false);
+    dropZone.addEventListener('drop', async (e) => {
+        const cid = await handleMediaDrop(e);
+        document.getElementById(MODAL_MEDIA_URL_ID).value = cid;
+    }, false);
+}
+
+function metadataDropZone() {
+    const dropZone = document.getElementById('metadata_drop_zone');
+    dropZone.addEventListener('dragover', handleDragOver, false);
+    dropZone.addEventListener('drop', async (e) => {
+        const cid = await handleMetadataDrop(e);
+        document.getElementById(MODAL_METADATA_ID).value = cid;
+    }, false);
+}
+
+function handleDragOver(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'copy';
+}
+
+async function handleMediaDrop(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    const file = event.dataTransfer.files[0];
+    if (!file.type.startsWith('image/')) {
+        alert('Please drop an image file.');
+        return;
+    }
+
+    const buffer = await file.arrayBuffer();
+    const cid = await uploadFileToIPFS(buffer, file.type);
+    return cid;
+}
+
+async function handleMetadataDrop(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    const file = event.dataTransfer.files[0];
+    if (!file.type.startsWith('application/json')) {
+        alert('Please drop a JSON metadata file.');
+        return;
+    }
+
+    const buffer = await file.arrayBuffer();
+    const cid = await uploadFileToIPFS(buffer, file.type);
+    return cid;
+}
+
+async function uploadFileToIPFS(buffer, fileType) {
+    const url = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
+    const formData = new FormData();
+    formData.append('file', new Blob([buffer], { type: fileType }));
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'pinata_api_key': '3edcfb989ad2b8a716f9',
+            'pinata_secret_api_key': 'bdce1163f7b4acfaa9f4b7bc4f1885cea4f95753238cf18052aba3a295a9daf9'
+        },
+        body: formData,
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        const cid = data.IpfsHash;
+        alert(`CID: ${cid}`);
+        return cid;
+    } else {
+        alert('Error uploading file to IPFS.');
+        return;
+    }
+}
+
+// Initialize drop zones
+mediaDropZone();
+metadataDropZone();

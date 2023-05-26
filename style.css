@@ -583,7 +583,7 @@ td>button {
 }
 
 /* Drag and Drop */
-.dropzone {
+#drop_zone {
   border: 2px dashed #aaa;
   border-radius: 4px;
   padding: 20px;
