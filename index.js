@@ -714,6 +714,18 @@ function createDivWithClass(className) {
 	return div;
 }
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function formatMetadataValue(value) {
+    if (typeof value === 'object' && value !== null) {
+        return '<pre>' + JSON.stringify(value, null, 2).replace(/^0+/, '') + '</pre>';
+    } else {
+        return value.toString().replace(/^0+/, '');
+    }
+}
+
 function appendTextInTokenDetailsElement(tokenDetailsElement, text) {
 	const textNode = document.createTextNode(text);
 	tokenDetailsElement.appendChild(textNode);
@@ -1076,40 +1088,55 @@ async function getNFTDetails(graveNumber) {
 		// exposeMetadataButton.classList.add("exposeMetadataButton")
 		// tokenDetailsElement.appendChild(exposeMetadataButton);
 		// exposeMetadataButton.disabled = !isUserOwnerOrBeneficiary;
+        const metadataUrl = `https://ipfs.io/ipfs/${nftDetails.metadata.slice(7)}`;
+        displayMetadata(metadataUrl, tokenDetailsElement);
 
-		if (nftDetails.metadata.endsWith(".json")) {
-			fetch("https://ipfs.io/ipfs/" + nftDetails.metadata.slice(7))
-				.then((response) => response.json())
-				.then((jsonData) => {
-					for (const [key, value] of Object.entries(jsonData)) {
-						const dataElement = document.createElement("div");
+        showDetailsModal();
+    } catch (error) {
+        console.error("Error in getNFTDetails:", error);
+    }
+}
 
-						if (key === "image") {
-							const imgElement = document.createElement("img");
-							imgElement.src = "https://ipfs.io/ipfs/" + value.slice(7);
-							imgElement.alt = "image";
-							imgElement.style.maxWidth = "420px";
-							imgElement.style.maxHeight = "420px";
-							imgElement.style.display = "block";
-							imgElement.style.margin = "0 auto";
-							dataElement.appendChild(imgElement);
-						} else {
-							dataElement.innerText = `${key}: ${value}`;
-						}
+function displayMetadata(metadataUrl, tokenDetailsElement) {
+    fetch(metadataUrl)
+        .then(response => response.json())
+        .then(jsonData => {
+            const metadataList = document.createElement("dl");
+            metadataList.classList.add("metadataList");
 
-						tokenDetailsElement.appendChild(dataElement);
-					}
-				})
-				.catch((error) => {
-					console.error("Error fetching JSON data:", error);
-				});
-		}
+            if (jsonData[0]) {
+                jsonData = jsonData[0]; // Remove the outer key (0) if it exists
+            }
 
-		showDetailsModal();
+            for (const key in jsonData) {
+                const dtMetadataKey = document.createElement("dt");
+                dtMetadataKey.textContent = capitalizeFirstLetter(key);
+                metadataList.appendChild(dtMetadataKey);
 
-	} catch (error) {
-		console.error("Error in getNFTDetails:", error);
-	}
+                const ddMetadataValue = document.createElement("dd");
+                ddMetadataValue.innerHTML = formatMetadataValue(jsonData[key]);
+                metadataList.appendChild(ddMetadataValue);
+            }
+
+            const hr2 = document.createElement("hr");
+            tokenDetailsElement.appendChild(hr2);
+
+            const metadataUrlDiv = createDivWithClass("metadataUrl");
+            metadataUrlDiv.innerText = `Metadata: `;
+            tokenDetailsElement.appendChild(metadataUrlDiv);
+
+            tokenDetailsElement.appendChild(metadataList);
+        })
+        .catch(error => {
+            console.error("Error displaying metadata:", error);
+        });
+}
+
+function formatMetadataValue(value) {
+    if (typeof value === "object") {
+        return JSON.stringify(value, null, 2).replace(/[\{\}\"]/g, "");
+    }
+    return value;
 }
 
 function displayMedia(mediaUrl, tokenDetailsElement) {
@@ -1149,11 +1176,10 @@ function displayMedia(mediaUrl, tokenDetailsElement) {
 			} else {
 				throw new Error("Error finding media");
 			}
-			const hr2 = document.createElement("hr");
-			tokenDetailsElement.appendChild(hr2);
-			const metadataUrl = createDivWithClass("metadataUrl");
-			metadataUrl.innerText = `Metadata: `;
-			tokenDetailsElement.appendChild(metadataUrl);
+
+			console.log(mediaUrl)
+
+		
 		})
 		.catch((error) => {
 			console.error("Error displaying media:", error);
@@ -1258,6 +1284,7 @@ async function updateGraveNumbers() {
 }
 
 
+// drag and drop 
 function mediaDropZone() {
     const dropZone = document.getElementById('media_drop_zone');
     dropZone.addEventListener('dragover', handleDragOver, false);
@@ -1364,7 +1391,6 @@ async function uploadFileToIPFS(buffer, fileType) {
         return;
     }
 }
-
 
 initDropZone('media_drop_zone', handleMediaDrop);
 initDropZone('metadata_drop_zone', handleMetadataDrop);
