@@ -1292,6 +1292,7 @@ function handleDragOver(event) {
 
 function handleDragEnter(event) {
     event.target.classList.add('drag-over');
+	event.target.classList.remove('drop-failure');
 }
 
 function handleDragLeave(event) {
@@ -1305,7 +1306,9 @@ async function handleMediaDrop(event) {
 
     const file = event.dataTransfer.files[0];
     if (!file.type.startsWith('image/')) {
-        alert('Please drop an image file.');
+		
+		event.target.classList.add('drop-failure');
+		alert('File type must be an image')
         return;
     }
 
@@ -1324,7 +1327,8 @@ async function handleMetadataDrop(event) {
 
     const file = event.dataTransfer.files[0];
     if (!file.type.startsWith('application/json')) {
-        alert('Please drop a JSON metadata file.');
+		event.target.classList.add('drop-failure');
+		alert('File type must be .json')
         return;
     }
 
@@ -1333,6 +1337,7 @@ async function handleMetadataDrop(event) {
 	if (cid) {
         event.target.classList.add('drop-success');
     }
+	mediaDropZone()
     return "ipfs://" + cid;
 }
 
@@ -1360,5 +1365,8 @@ async function uploadFileToIPFS(buffer, fileType) {
     }
 }
 
+
 initDropZone('media_drop_zone', handleMediaDrop);
 initDropZone('metadata_drop_zone', handleMetadataDrop);
+mediaDropZone();
+metadataDropZone();

@@ -600,3 +600,8 @@ td>button {
   background-image: url(./img/grass.gif);
   background-size: 500%;
 }
+
+.drop-failure {
+  background-image: url(./img/tbg.gif);
+  background-size: cover;
+}
