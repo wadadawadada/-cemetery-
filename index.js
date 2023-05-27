@@ -1258,7 +1258,6 @@ async function updateGraveNumbers() {
 }
 
 
-
 function mediaDropZone() {
     const dropZone = document.getElementById('media_drop_zone');
     dropZone.addEventListener('dragover', handleDragOver, false);
@@ -1277,15 +1276,32 @@ function metadataDropZone() {
     }, false);
 }
 
+function initDropZone(dropZoneId, handleDrop) {
+    const dropZone = document.getElementById(dropZoneId);
+    dropZone.addEventListener('dragover', handleDragOver, false);
+    dropZone.addEventListener('dragenter', handleDragEnter, false);
+    dropZone.addEventListener('dragleave', handleDragLeave, false);
+    dropZone.addEventListener('drop', handleDrop, false);
+}
+
 function handleDragOver(event) {
     event.stopPropagation();
     event.preventDefault();
     event.dataTransfer.dropEffect = 'copy';
 }
 
+function handleDragEnter(event) {
+    event.target.classList.add('drag-over');
+}
+
+function handleDragLeave(event) {
+    event.target.classList.remove('drag-over');
+}
+
 async function handleMediaDrop(event) {
     event.stopPropagation();
     event.preventDefault();
+	event.target.classList.remove('drag-over');
 
     const file = event.dataTransfer.files[0];
     if (!file.type.startsWith('image/')) {
@@ -1295,12 +1311,16 @@ async function handleMediaDrop(event) {
 
     const buffer = await file.arrayBuffer();
     const cid = await uploadFileToIPFS(buffer, file.type);
-    return cid;
+	if (cid) {
+        event.target.classList.add('drop-success');
+    }
+    return "ipfs://" + cid;
 }
 
 async function handleMetadataDrop(event) {
     event.stopPropagation();
     event.preventDefault();
+	event.target.classList.remove('drag-over');
 
     const file = event.dataTransfer.files[0];
     if (!file.type.startsWith('application/json')) {
@@ -1310,7 +1330,10 @@ async function handleMetadataDrop(event) {
 
     const buffer = await file.arrayBuffer();
     const cid = await uploadFileToIPFS(buffer, file.type);
-    return cid;
+	if (cid) {
+        event.target.classList.add('drop-success');
+    }
+    return "ipfs://" + cid;
 }
 
 async function uploadFileToIPFS(buffer, fileType) {
@@ -1330,7 +1353,6 @@ async function uploadFileToIPFS(buffer, fileType) {
     if (response.ok) {
         const data = await response.json();
         const cid = data.IpfsHash;
-        alert(`CID: ${cid}`);
         return cid;
     } else {
         alert('Error uploading file to IPFS.');
@@ -1338,6 +1360,5 @@ async function uploadFileToIPFS(buffer, fileType) {
     }
 }
 
-// Initialize drop zones
-mediaDropZone();
-metadataDropZone();
+initDropZone('media_drop_zone', handleMediaDrop);
+initDropZone('metadata_drop_zone', handleMetadataDrop);

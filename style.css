@@ -583,11 +583,20 @@ td>button {
 }
 
 /* Drag and Drop */
-#drop_zone {
+#media_drop_zone, #metadata_drop_zone {
   border: 2px dashed #aaa;
   border-radius: 4px;
   padding: 20px;
   text-align: center;
-  min-height: 100px;
   margin-bottom: 20px;
+}
+
+.drag-over {
+  background-image: url(./img/dig.gif);
+  background-size: cover;
+}
+
+.drop-success {
+  background-image: url(./img/grass.gif);
+  background-size: 500%;
 }
