@@ -46,21 +46,26 @@
       <text for="modalEpitaph">Epitaph:</text>
       <input type="text" id="modalEpitaph" />
       <br><br>
-      <label for="media_input">Media:</label>
-<input type="text" id="media_input" />
-<br>
-<p style="font-size:12px"><i>Media file must begin with "ipfs://".</i></p>
+
+
+<label for="media_input">Media:</label>
+
+<span style="font-size:12px"><i>Media file must begin with "ipfs://".</i></span>
 <div id="media_drop_zone">
     Drop image file here
+    <input hidden id="media_input"/>
 </div>
 <br><br>
+
+
 <label for="metadata_input">Metadata:</label>
-<input type="text" id="metadata_input" />
-<br>
-<p style="font-size:12px"><i>Metadata file must begin with "ipfs://".</i></p>
+
+<span style="font-size:12px"><i>Metadata file must begin with "ipfs://".</i></span>
 <div id="metadata_drop_zone">
     Drop metadata file here
+    <input hidden id="metadata_input"/>
 </div>
+
 
       <br><br>
       <!-- <text for="modalResurrectTime">Resurrection:</text>
