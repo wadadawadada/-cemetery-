@@ -1238,7 +1238,7 @@ async function updateGraveNumbers() {
 					mediaElement.style.maxHeight = "50px";
 					mediaElement.style.borderRadius = "5px";
 					mediaElement.style.borderWidth = "0px";
-
+					mediaElement.style.filter = "grayscale(100%)";
 					mediaElement.onerror = () => {
 						mediaElement.setAttribute("src", './img/pfp.gif');
 					};
