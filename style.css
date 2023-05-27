@@ -592,16 +592,22 @@ td>button {
 }
 
 .drag-over {
-  background-image: url(./img/dig.gif);
+  background-image: url(./img/upload.gif);
   background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
 }
 
 .drop-success {
-  background-image: url(./img/grass.gif);
-  background-size: 500%;
+  background-image: url(./img/sucess.gif);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
 }
 
 .drop-failure {
-  background-image: url(./img/tbg.gif);
+  background-image: url(./img/fail.gif);
   background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
 }
