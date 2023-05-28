@@ -727,10 +727,10 @@ function formatMetadataValue(value) {
 }
 
 function convertIpfsUrl(url) {
-    if (url && url.startsWith("ipfs://")) {
-        return url.replace("ipfs://", "https://ipfs.io/ipfs/");
-    }
-    return url;
+	if (url && url.startsWith("ipfs://")) {
+		return url.replace("ipfs://", "https://ipfs.io/ipfs/");
+	}
+	return url;
 }
 
 function isMediaFile(value) {
@@ -1116,53 +1116,53 @@ async function getNFTDetails(graveNumber) {
 }
 
 function displayMetadata(metadataUrl, tokenDetailsElement) {
-    fetch(metadataUrl)
-        .then(response => response.json())
-        .then(jsonData => {
-            const metadataList = document.createElement("dl");
-            metadataList.classList.add("metadataList");
+	fetch(metadataUrl)
+		.then(response => response.json())
+		.then(jsonData => {
+			const metadataList = document.createElement("dl");
+			metadataList.classList.add("metadataList");
 
-            if (jsonData[0]) {
-                jsonData = jsonData[0]; // Remove the outer key (0) if it exists
-            }
+			if (jsonData[0]) {
+				jsonData = jsonData[0]; // Remove the outer key (0) if it exists
+			}
 
-            for (const key in jsonData) {
-                const dtMetadataKey = document.createElement("dt");
-                dtMetadataKey.textContent = capitalizeFirstLetter(key);
-                metadataList.appendChild(dtMetadataKey);
+			for (const key in jsonData) {
+				const dtMetadataKey = document.createElement("dt");
+				dtMetadataKey.textContent = capitalizeFirstLetter(key);
+				metadataList.appendChild(dtMetadataKey);
 
-                const ddMetadataValue = document.createElement("dd");
-                let value = jsonData[key];
+				const ddMetadataValue = document.createElement("dd");
+				let value = jsonData[key];
 
-                value = convertIpfsUrl(value);
+				value = convertIpfsUrl(value);
 
-                if (isMediaFile(value) || isReadableFile(value)) {
-                    if (isMediaFile(value)) {
-                        const mediaElement = createMediaElement(value);
-                        ddMetadataValue.appendChild(mediaElement);
-                    } else if (isReadableFile(value)) {
-                        const readableElement = createReadableElement(value);
-                        ddMetadataValue.appendChild(readableElement);
-                    }
-                } else {
-                    ddMetadataValue.innerHTML = formatMetadataValue(value);
-                }
+				if (isMediaFile(value) || isReadableFile(value)) {
+					if (isMediaFile(value)) {
+						const mediaElement = createMediaElement(value);
+						ddMetadataValue.appendChild(mediaElement);
+					} else if (isReadableFile(value)) {
+						const readableElement = createReadableElement(value);
+						ddMetadataValue.appendChild(readableElement);
+					}
+				} else {
+					ddMetadataValue.innerHTML = formatMetadataValue(value);
+				}
 
-                metadataList.appendChild(ddMetadataValue);
-            }
+				metadataList.appendChild(ddMetadataValue);
+			}
 
-            const hr2 = document.createElement("hr");
-            tokenDetailsElement.appendChild(hr2);
+			const hr2 = document.createElement("hr");
+			tokenDetailsElement.appendChild(hr2);
 
-            const metadataUrlDiv = createDivWithClass("metadataUrl");
-            metadataUrlDiv.innerText = `Metadata: `;
-            tokenDetailsElement.appendChild(metadataUrlDiv);
+			const metadataUrlDiv = createDivWithClass("metadataUrl");
+			metadataUrlDiv.innerText = `Metadata: `;
+			tokenDetailsElement.appendChild(metadataUrlDiv);
 
-            tokenDetailsElement.appendChild(metadataList);
-        })
-        .catch(error => {
-            console.error("Error displaying metadata:", error);
-        });
+			tokenDetailsElement.appendChild(metadataList);
+		})
+		.catch(error => {
+			console.error("Error displaying metadata:", error);
+		});
 }
 
 function createMediaElement(src) {

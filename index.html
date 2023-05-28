@@ -13,7 +13,7 @@
 <body id="cemetery">
 
   <p id="logo">
-    crypt0_cemetery v0.8.0
+    crypt0_cemetery v0.9.0
   </p>
 
   <p id="about">
@@ -47,25 +47,24 @@
       <input type="text" id="modalEpitaph" />
       <br><br>
 
+      <label for="media_input">Image:</label>
 
-<label for="media_input">Image:</label>
+      <span style="font-size:12px"><i>Tombstone portrait and the default preferred likeness for AI resurrection and
+          recreation, unless otherwise declared as "preferred_likeness" in the metadata.</i></span>
+      <div id="media_drop_zone">
+        Drop image file here
+        <input hidden id="media_input" />
+      </div>
+      <br><br>
 
-<span style="font-size:12px"><i>Image displayed on the Tombstone and the preferred likeness for AI resurrection and recreation, unless otherwise declared as "preferredLikeness" in the metadata.</i></span>
-<div id="media_drop_zone">
-    Drop image file here
-    <input hidden id="media_input"/>
-</div>
-<br><br>
+      <label for="metadata_input">Metadata:</label>
 
-
-<label for="metadata_input">Metadata:</label>
-
-<span style="font-size:12px"><i>Metadata must be a .json file</i></span>
-<div id="metadata_drop_zone">
-    Drop metadata file here
-    <input hidden id="metadata_input"/>
-</div>
-
+      <span style="font-size:12px"><i>Metadata must be a "key": "value" .json file to have it's contents formatted and
+          displayed.</i></span><br>
+      <div id="metadata_drop_zone">
+        Drop metadata file here
+        <input hidden id="metadata_input" />
+      </div>
 
       <br><br>
       <!-- <text for="modalResurrectTime">Resurrection:</text>
