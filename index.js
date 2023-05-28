@@ -953,15 +953,15 @@ async function getNFTDetails(graveNumber) {
 		// const isUserOwnerOrBeneficiary =
 		// 	userAddress === nftDetails.currentOwner ||
 		// 	userAddress === nftDetails.beneficiary;
-
 		const tokenDetailsElement = document.getElementById("tokenDetailsModal");
 		tokenDetailsElement.classList.add("token-details-modal");
+
 		tokenDetailsElement.innerHTML = "";
 
 		const elements = [
 			{
 				class: "close-details-modal-button",
-				text: "X",
+				text: "Back to Cemetery",
 				onClick: closeDetailsModal,
 			},
 			{ class: "coffinId", text: `Grave: ${graveNumber}` },
@@ -1116,53 +1116,55 @@ async function getNFTDetails(graveNumber) {
 }
 
 function displayMetadata(metadataUrl, tokenDetailsElement) {
-	fetch(metadataUrl)
-		.then(response => response.json())
-		.then(jsonData => {
-			const metadataList = document.createElement("dl");
-			metadataList.classList.add("metadataList");
+    fetch(metadataUrl)
+        .then(response => response.json())
+        .then(jsonData => {
+            const metadataList = document.createElement("dl");
+            metadataList.classList.add("metadataList");
+            metadataList.style.textAlign = "left";
 
-			if (jsonData[0]) {
-				jsonData = jsonData[0]; // Remove the outer key (0) if it exists
-			}
+            if (jsonData[0]) {
+                jsonData = jsonData[0]; // Remove the outer key (0) if it exists
+            }
 
-			for (const key in jsonData) {
-				const dtMetadataKey = document.createElement("dt");
-				dtMetadataKey.textContent = capitalizeFirstLetter(key);
-				metadataList.appendChild(dtMetadataKey);
+            for (const key in jsonData) {
+                const dtMetadataKey = document.createElement("dt");
+                dtMetadataKey.textContent = capitalizeFirstLetter(key);
+                metadataList.appendChild(dtMetadataKey);
 
-				const ddMetadataValue = document.createElement("dd");
-				let value = jsonData[key];
+                const ddMetadataValue = document.createElement("dd");
+                let value = jsonData[key];
 
-				value = convertIpfsUrl(value);
+                value = convertIpfsUrl(value);
 
-				if (isMediaFile(value) || isReadableFile(value)) {
-					if (isMediaFile(value)) {
-						const mediaElement = createMediaElement(value);
-						ddMetadataValue.appendChild(mediaElement);
-					} else if (isReadableFile(value)) {
-						const readableElement = createReadableElement(value);
-						ddMetadataValue.appendChild(readableElement);
-					}
-				} else {
-					ddMetadataValue.innerHTML = formatMetadataValue(value);
-				}
+                if (isMediaFile(value) || isReadableFile(value)) {
+                    if (isMediaFile(value)) {
+                        const mediaElement = createMediaElement(value);
+                        ddMetadataValue.appendChild(mediaElement);
+                    } else if (isReadableFile(value)) {
+                        const readableElement = createReadableElement(value);
+                        ddMetadataValue.appendChild(readableElement);
+                    }
+                } else {
+                    ddMetadataValue.innerHTML = formatMetadataValue(value);
+                }
 
-				metadataList.appendChild(ddMetadataValue);
-			}
+                metadataList.appendChild(ddMetadataValue);
+            }
 
-			const hr2 = document.createElement("hr");
-			tokenDetailsElement.appendChild(hr2);
+            const hr2 = document.createElement("hr");
+            tokenDetailsElement.appendChild(hr2);
 
-			const metadataUrlDiv = createDivWithClass("metadataUrl");
-			metadataUrlDiv.innerText = `Metadata: `;
-			tokenDetailsElement.appendChild(metadataUrlDiv);
+            const metadataUrlDiv = createDivWithClass("metadataUrl");
+            metadataUrlDiv.innerText = `Metadata: `;
 
-			tokenDetailsElement.appendChild(metadataList);
-		})
-		.catch(error => {
-			console.error("Error displaying metadata:", error);
-		});
+            tokenDetailsElement.appendChild(metadataUrlDiv);
+
+            tokenDetailsElement.appendChild(metadataList);
+        })
+        .catch(error => {
+            console.error("Error displaying metadata:", error);
+        });
 }
 
 function createMediaElement(src) {
