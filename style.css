@@ -362,20 +362,29 @@ td>button {
   overflow: auto;
   transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.863);
-  padding: 40px;
+  padding: 60px;
   text-align: center;
   line-height: 22px;
   border: 1px solid #aaa;
   word-wrap: break-word;
   max-width: 840px;
   border-radius: 3px;
-  border-top-left-radius: 45%;
-  border-top-right-radius: 45%;
+  border-top-left-radius: 60px;
+  border-top-right-radius: 60px;
+  box-shadow: 0px 0px 1200px 611px rgb(0, 0, 0);;
+}
+
+@media (min-width: 600px) {
+  .token-details-modal {
+    border-top-left-radius: 450px;
+    border-top-right-radius: 450px;
+    width: 80%;
+  }
 }
 
 .close-details-modal-button {
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.863);
+  background-color: rgba(130, 14, 14, 0.863);
   color: #ffffff;
   border: 1px dashed #aaa;
   text-align: center;
