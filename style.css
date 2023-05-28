@@ -371,10 +371,12 @@ td>button {
   border-radius: 3px;
   border-top-left-radius: 60px;
   border-top-right-radius: 60px;
-  box-shadow: 0px 0px 800px 411px rgb(0, 0, 0);;
+  box-shadow: 0px 0px 800px 411px rgb(0, 0, 0);
   background-image: url("/img/tbg_big.png");
   background-attachment: local;
   background-repeat: no-repeat;
+  color:#bababa;
+  text-shadow: 1px 1px 2px #000000;
 }
 
 @media (min-width: 600px) {
