@@ -363,25 +363,22 @@ td>button {
   transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.863);
   padding: 40px;
-  text-align: left;
+  text-align: center;
   line-height: 22px;
-  border: 1px solid white;
+  border: 1px solid #aaa;
   word-wrap: break-word;
   max-width: 840px;
   border-radius: 3px;
+  border-top-left-radius: 45%;
+  border-top-right-radius: 45%;
 }
 
 .close-details-modal-button {
   cursor: pointer;
-  position: absolute;
-  right: 10px;
-  top: 10px;
   background-color: rgba(0, 0, 0, 0.863);
-  color: #FFFFFF;
-  border: 1px solid rgb(255, 255, 255);
-  width: 25px;
-  height: 20px;
-  text-align: center
+  color: #ffffff;
+  border: 1px dashed #aaa;
+  text-align: center;
 }
 
 .epitaph,
