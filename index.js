@@ -715,15 +715,15 @@ function createDivWithClass(className) {
 }
 
 function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+	return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function formatMetadataValue(value) {
-    if (typeof value === 'object' && value !== null) {
-        return '<pre>' + JSON.stringify(value, null, 2).replace(/^0+/, '') + '</pre>';
-    } else {
-        return value.toString().replace(/^0+/, '');
-    }
+	if (typeof value === 'object' && value !== null) {
+		return '<pre>' + JSON.stringify(value, null, 2).replace(/^0+/, '') + '</pre>';
+	} else {
+		return value.toString().replace(/^0+/, '');
+	}
 }
 
 function appendTextInTokenDetailsElement(tokenDetailsElement, text) {
@@ -1088,55 +1088,55 @@ async function getNFTDetails(graveNumber) {
 		// exposeMetadataButton.classList.add("exposeMetadataButton")
 		// tokenDetailsElement.appendChild(exposeMetadataButton);
 		// exposeMetadataButton.disabled = !isUserOwnerOrBeneficiary;
-        const metadataUrl = `https://ipfs.io/ipfs/${nftDetails.metadata.slice(7)}`;
-        displayMetadata(metadataUrl, tokenDetailsElement);
+		const metadataUrl = `https://ipfs.io/ipfs/${nftDetails.metadata.slice(7)}`;
+		displayMetadata(metadataUrl, tokenDetailsElement);
 
-        showDetailsModal();
-    } catch (error) {
-        console.error("Error in getNFTDetails:", error);
-    }
+		showDetailsModal();
+	} catch (error) {
+		console.error("Error in getNFTDetails:", error);
+	}
 }
 
 function displayMetadata(metadataUrl, tokenDetailsElement) {
-    fetch(metadataUrl)
-        .then(response => response.json())
-        .then(jsonData => {
-            const metadataList = document.createElement("dl");
-            metadataList.classList.add("metadataList");
+	fetch(metadataUrl)
+		.then(response => response.json())
+		.then(jsonData => {
+			const metadataList = document.createElement("dl");
+			metadataList.classList.add("metadataList");
 
-            if (jsonData[0]) {
-                jsonData = jsonData[0]; // Remove the outer key (0) if it exists
-            }
+			if (jsonData[0]) {
+				jsonData = jsonData[0]; // Remove the outer key (0) if it exists
+			}
 
-            for (const key in jsonData) {
-                const dtMetadataKey = document.createElement("dt");
-                dtMetadataKey.textContent = capitalizeFirstLetter(key);
-                metadataList.appendChild(dtMetadataKey);
+			for (const key in jsonData) {
+				const dtMetadataKey = document.createElement("dt");
+				dtMetadataKey.textContent = capitalizeFirstLetter(key);
+				metadataList.appendChild(dtMetadataKey);
 
-                const ddMetadataValue = document.createElement("dd");
-                ddMetadataValue.innerHTML = formatMetadataValue(jsonData[key]);
-                metadataList.appendChild(ddMetadataValue);
-            }
+				const ddMetadataValue = document.createElement("dd");
+				ddMetadataValue.innerHTML = formatMetadataValue(jsonData[key]);
+				metadataList.appendChild(ddMetadataValue);
+			}
 
-            const hr2 = document.createElement("hr");
-            tokenDetailsElement.appendChild(hr2);
+			const hr2 = document.createElement("hr");
+			tokenDetailsElement.appendChild(hr2);
 
-            const metadataUrlDiv = createDivWithClass("metadataUrl");
-            metadataUrlDiv.innerText = `Metadata: `;
-            tokenDetailsElement.appendChild(metadataUrlDiv);
+			const metadataUrlDiv = createDivWithClass("metadataUrl");
+			metadataUrlDiv.innerText = `Metadata: `;
+			tokenDetailsElement.appendChild(metadataUrlDiv);
 
-            tokenDetailsElement.appendChild(metadataList);
-        })
-        .catch(error => {
-            console.error("Error displaying metadata:", error);
-        });
+			tokenDetailsElement.appendChild(metadataList);
+		})
+		.catch(error => {
+			console.error("Error displaying metadata:", error);
+		});
 }
 
 function formatMetadataValue(value) {
-    if (typeof value === "object") {
-        return JSON.stringify(value, null, 2).replace(/[\{\}\"]/g, "");
-    }
-    return value;
+	if (typeof value === "object") {
+		return JSON.stringify(value, null, 2).replace(/[\{\}\"]/g, "");
+	}
+	return value;
 }
 
 function displayMedia(mediaUrl, tokenDetailsElement) {
@@ -1179,7 +1179,7 @@ function displayMedia(mediaUrl, tokenDetailsElement) {
 
 			console.log(mediaUrl)
 
-		
+
 		})
 		.catch((error) => {
 			console.error("Error displaying media:", error);
@@ -1239,7 +1239,7 @@ async function updateGraveNumbers() {
 					mediaElement.style.borderRadius = "5px";
 					mediaElement.style.borderWidth = "0px";
 					mediaElement.style.filter = "grayscale(100%) sepia(10%) contrast(95%) brightness(83%) hue-rotate(10deg)";
-					
+
 					mediaElement.onerror = () => {
 						mediaElement.setAttribute("src", './img/pfp.gif');
 					};
@@ -1287,110 +1287,108 @@ async function updateGraveNumbers() {
 
 // drag and drop 
 function mediaDropZone() {
-    const dropZone = document.getElementById('media_drop_zone');
-    dropZone.addEventListener('dragover', handleDragOver, false);
-    dropZone.addEventListener('drop', async (e) => {
-        const cid = await handleMediaDrop(e);
-        document.getElementById(MODAL_MEDIA_URL_ID).value = cid;
-    }, false);
+	const dropZone = document.getElementById('media_drop_zone');
+	dropZone.addEventListener('dragover', handleDragOver, false);
+	dropZone.addEventListener('drop', async (e) => {
+		const cid = await handleMediaDrop(e);
+		document.getElementById(MODAL_MEDIA_URL_ID).value = cid;
+	}, false);
 }
 
 function metadataDropZone() {
-    const dropZone = document.getElementById('metadata_drop_zone');
-    dropZone.addEventListener('dragover', handleDragOver, false);
-    dropZone.addEventListener('drop', async (e) => {
-        const cid = await handleMetadataDrop(e);
-        document.getElementById(MODAL_METADATA_ID).value = cid;
-    }, false);
+	const dropZone = document.getElementById('metadata_drop_zone');
+	dropZone.addEventListener('dragover', handleDragOver, false);
+	dropZone.addEventListener('drop', async (e) => {
+		const cid = await handleMetadataDrop(e);
+		document.getElementById(MODAL_METADATA_ID).value = cid;
+	}, false);
 }
 
 function initDropZone(dropZoneId, handleDrop) {
-    const dropZone = document.getElementById(dropZoneId);
-    dropZone.addEventListener('dragover', handleDragOver, false);
-    dropZone.addEventListener('dragenter', handleDragEnter, false);
-    dropZone.addEventListener('dragleave', handleDragLeave, false);
-    dropZone.addEventListener('drop', handleDrop, false);
+	const dropZone = document.getElementById(dropZoneId);
+	dropZone.addEventListener('dragover', handleDragOver, false);
+	dropZone.addEventListener('dragenter', handleDragEnter, false);
+	dropZone.addEventListener('dragleave', handleDragLeave, false);
+	dropZone.addEventListener('drop', handleDrop, false);
 }
 
 function handleDragOver(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    event.dataTransfer.dropEffect = 'copy';
+	event.stopPropagation();
+	event.preventDefault();
+	event.dataTransfer.dropEffect = 'copy';
 }
 
 function handleDragEnter(event) {
-    event.target.classList.add('drag-over');
+	event.target.classList.add('drag-over');
 	event.target.classList.remove('drop-failure');
 }
 
 function handleDragLeave(event) {
-    event.target.classList.remove('drag-over');
+	event.target.classList.remove('drag-over');
 }
 
 async function handleMediaDrop(event) {
-    event.stopPropagation();
-    event.preventDefault();
+	event.stopPropagation();
+	event.preventDefault();
 	event.target.classList.remove('drag-over');
 
-    const file = event.dataTransfer.files[0];
-    if (!file.type.startsWith('image/')) {
-		
-		event.target.classList.add('drop-failure');
-		alert('File type must be an image')
-        return;
-    }
+	const file = event.dataTransfer.files[0];
+	if (!file.type.startsWith('image/')) {
 
-    const buffer = await file.arrayBuffer();
-    const cid = await uploadFileToIPFS(buffer, file.type);
+		event.target.classList.add('drop-failure');
+		return;
+	}
+
+	const buffer = await file.arrayBuffer();
+	const cid = await uploadFileToIPFS(buffer, file.type);
 	if (cid) {
-        event.target.classList.add('drop-success');
-    }
-    return "ipfs://" + cid;
+		event.target.classList.add('drop-success');
+	}
+	return "ipfs://" + cid;
 }
 
 async function handleMetadataDrop(event) {
-    event.stopPropagation();
-    event.preventDefault();
+	event.stopPropagation();
+	event.preventDefault();
 	event.target.classList.remove('drag-over');
 
-    const file = event.dataTransfer.files[0];
-    if (!file.type.startsWith('application/json')) {
+	const file = event.dataTransfer.files[0];
+	if (!file.type.startsWith('application/json')) {
 		event.target.classList.add('drop-failure');
-		alert('File type must be .json')
-        return;
-    }
+		return;
+	}
 
-    const buffer = await file.arrayBuffer();
-    const cid = await uploadFileToIPFS(buffer, file.type);
+	const buffer = await file.arrayBuffer();
+	const cid = await uploadFileToIPFS(buffer, file.type);
 	if (cid) {
-        event.target.classList.add('drop-success');
-    }
+		event.target.classList.add('drop-success');
+	}
 	mediaDropZone()
-    return "ipfs://" + cid;
+	return "ipfs://" + cid;
 }
 
 async function uploadFileToIPFS(buffer, fileType) {
-    const url = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
-    const formData = new FormData();
-    formData.append('file', new Blob([buffer], { type: fileType }));
+	const url = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
+	const formData = new FormData();
+	formData.append('file', new Blob([buffer], { type: fileType }));
 
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'pinata_api_key': '3edcfb989ad2b8a716f9',
-            'pinata_secret_api_key': 'bdce1163f7b4acfaa9f4b7bc4f1885cea4f95753238cf18052aba3a295a9daf9'
-        },
-        body: formData,
-    });
+	const response = await fetch(url, {
+		method: 'POST',
+		headers: {
+			'pinata_api_key': '3edcfb989ad2b8a716f9',
+			'pinata_secret_api_key': 'bdce1163f7b4acfaa9f4b7bc4f1885cea4f95753238cf18052aba3a295a9daf9'
+		},
+		body: formData,
+	});
 
-    if (response.ok) {
-        const data = await response.json();
-        const cid = data.IpfsHash;
-        return cid;
-    } else {
-        alert('Error uploading file to IPFS.');
-        return;
-    }
+	if (response.ok) {
+		const data = await response.json();
+		const cid = data.IpfsHash;
+		return cid;
+	} else {
+		alert('Error uploading file to IPFS.');
+		return;
+	}
 }
 
 initDropZone('media_drop_zone', handleMediaDrop);
