@@ -365,9 +365,11 @@ td>button {
   padding: 80px;
   text-align: center;
   line-height: 22px;
-  border: 5px solid #343434;
+  border: 10px solid #333333;
+  /* border: none; */
+ 
   word-wrap: break-word;
-  max-width: 840px;
+  max-width: 640px;
   border-radius: 3px;
   border-top-left-radius: 60px;
   border-top-right-radius: 60px;
@@ -375,16 +377,16 @@ td>button {
   background-image: url("/img/tbg_big.png");
   background-attachment: local;
   background-repeat: no-repeat;
-  color:#bababa;
+  color:#999999;
   text-shadow: 1px 1px 2px #000000;
 }
 
 @media (min-width: 600px) {
   .token-details-modal {
-    border-top-left-radius:480px;
-    border-top-right-radius: 480px;
+    border-top-left-radius:400px;
+    border-top-right-radius: 400px;
     width: 80%;
-  }
+      }
 }
 
 .close-details-modal-button {
@@ -403,8 +405,9 @@ td>button {
 }
 
 .occupant {
-  font-size: large;
+  font-size: 36px;
   padding-bottom: 22px;
+  
 }
 
 .coffinId {
