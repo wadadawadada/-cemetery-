@@ -1221,7 +1221,10 @@ function displayMedia(mediaUrl, tokenDetailsElement) {
 				mediaElement.style.maxHeight = "420px";
 				mediaElement.style.display = "block";
 				mediaElement.style.margin = "0 auto";
-
+				mediaElement.style.marginTop = "20px";
+				mediaElement.style.marginBottom = "20px";
+				mediaElement.style.borderRadius = "5px";
+				mediaElement.style.filter = "sepia(30%)";
 				mediaContainer.appendChild(mediaElement);
 				tokenDetailsElement.appendChild(mediaContainer);
 			} else {

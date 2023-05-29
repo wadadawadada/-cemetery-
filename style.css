@@ -365,15 +365,14 @@ td>button {
   padding: 80px;
   text-align: center;
   line-height: 22px;
-  border: 10px solid #333333;
+  border: 5px solid #373737;
   /* border: none; */
- 
   word-wrap: break-word;
-  max-width: 640px;
+  max-width: 540px;
   border-radius: 3px;
   border-top-left-radius: 60px;
   border-top-right-radius: 60px;
-  box-shadow: 0px 0px 800px 411px rgb(0, 0, 0);
+  box-shadow: inset 0px 0px 13px 31px rgb(32, 31, 31), 0px 0px 800px 411px rgb(0, 0, 0);
   background-image: url("/img/tbg_big.png");
   background-attachment: local;
   background-repeat: no-repeat;
@@ -389,9 +388,10 @@ td>button {
       }
 }
 
+
 .close-details-modal-button {
   cursor: pointer;
-  background-color: rgba(28, 130, 14, 0.863);
+  background-color: rgba(35, 55, 35, 1);
   color: #ffffff;
   border: 1px dashed #aaa;
   text-align: center;
@@ -406,8 +406,9 @@ td>button {
 
 .occupant {
   font-size: 36px;
+  font-weight: bold;
   padding-bottom: 22px;
-  
+  line-height: 32px;
 }
 
 .coffinId {
