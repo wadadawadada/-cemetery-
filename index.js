@@ -964,12 +964,12 @@ async function getNFTDetails(graveNumber) {
 				text: "Back to Cemetery",
 				onClick: closeDetailsModal,
 			},
-			{ class: "coffinId", text: `Grave: ${graveNumber}` },
+			{ class: "coffinId", text: `Grave #${graveNumber}` },
 			{ class: "occupant", text: `${nftDetails.occupant}` }, /*Occupant*/ 
 			{ class: "epitaph", text: `${nftDetails.epitaph}` },
 			{
 				class: "dateBorn",
-				text: `Date Born: ${nftDetails.dateBorn.substring(6, 8)}-${nftDetails.dateBorn.substring(4, 6)}-${nftDetails.dateBorn.substring(0, 4)}`,
+				text: `D.O.B.: ${nftDetails.dateBorn.substring(6, 8)}-${nftDetails.dateBorn.substring(4, 6)}-${nftDetails.dateBorn.substring(0, 4)}`,
 			},
 			{
 				class: "coffinDateBuriedCheck",

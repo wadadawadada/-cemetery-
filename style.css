@@ -376,8 +376,8 @@ td>button {
   background-image: url("/img/tbg_big.png");
   background-attachment: local;
   background-repeat: no-repeat;
-  color:#999999;
-  text-shadow: 1px 1px 2px #000000;
+  color:#c5c5c5;
+  /* text-shadow: 1px 1px 2px #000000; */
 }
 
 @media (min-width: 600px) {
@@ -402,13 +402,30 @@ td>button {
 .coffinDateBuriedCheck,
 .resurrectTime {
   font-size: small;
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+.dateBorn{
+  font-size: 26px;
+  font-weight: bold;
+  font-family: 'Keania One', cursive;
+  
+}
+
+.epitaph {
+  font-family: 'Merienda', cursive;
+  margin-top: -15px;
+
 }
 
 .occupant {
-  font-size: 36px;
+  font-size: 46px;
   font-weight: bold;
-  padding-bottom: 22px;
-  line-height: 32px;
+  padding-bottom: 32px;
+  line-height: 42px;
+  font-family: 'Keania One', cursive;
+
 }
 
 .coffinId {
