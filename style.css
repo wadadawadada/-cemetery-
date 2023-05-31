@@ -127,16 +127,21 @@ a:active {
   font-size: 12px;
   padding: 2px;
   /* margin-right: 10px; */
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: small;
 }
 
 #gravenav button:hover {
   background-color: #6d6b6b98;
+  
 }
 
 .graveButton {
   background-color: rgba(0, 0, 0, 0);
   color: rgb(173, 173, 173);
   /* position: relative; */
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: large;
 }
 
 .buryButton {
@@ -144,12 +149,15 @@ a:active {
   color: rgb(255, 255, 255);
   /* position: relative; */
   bottom: 2px;
-
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: large;
 }
 
 .button {
   background-color: rgb(0, 0, 0);
   color: white;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: large;
 }
 
 
@@ -217,6 +225,7 @@ a:active {
 
 .grave>button {
   background-color: rgba(0, 0, 0, 0.363);
+  
 }
 
 .bury>button {
@@ -372,8 +381,10 @@ td>button {
   border-radius: 3px;
   border-top-left-radius: 60px;
   border-top-right-radius: 60px;
-  box-shadow: inset 0px 0px 13px 31px rgb(32, 31, 31), 0px 0px 800px 411px rgb(0, 0, 0);
-  background-image: url("/img/tbg_big.png");
+  box-shadow: inset 0px 0px 23px 11px rgb(22, 22, 22), 0px 0px 800px 411px rgb(0, 0, 0);
+  /* background-image: url("/img/tbg_big.png"); */
+  background: linear-gradient(0deg, #171717 0%, #000 14%, #1F1F1F 34%, #2B2B2B 59%, #6B6B6B 87%, #484848 100%);
+  
   background-attachment: local;
   background-repeat: no-repeat;
   color:#c5c5c5;
@@ -408,10 +419,11 @@ td>button {
 
 .dateBorn{
   font-size: 26px;
-  font-weight: bold;
+  /* font-weight: bold; */
   font-family: 'Bebas Neue', sans-serif;
-  color: #aaaaaa;
-  -webkit-text-stroke: 0.7px rgb(64, 64, 64);
+  color: #ffffff;
+  
+  
   
 }
 
@@ -427,19 +439,20 @@ td>button {
   padding-bottom: 32px;
   line-height: 52px;
   font-family: 'Bebas Neue', sans-serif;
-  color: #aaaaaa;
-  -webkit-text-stroke: 0.7px rgb(64, 64, 64);
+  color: #2a2a2a;
+  -webkit-text-stroke: 0.2px rgb(98, 98, 98);
+  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.763), 0px -1px 1px rgba(0,0,0,.7);
 }
 
 .coffinId {
   font-size: medium;
   padding-bottom: 22px;
   padding-top: 22px;
-  font-weight: bold;
+  /* font-weight: bold; */
   font-size: 26px;
   font-family: 'Bebas Neue', sans-serif;
-  color: #aaaaaa;
-  -webkit-text-stroke: 0.7px rgb(64, 64, 64);
+  color: #ffffff;
+  
 }
 
 .currentOwner {
