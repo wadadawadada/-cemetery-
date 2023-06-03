@@ -587,7 +587,6 @@ const MODAL_METADATA_ID = 'metadata_input';
 // const UNLOCK_METADATA_BUTTON_ID = "unlockMetadataButton";
 // const EXPOSE_METADATA_BUTTON_ID = "exposeMetadataButton";
 
-
 const statusBar = document.createElement("span");
 statusBar.setAttribute("id", "statsign");
 const statusTextNode = document.createTextNode("Status: ");
@@ -669,6 +668,12 @@ document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
 	// const UTCResurrectTime = Date.parse(resurrectTime) / 1000;
 	// const beneficiary = document.getElementById(MODAL_BENEFICIARY_ID).value;
 	const nBirth = birth.replaceAll("-", "");
+	console.log("MINTING DETAILS: ///////")
+	console.log("occupant: ", occupant )
+	console.log("birth: ", birth )
+	console.log("epitaph: ", epitaph )
+	console.log("mediaUrl: ", mediaUrl )
+	console.log("metadata: ", metadata )
 
 	if (
 		occupant &&
@@ -1341,21 +1346,27 @@ async function updateGraveNumbers() {
 
 // drag and drop 
 function mediaDropZone() {
-	const dropZone = document.getElementById('media_drop_zone');
-	dropZone.addEventListener('dragover', handleDragOver, false);
-	dropZone.addEventListener('drop', async (e) => {
-		const cid = await handleMediaDrop(e);
-		document.getElementById(MODAL_MEDIA_URL_ID).value = cid;
-	}, false);
+  const dropZone = document.getElementById('media_drop_zone');
+  dropZone.addEventListener('dragover', handleDragOver, false);
+  dropZone.addEventListener('drop', async (e) => {
+    const cid = await handleMediaDrop(e);
+    const mediaUrlElement = document.getElementById(MODAL_MEDIA_URL_ID);
+    if (mediaUrlElement) {
+      mediaUrlElement.value = cid;
+    }
+  }, false);
 }
 
 function metadataDropZone() {
-	const dropZone = document.getElementById('metadata_drop_zone');
-	dropZone.addEventListener('dragover', handleDragOver, false);
-	dropZone.addEventListener('drop', async (e) => {
-		const cid = await handleMetadataDrop(e);
-		document.getElementById(MODAL_METADATA_ID).value = cid;
-	}, false);
+  const dropZone = document.getElementById('metadata_drop_zone');
+  dropZone.addEventListener('dragover', handleDragOver, false);
+  dropZone.addEventListener('drop', async (e) => {
+    const cid = await handleMetadataDrop(e);
+    const metadataElement = document.getElementById(MODAL_METADATA_ID);
+    if (metadataElement) {
+      metadataElement.value = cid;
+    }
+  }, false);
 }
 
 function initDropZone(dropZoneId, handleDrop) {
@@ -1417,7 +1428,6 @@ async function handleMetadataDrop(event) {
 	if (cid) {
 		event.target.classList.add('drop-success');
 	}
-	mediaDropZone()
 	return "ipfs://" + cid;
 }
 
@@ -1449,3 +1459,67 @@ initDropZone('media_drop_zone', handleMediaDrop);
 initDropZone('metadata_drop_zone', handleMetadataDrop);
 mediaDropZone();
 metadataDropZone();
+
+// key:value form to replace metadata drag and drop
+document.getElementById('addKeyValueBtn').addEventListener('click', function () {
+    const container = document.getElementById('customKeyValueContainer');
+    const index = container.childElementCount;
+    // Add line break
+    let lineBreak1 = document.createElement('br');
+    container.appendChild(lineBreak1);
+    const keyLabel = document.createElement('label');
+    keyLabel.setAttribute('for', `customKey${index}`);
+    keyLabel.textContent = 'Key:';
+    container.appendChild(keyLabel);
+
+    const keyInput = document.createElement('input');
+    keyInput.setAttribute('type', 'text');
+    keyInput.setAttribute('id', `customKey${index}`);
+    container.appendChild(keyInput);
+
+    const valueLabel = document.createElement('label');
+    valueLabel.setAttribute('for', `customValue${index}`);
+    valueLabel.textContent = 'Value:';
+    container.appendChild(valueLabel);
+
+    const valueInput = document.createElement('input');
+    valueInput.setAttribute('type', 'text');
+    valueInput.setAttribute('id', `customValue${index}`);
+    container.appendChild(valueInput);
+    
+
+	let lineBreak2 = document.createElement('br');
+    container.appendChild(lineBreak2);
+});
+
+document.getElementById('submitKeyValueBtn').addEventListener('click', async function () {
+    const container = document.getElementById('customKeyValueContainer');
+    if (!container) return;
+
+    const numOfPairs = container.childElementCount / 3;
+    let metadata = {};
+
+    for (let i = 0; i < numOfPairs; i++) {
+        const keyElement = document.getElementById(`customKey${i}`);
+        const valueElement = document.getElementById(`customValue${i}`);
+
+        if (!keyElement || !valueElement) continue;
+
+        const key = keyElement.value;
+        const value = valueElement.value;
+
+        metadata[key] = value;
+    }
+
+    const jsonMetadata = new Blob([JSON.stringify(metadata)], { type: 'application/json' });
+
+    const buffer = await new Response(jsonMetadata).arrayBuffer();
+
+    const cid = await uploadFileToIPFS(buffer, 'application/json');
+    const dropZone = document.getElementById('metadata_drop_zone');
+
+    if (cid) {
+        document.getElementById(MODAL_METADATA_ID).value = "ipfs://" + cid;
+        dropZone.classList.add('drop-success');
+    }
+});
