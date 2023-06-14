@@ -1176,7 +1176,8 @@ async function mintNFT(occupant, birth, epitaph, mediaUrl, metadata, resurrectTi
     try {
         const MINT_COST = window.web3.utils.toWei("0.001", "ether");
         const nonce = await window.web3.eth.getTransactionCount(window.account);
-        await window.contract.methods.mint(occupant, birth, epitaph, mediaUrl, metadata, resurrectTime, beneficiary).send({ from: window.account, value: MINT_COST, nonce });
+		const gasPrice = await window.web3.eth.getGasPrice();
+        await window.contract.methods.mint(occupant, birth, epitaph, mediaUrl, metadata, resurrectTime, beneficiary).send({ from: window.account, value: MINT_COST, nonce, gasPrice });
         updateGraveNumbers();
     } catch (error) {
         console.error(error);
