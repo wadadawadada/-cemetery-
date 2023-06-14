@@ -1,0 +1,17 @@
+{
+    "id": "1",
+    "name": "Crypto Coffin",
+    "external_url": "https://cemetery.digital",
+    "description": "Crypto Cemetery Beta Coffin",
+    "image": "ipfs://QmTMzP9tuzdqo62ipaHAd26YPq66aMtDe7TgqfWeFtK7mR",
+    "background_color": "1c1c1c",
+    "attributes": [
+      {
+        "trait_type": "Version",
+        "value": "Beta"
+      },
+      {
+        "value": "Coffin"
+      }
+    ]
+}
