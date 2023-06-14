@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Crypto Cemetery (Alpha)</title>
+  <title>Crypto Cemetery (Beta)</title>
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4-rc.1/web3.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
@@ -22,14 +22,15 @@
 <body id="cemetery">
 
   <p id="logo">
-    crypt0_cemetery v0.9.0
+    crypt0_cemetery v0.9.1
   </p>
 
   <p id="about">
     <a href="/docs/FAQ.pdf" target="_blank">FAQ</a> &nbsp; &nbsp;
     <a href="/docs/singularity_en.pdf" target="_blank">white paper</a> &nbsp; &nbsp;
     <a href="https://twitter.com/GrandRisingCR" target="_blank">twitter</a>&nbsp; &nbsp;
-    <a href="https://discord.gg/gKVRDEHbYs" target="_blank">discord</a>
+    <a href="https://discord.gg/gKVRDEHbYs" target="_blank">discord</a>&nbsp; &nbsp;
+    <a href="https://polygonscan.com/address/0xebc8f42c8e400109ba0f4d4baa609b662b5f42f6" target="_blank">contract</a>
   </p>
 
   <div id="navContainer" class="nav-container">
@@ -74,26 +75,28 @@
         Drop metadata file here
         <input hidden id="metadata_input" />
       </div>
-
-      <br><br>
-      <!-- <text for="modalResurrectTime">Resurrection:</text>
+      <div id="customKeyValueContainer"></div>
+      <button id="addKeyValueBtn">Add Key-Value</button>
+      <button id="submitKeyValueBtn">Submit</button>
+      <br>
+      <text style="font-size:12px"><i>You can add up to 5 unique Key-Value fields. Once your fields are complete, press Submit to drop it in the coffin.</i></text>
+      <br><br><br>
+      <text for="modalResurrectTime">Resurrection:</text>
       <input type="datetime-local" id="modalResurrectTime" />
+      <br>
+      <text style="font-size:12px"><i>Resurrection is the exact time the Beneficiary will gain access to the coffins Unlock, Reveal, and Rebury mechanics.</i></text>
+
       <br><br>
       <text for="modalBeneficiary">Beneficiary:</text>
       <input type="text" id="modalBeneficiary" />
       <br>
       <text style="font-size:12px"><i>Beneficiary must be an ethereum address (0x...)</i></text>
       <br><br>
-      <br><br>
+
       <text style="color:#ffd000">ⓘ You will be asked to sign 2 transactions. The first transaction will bury your
         coffin. The second
         transaction gives the beneficiary approval to resurrect any of your coffins.</text>
-      <br><br> -->
-      <div id="customKeyValueContainer"></div>
-      <br>
-      <button id="addKeyValueBtn">Add Key-Value</button>
-      <button id="submitKeyValueBtn">Submit</button>
-      <br>
+      <br><br>
       <button id="submitModal">BURY</button>
     </div>
   </div>
