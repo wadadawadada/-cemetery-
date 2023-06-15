@@ -1120,14 +1120,16 @@ async function getTotalSupply() {
 
 async function unlockCoffinMetadata(graveNumber) {
     const nonce = await window.web3.eth.getTransactionCount(window.account);
-    const tx = await window.contract.methods.unlockMetadata(graveNumber).send({ from: window.account, nonce });
+	const gasPrice = await window.web3.eth.getGasPrice();
+    const tx = await window.contract.methods.unlockMetadata(graveNumber).send({ from: window.account, nonce, gasPrice });
     console.log(tx);
     return tx;
 }
 
 async function exposeCoffinMetadata(graveNumber) {
-    const nonce = await window.web3.eth.getTransactionCount(window.account);
-    const tx = await window.contract.methods.exposeMetadata(graveNumber).call({ from: window.account, nonce });
+	const nonce = await window.web3.eth.getTransactionCount(window.account);
+	const gasPrice = await window.web3.eth.getGasPrice();
+    const tx = await window.contract.methods.exposeMetadata(graveNumber).call({ from: window.account, nonce, gasPrice });
     console.log(tx);
     return tx;
 }
@@ -1135,7 +1137,9 @@ async function exposeCoffinMetadata(graveNumber) {
 async function setApprovalForAll(beneficiary) {
     try {
         const userAddress = window.account;
-        const tx = await contract.methods.setApprovalForAll(beneficiary, true).send({ from: userAddress });
+		const nonce = await window.web3.eth.getTransactionCount(window.account);
+		const gasPrice = await window.web3.eth.getGasPrice();
+        const tx = await contract.methods.setApprovalForAll(beneficiary, true).send({ from: userAddress, nonce, gasPrice });
         console.log("Transaction:", tx);
         return tx;
     } catch (error) {
@@ -1148,7 +1152,8 @@ async function checkResurrectionAndTransfer(graveNumber) {
     setStatus("Attempting Resurrection");
     try {
         const nonce = await window.web3.eth.getTransactionCount(window.account);
-        const tx = await window.contract.methods.checkForResurrectionAndTransfer(graveNumber).send({ from: window.account, nonce });
+		const gasPrice = await window.web3.eth.getGasPrice();
+        const tx = await window.contract.methods.checkForResurrectionAndTransfer(graveNumber).send({ from: window.account, nonce, gasPrice });
         setStatus("Successfully resurrected coffin");
         console.log(tx);
     } catch (e) {
@@ -1163,7 +1168,8 @@ async function updateCoffin(graveNumber, resurrectTime, beneficiary) {
         await setApprovalForAll(beneficiary);
         setStatus("Lowering coffin...");
         const nonce = await window.web3.eth.getTransactionCount(window.account);
-        const tx = await window.contract.methods.updateCoffin(graveNumber, resurrectTime, beneficiary).send({ from: window.account, nonce });
+		const gasPrice = await window.web3.eth.getGasPrice();
+        const tx = await window.contract.methods.updateCoffin(graveNumber, resurrectTime, beneficiary).send({ from: window.account, nonce, gasPrice });
         setStatus("Successfully buried coffin");
         console.log(tx);
     } catch (e) {
@@ -1184,23 +1190,20 @@ async function mintNFT(occupant, birth, epitaph, mediaUrl, metadata, resurrectTi
         setStatus("Something went terribly wrong");
     }
 }
-
 async function getNFTDetails(graveNumber) {
 	try {
-		const userAddress = (await window.web3.eth.getAccounts())[0];
+		const userAddress = (await window.ethereum.request({ method: 'eth_requestAccounts' }))[0];
 		const nftDetails = await window.contract.methods
 			.tokenDetails(graveNumber)
 			.call();
-		console.log(nftDetails)
+		console.log(nftDetails);
 		const isUserOwnerOrBeneficiary =
 			userAddress === nftDetails.currentOwner ||
 			userAddress === nftDetails.beneficiary;
 		const tokenDetailsElement = document.getElementById("tokenDetailsModal");
 		tokenDetailsElement.classList.add("token-details-modal");
-
 		tokenDetailsElement.innerHTML = "";
-
-		const elements = [
+		const topElements = [
 			{
 				class: "close-details-modal-button",
 				text: "Back to Cemetery",
@@ -1208,6 +1211,16 @@ async function getNFTDetails(graveNumber) {
 			},
 			{ class: "coffinId", text: `Grave #${graveNumber}` },
 			{ class: "occupant", text: `${nftDetails.occupant}` },
+		];
+
+		topElements.forEach((el) => {
+			const div = createDivWithClass(el.class);
+			div.innerText = el.text;
+			if (el.onClick) div.addEventListener("click", el.onClick);
+			tokenDetailsElement.appendChild(div);
+		});
+
+		const bottomElements = [
 			{ class: "epitaph", text: `${nftDetails.epitaph}` },
 			{
 				class: "dateBorn",
@@ -1242,15 +1255,43 @@ async function getNFTDetails(graveNumber) {
 			{
 				class: "coffinBuryCount",
 				text: `This Coffin has been buried ${nftDetails.buriedCounter} times.`,
-			}
+			},
 		];
 
-		elements.forEach((el) => {
+		if (nftDetails.mediaUrl.startsWith("ipfs://")) {
+
+		const mediaUrl = `https://ipfs.io/ipfs/${nftDetails.mediaUrl.slice(7)}`;
+		const tinyPFP = document.createElement("img");
+		tinyPFP.id = MODAL_MEDIA_URL_ID;
+		tinyPFP.classList.add("mediaUrl");
+
+		tinyPFP.src = mediaUrl;
+		tinyPFP.alt = "image";
+
+		tinyPFP.classList.add("mediaElement");
+		tinyPFP.style.maxWidth = "420px";
+		tinyPFP.style.maxHeight = "420px";
+		tinyPFP.style.display = "block";
+		tinyPFP.style.margin = "0 auto";
+		tinyPFP.style.marginTop = "20px";
+		tinyPFP.style.marginBottom = "20px";
+		tinyPFP.style.borderRadius = "5px";
+		tinyPFP.style.filter = "sepia(30%)";
+
+		tokenDetailsElement.appendChild(tinyPFP);
+		tokenDetailsElement.appendChild(document.createElement("div"));
+		}
+
+		tokenDetailsElement.appendChild(document.createElement("br"))
+
+		bottomElements.forEach((el) => {
 			const div = createDivWithClass(el.class);
 			div.innerText = el.text;
 			if (el.onClick) div.addEventListener("click", el.onClick);
 			tokenDetailsElement.appendChild(div);
 		});
+
+
 
 		appendTextInTokenDetailsElement(
 			tokenDetailsElement,
@@ -1260,7 +1301,7 @@ async function getNFTDetails(graveNumber) {
 		const resurrectButton = document.createElement("button");
 		resurrectButton.textContent = "RESURRECT";
 		resurrectButton.id = RESURRECT_BUTTON_ID;
-		resurrectButton.classList.add("resurrectButton")
+		resurrectButton.classList.add("resurrectButton");
 		tokenDetailsElement.appendChild(resurrectButton);
 		resurrectButton.disabled = !isUserOwnerOrBeneficiary;
 		resurrectButton.addEventListener("click", () => {
@@ -1296,7 +1337,7 @@ async function getNFTDetails(graveNumber) {
 		const buryAgainButton = document.createElement("button");
 		buryAgainButton.textContent = "BURY AGAIN";
 		buryAgainButton.id = BURY_AGAIN_BUTTON_ID;
-		buryAgainButton.classList.add("buryAgainButton")
+		buryAgainButton.classList.add("buryAgainButton");
 
 		tokenDetailsElement.appendChild(buryAgainButton);
 		buryAgainButton.disabled = !isUserOwnerOrBeneficiary;
@@ -1315,27 +1356,23 @@ async function getNFTDetails(graveNumber) {
 		mediaUrl.innerText = `Media: ${nftDetails.mediaUrl}`;
 		tokenDetailsElement.appendChild(mediaUrl);
 
-		if (nftDetails.mediaUrl.startsWith("ipfs://")) {
-			const mediaUrl = `https://ipfs.io/ipfs/${nftDetails.mediaUrl.slice(7)}`;
-			displayMedia(mediaUrl, tokenDetailsElement);
-		}
-
 		const hr2 = document.createElement("hr");
 		tokenDetailsElement.appendChild(hr2);
+
 		const isOpen = document.createElement("div");
-		isOpen.classList.add("isOpen")
+		isOpen.classList.add("isOpen");
 		isOpen.innerText = `Metadata Exposed: ${nftDetails.isOpen}`;
 		tokenDetailsElement.appendChild(isOpen);
+
 		const metadataInstructions = document.createTextNode(
 			"Each coffin contains locked metadata. Once unlocked, the metadata is forever exposed."
 		);
-
 		tokenDetailsElement.appendChild(metadataInstructions);
 
 		const unlockMetadataButton = document.createElement("button");
 		unlockMetadataButton.textContent = "UNLOCK METADATA";
 		unlockMetadataButton.id = UNLOCK_METADATA_BUTTON_ID;
-		unlockMetadataButton.classList.add("unlockMetadataButton")
+		unlockMetadataButton.classList.add("unlockMetadataButton");
 		tokenDetailsElement.appendChild(unlockMetadataButton);
 		unlockMetadataButton.disabled = !isUserOwnerOrBeneficiary;
 		unlockMetadataButton.addEventListener("click", async () => {
@@ -1345,14 +1382,15 @@ async function getNFTDetails(graveNumber) {
 		const exposeMetadataButton = document.createElement("button");
 		exposeMetadataButton.textContent = "EXPOSE METADATA";
 		exposeMetadataButton.id = EXPOSE_METADATA_BUTTON_ID;
-		exposeMetadataButton.classList.add("exposeMetadataButton")
+		exposeMetadataButton.classList.add("exposeMetadataButton");
 		tokenDetailsElement.appendChild(exposeMetadataButton);
 		exposeMetadataButton.disabled = !isUserOwnerOrBeneficiary;
+
 		try {
 			const metadataUrl = `https://ipfs.io/ipfs/${nftDetails.metadata.slice(7)}`;
 			displayMetadata(metadataUrl, tokenDetailsElement);
-		} catch(e) {
-			console.log(e)
+		} catch (e) {
+			console.log(e);
 		}
 
 		showDetailsModal();
