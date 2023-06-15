@@ -1189,9 +1189,9 @@ async function getNFTDetails(graveNumber) {
 	try {
 		const userAddress = (await window.web3.eth.getAccounts())[0];
 		const nftDetails = await window.contract.methods
-			.readC0ffin(graveNumber)
+			.tokenDetails(graveNumber)
 			.call();
-
+		console.log(nftDetails)
 		const isUserOwnerOrBeneficiary =
 			userAddress === nftDetails.currentOwner ||
 			userAddress === nftDetails.beneficiary;
@@ -1348,8 +1348,12 @@ async function getNFTDetails(graveNumber) {
 		exposeMetadataButton.classList.add("exposeMetadataButton")
 		tokenDetailsElement.appendChild(exposeMetadataButton);
 		exposeMetadataButton.disabled = !isUserOwnerOrBeneficiary;
-		const metadataUrl = `https://ipfs.io/ipfs/${nftDetails.metadata.slice(7)}`;
-		displayMetadata(metadataUrl, tokenDetailsElement);
+		try {
+			const metadataUrl = `https://ipfs.io/ipfs/${nftDetails.metadata.slice(7)}`;
+			displayMetadata(metadataUrl, tokenDetailsElement);
+		} catch(e) {
+			console.log(e)
+		}
 
 		showDetailsModal();
 	} catch (error) {
@@ -1485,7 +1489,7 @@ function displayMedia(mediaUrl, tokenDetailsElement) {
 async function getPFPDetails(graveNumber) {
 	try {
 		const pfpDetails = await window.contract.methods
-			.readC0ffin(graveNumber)
+			.tokenDetails(graveNumber)
 			.call();
 		return pfpDetails;
 	} catch (error) {
