@@ -962,6 +962,7 @@ document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
 	}
 });
 
+
 document.getElementById(CLOSE_MODAL_ID).addEventListener("click", closeModal);
 document
 	.getElementById(CLOSE_DETAILS_MODAL_ID)
@@ -1090,6 +1091,7 @@ addEventListeners([
 	[goButton, "click", onGoButtonClick],
 ]);
 
+
 async function loadBlockchainData() {
 	if (window.ethereum) {
 		window.web3 = new Web3(window.ethereum);
@@ -1190,6 +1192,7 @@ async function mintNFT(occupant, birth, epitaph, mediaUrl, metadata, resurrectTi
         setStatus("Something went terribly wrong");
     }
 }
+
 async function getNFTDetails(graveNumber) {
 	try {
 		const userAddress = (await window.ethereum.request({ method: 'eth_requestAccounts' }))[0];
@@ -1622,7 +1625,6 @@ async function updateGraveNumbers() {
 	updateTableNumber();
 }
 
-
 // drag and drop 
 function mediaDropZone() {
   const dropZone = document.getElementById('media_drop_zone');
@@ -1669,6 +1671,59 @@ function handleDragEnter(event) {
 
 function handleDragLeave(event) {
 	event.target.classList.remove('drag-over');
+}
+
+// Add HTML button element
+const mobileMediaDropZoneButton = document.createElement('button');
+const mobileMediaDropZone = document.getElementById("media_drop_zone");
+mobileMediaDropZoneButton.textContent = 'Select and Upload';
+mobileMediaDropZoneButton.addEventListener('click', openFilePicker);
+mobileMediaDropZone.appendChild(mobileMediaDropZoneButton);
+
+const mobileMetadataDropZoneButton = document.createElement('button');
+const mobileMetadataDropZone = document.getElementById("metadata_drop_zone");
+mobileMetadataDropZoneButton.textContent = 'Select and Upload';
+mobileMetadataDropZoneButton.addEventListener('click', openFilePicker);
+mobileMetadataDropZone.appendChild(mobileMetadataDropZoneButton);
+
+// File picker function
+function openFilePicker() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*, application/json';
+  input.addEventListener('change', handleFileSelect);
+  input.click();
+}
+
+// Handle file select function
+async function handleFileSelect(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const buffer = await file.arrayBuffer();
+  
+  // Check file type
+  if (file.type.startsWith('image/')) {
+    const cid = await uploadFileToIPFS(buffer, file.type);
+    const mediaUrlElement = document.getElementById(MODAL_MEDIA_URL_ID);
+	const mediaUrlElementDopZone = document.getElementById("media_drop_zone");
+    if (mediaUrlElement) {
+      mediaUrlElement.value = cid;
+	  mediaUrlElementDopZone.classList.add('drop-success');
+    }
+  } else if (file.type.startsWith('application/json')) {
+    const cid = await uploadFileToIPFS(buffer, file.type);
+    const metadataElement = document.getElementById(MODAL_METADATA_ID);
+	const metadataElementDropZone = document.getElementById("metadata_drop_zone");
+
+    if (metadataElement) {
+      metadataElement.value = cid;
+	  metadataElementDropZone.classList.add('drop-success');
+    }
+  } else {
+	event.target.classList.add('drop-failure');
+    alert('Invalid file type');
+  }
+
 }
 
 async function handleMediaDrop(event) {
