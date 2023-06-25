@@ -948,7 +948,6 @@ document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
 			UTCResurrectTime,
 			beneficiary
 		);
-
 		try {
 			setStatus("Approving Beneficiary...");
 			await setApprovalForAll(beneficiary);
@@ -961,7 +960,6 @@ document.getElementById(SUBMIT_MODAL_ID).addEventListener("click", async () => {
 		setStatus("Please enter coffin details.");
 	}
 });
-
 
 document.getElementById(CLOSE_MODAL_ID).addEventListener("click", closeModal);
 document
@@ -1673,7 +1671,7 @@ function handleDragLeave(event) {
 	event.target.classList.remove('drag-over');
 }
 
-// Add HTML button element
+// file upload for mobile users
 const mobileMediaDropZoneButton = document.createElement('button');
 const mobileMediaDropZone = document.getElementById("media_drop_zone");
 mobileMediaDropZoneButton.textContent = 'Select and Upload';
@@ -1686,7 +1684,7 @@ mobileMetadataDropZoneButton.textContent = 'Select and Upload';
 mobileMetadataDropZoneButton.addEventListener('click', openFilePicker);
 mobileMetadataDropZone.appendChild(mobileMetadataDropZoneButton);
 
-// File picker function
+// file picker function
 function openFilePicker() {
   const input = document.createElement('input');
   input.type = 'file';
@@ -1695,7 +1693,7 @@ function openFilePicker() {
   input.click();
 }
 
-// Handle file select function
+// handle file select function
 async function handleFileSelect(event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -1723,7 +1721,6 @@ async function handleFileSelect(event) {
 	event.target.classList.add('drop-failure');
     alert('Invalid file type');
   }
-
 }
 
 async function handleMediaDrop(event) {
@@ -1821,7 +1818,6 @@ document.getElementById('addKeyValueBtn').addEventListener('click', function () 
     valueInput.setAttribute('id', `customValue${index}`);
     container.appendChild(valueInput);
     
-
 	let lineBreak2 = document.createElement('br');
     container.appendChild(lineBreak2);
 });
@@ -1857,3 +1853,224 @@ document.getElementById('submitKeyValueBtn').addEventListener('click', async fun
         dropZone.classList.add('drop-success');
     }
 });
+
+// metadata modal and form
+function openMetadataModal() {
+	document.getElementById("metadataModal").style.display = "block";
+}
+
+function closeMetadataModal() {
+	document.getElementById("metadataModal").style.display = "none";
+}
+
+// create the main modal container
+var metadataModal = document.createElement("div");
+metadataModal.id = "metadataModal";
+metadataModal.className = "metadata-modal";
+
+// create the modal content container
+var metadataModalContent = document.createElement("div");
+metadataModalContent.className = "metadata-modal-content";
+
+// create the close button
+var closeBtn = document.createElement("span");
+closeBtn.className = "metadata-modal-close";
+closeBtn.textContent = "X";
+closeBtn.onclick = closeMetadataModal;
+
+// create the form container
+var metadataModalForm = document.createElement("div");
+metadataModalForm.id = "metadataModalForm";
+metadataModalForm.className = "metadata-modal-form";
+
+// Memory Length
+const memoryLabel = document.createElement("label");
+memoryLabel.htmlFor = "memoryInput";
+memoryLabel.textContent = "Memory Length: ";
+metadataModalForm.appendChild(memoryLabel);
+const memoryInput = document.createElement("input");
+memoryInput.type = "number";
+memoryInput.min = "1";
+memoryInput.max = "20";
+memoryInput.id = "memoryInput";
+metadataModalForm.appendChild(memoryInput);
+
+const metadataModalBreak1 = document.createElement("br")
+metadataModalForm.appendChild(metadataModalBreak1);
+
+// IQ
+const metadataIQLabel = document.createElement("label");
+metadataIQLabel.htmlFor = "metadataIQ";
+metadataIQLabel.textContent = "IQ Score: ";
+metadataModalForm.appendChild(metadataIQLabel);
+const metadataIQ = document.createElement("input");
+metadataIQ.type = "number";
+metadataIQ.min = 10;
+metadataIQ.max = 550;
+metadataIQ.id = "metadataIQ"
+metadataModalForm.appendChild(metadataIQ);
+
+const metadataModalBreak2 = document.createElement("br")
+metadataModalForm.appendChild(metadataModalBreak2);
+
+// Age
+const metadataAgeLabel = document.createElement("label");
+metadataAgeLabel.htmlFor = "metadataAge";
+metadataAgeLabel.textContent = "Age: ";
+metadataModalForm.appendChild(metadataAgeLabel);
+const metadataAge = document.createElement("input");
+metadataAge.type = "number";
+metadataAge.min = "1";
+metadataAge.max = "150";
+metadataAge.id = "metadataAge";
+metadataModalForm.appendChild(metadataAge);
+
+const metadataModalBreak3 = document.createElement("br")
+metadataModalForm.appendChild(metadataModalBreak3);
+
+// Location
+const metadataLocationLabel = document.createElement("label");
+metadataLocationLabel.htmlFor = "metadataLocation";
+metadataLocationLabel.textContent = "Location: ";
+metadataModalForm.appendChild(metadataLocationLabel);
+const metadataLocation = document.createElement("input");
+metadataLocation.type = "text";
+metadataLocation.id = "metadataLocation";
+metadataModalForm.appendChild(metadataLocation)
+
+const metadataModalBreak4 = document.createElement("br")
+metadataModalForm.appendChild(metadataModalBreak4);
+
+// Job
+const metadataJobLabel = document.createElement("label");
+metadataJobLabel.htmlFor = "metadataJob";
+metadataJobLabel.textContent = "Job: ";
+metadataModalForm.appendChild(metadataJobLabel);
+const metadataJob = document.createElement("input");
+metadataJob.type = "text";
+metadataJob.id = "metadataJob";
+metadataModalForm.appendChild(metadataJob)
+
+const metadataModalBreak5 = document.createElement("br")
+metadataModalForm.appendChild(metadataModalBreak5);
+
+// Hobby
+const metadataHobbyLabel = document.createElement("label");
+metadataHobbyLabel.htmlFor = "metadataHobby";
+metadataHobbyLabel.textContent = "Hobby: ";
+metadataModalForm.appendChild(metadataHobbyLabel);
+const metadataHobby = document.createElement("input");
+metadataHobby.type = "text";
+metadataHobby.id = "metadataHobby";
+metadataModalForm.appendChild(metadataHobby)
+
+const metadataModalBreak6 = document.createElement("br")
+metadataModalForm.appendChild(metadataModalBreak6);
+
+// Mood
+const metadataMoodLabel = document.createElement("label");
+metadataMoodLabel.htmlFor = "metadataMood";
+metadataMoodLabel.textContent = "Mood: ";
+metadataModalForm.appendChild(metadataMoodLabel);
+const metadataMood = document.createElement("input");
+metadataMood.type = "text";
+metadataMood.id = "metadataMood";
+metadataModalForm.appendChild(metadataMood);
+
+const metadataModalBreak7 = document.createElement("br")
+metadataModalForm.appendChild(metadataModalBreak7);
+
+// Gender
+const metadataGenderLabel = document.createElement("label")
+metadataGenderLabel.htmlFor = "metadataGender";
+metadataGenderLabel.textContent = "Gender: ";
+metadataModalForm.appendChild(metadataGenderLabel);
+const metadataGender = document.createElement("select");
+const gender1 = document.createElement("option")
+gender1.value = "Male";
+gender1.textContent = "Male";
+metadataGender.appendChild(gender1)
+const gender2 = document.createElement("option")
+gender2.value = "Female";
+gender2.textContent = "Female";
+metadataGender.appendChild(gender2)
+const gender3 = document.createElement("option")
+gender3.value = "Non Binary";
+gender3.textContent = "Non Binary";
+metadataGender.appendChild(gender3)
+const gender4 = document.createElement("option")
+gender4.value = "Genderqueer";
+gender4.textContent = "Genderqueer";
+metadataGender.appendChild(gender4)
+const gender5 = document.createElement("option")
+gender5.value = "Agender";
+gender5.textContent = "Agender";
+metadataGender.appendChild(gender5)
+const gender6 = document.createElement("option")
+gender6.value = "Bigender";
+gender6.textContent = "Bigender";
+metadataGender.appendChild(gender6)
+const gender7 = document.createElement("option")
+gender7.value = "Genderfluid";
+gender7.textContent = "Genderfluid";
+metadataGender.appendChild(gender7)
+const gender8 = document.createElement("option")
+gender8.value = "Two Spirit";
+gender8.textContent = "Two Spirit";
+metadataGender.appendChild(gender8)
+const gender9 = document.createElement("option")
+gender9.value = "Androgynous";
+gender9.textContent = "Androgynous";
+metadataGender.appendChild(gender9)
+const gender10 = document.createElement("option")
+gender10.value = "Demigender";
+gender10.textContent = "Demigender";
+metadataGender.appendChild(gender10)
+const gender11 = document.createElement("option")
+gender11.value = "Neutrois";
+gender11.textContent = "Neutrois";
+metadataGender.appendChild(gender11)
+const gender12 = document.createElement("option")
+gender12.value = "Gender Questioning";
+gender12.textContent = "Gender Questioning";
+metadataGender.appendChild(gender12)
+const gender13 = document.createElement("option")
+gender13.value = "Gender Nonconforming";
+gender13.textContent = "Gender Nonconforming";
+metadataGender.appendChild(gender13)
+const gender14 = document.createElement("option")
+gender14.value = "Transgender";
+gender14.textContent = "Transgender";
+metadataGender.appendChild(gender14)
+const gender15 = document.createElement("option")
+gender15.value = "Cisgender";
+gender15.textContent = "Cisgender";
+metadataGender.appendChild(gender15);
+const gender16 = document.createElement("option")
+gender16.value = "Pangender";
+gender16.textContent = "Pangender";
+metadataGender.appendChild(gender16)
+
+metadataModalForm.appendChild(metadataGender);
+
+
+
+
+const metadataModalBreak8 = document.createElement("br")
+metadataModalForm.appendChild(metadataModalBreak8);
+
+const metadataModalBreak9 = document.createElement("br")
+metadataModalForm.appendChild(metadataModalBreak9);
+
+
+
+
+// append the close button and form to the modal content container
+metadataModalContent.appendChild(closeBtn);
+metadataModalContent.appendChild(metadataModalForm);
+
+// append the modal content container to the main modal container
+metadataModal.appendChild(metadataModalContent);
+
+// append the main modal container to the body
+document.body.appendChild(metadataModal);

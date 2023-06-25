@@ -511,3 +511,53 @@ td>button {
 ::-webkit-scrollbar {
   width: 0;
 }
+
+/* /////////////////////////////// */
+
+/* METADATA MODAL */
+.metadata-modal {
+  display: none;
+  position: fixed;
+  top: 50vh;
+  left: 50vw;
+  width: 50vw;
+  height: 80%;
+  overflow: auto;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.863);
+  padding: 40px;
+  text-align: left;
+  line-height: 22px;
+  border: 1px solid white;
+  word-wrap: break-word;
+  max-width: 840px;
+  border-radius: 3px;
+  z-index: 1;
+}
+
+.metadata-modal-content {
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.metadata-modal-close {
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background-color: rgba(0, 0, 0, 0.863);
+  color: #ffffff;
+  border: 1px solid white;
+  width: 25px;
+  height: 20px;
+  text-align: center
+}
+
+.metadata-modal-close:hover,
+.metadata-modal-close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}

@@ -69,7 +69,8 @@
       <label for="metadata_input">Metadata:</label>
 
       <span style="font-size:12px"><i>Metadata must be a "key": "value" .json file to have it's contents formatted and
-          displayed.</i></span><br>
+          displayed. You can only choose one of the following options: upload your own file, submit Key-Value pairs, or complete the Personality Form.</i></span><br>
+
       <div id="metadata_drop_zone">
         Drop metadata file here
         <input hidden id="metadata_input" />
@@ -79,7 +80,15 @@
       <button id="submitKeyValueBtn">Submit</button>
       <br>
       <text style="font-size:12px"><i>You can add up to 5 unique Key-Value fields. Once your fields are complete, press Submit to drop it in the coffin.</i></text>
-      <br><br><br>
+      <br>
+      <br>
+      <button onclick=openMetadataModal() disabled>Personality Form</button>
+      <br>
+      <text style="font-size:12px"><i>Create a custom personality!</i></text>
+
+
+      <br>
+      <br>
       <text for="modalResurrectTime">Resurrection:</text>
       <input type="datetime-local" id="modalResurrectTime" />
       <br>
