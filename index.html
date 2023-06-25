@@ -45,18 +45,21 @@
   <div id="cemeteryContainer">
     <div id="modal" class="modal-style">
       <button id="closeModal" class="modal-close">X</button>
-      <br><br><br>
-      <text for="modalOccupant">Occupant:</text>
+      <br>
+      <p><i>All information is publicly available on-chain. Simply put, this is a character creator for AI enabled metaverses. All inhabitants are fictional.</i></p>
+      <hr>
+      <br>
+      <text for="modalOccupant">1) Name the Occupant:</text>
       <input type="text" id="modalOccupant" />
       <br><br>
-      <text for="modalBirth">Birth:</text>
+      <text for="modalBirth">2) The Occupant's Date of Birth:</text>
       <input type="date" id="modalBirth" />
       <br><br>
-      <text for="modalEpitaph">Epitaph:</text>
+      <text for="modalEpitaph">3) Write a brief Epitaph:</text>
       <input type="text" id="modalEpitaph" />
       <br><br>
 
-      <label for="media_input">Image:</label>
+      <label for="media_input">4) A portrait of the Occupant:</label>
 
       <span style="font-size:12px"><i>Tombstone portrait and the default preferred likeness for AI resurrection and
           recreation, unless otherwise declared as "preferred_likeness" in the metadata.</i></span>
@@ -64,38 +67,44 @@
         Drop image file here
         <input hidden id="media_input" />
       </div>
-      <br><br>
 
-      <label for="metadata_input">Metadata:</label>
-
-      <span style="font-size:12px"><i>Metadata must be a "key": "value" .json file to have it's contents formatted and
-          displayed. You can only choose one of the following options: upload your own file, submit Key-Value pairs, or complete the Personality Form.</i></span><br>
-
+      <br>
+      <label for="metadata_input">5) The digital personality of the Occupant:</label>
+      <br>
+      <span>You have three options for providing the Occupant's Metadata. <i>You can only choose one.</i></span>
+      <ul>
+        <li>
+          Custom file: Drag and Drop or upload a .json file with a "key": "value" structure.
+        </li>
+        <li>
+          Key-Value Submissions: Add and complete up to 5 custom Key-Value pairs using the buttons below.
+        </li>
+        <li>
+          Personality Form: Complete the Personality Form.
+        </li>
+      </ul>
       <div id="metadata_drop_zone">
-        Drop metadata file here
+        Option 1: Drop metadata file here or
         <input hidden id="metadata_input" />
       </div>
+      
       <div id="customKeyValueContainer"></div>
-      <button id="addKeyValueBtn">Add Key-Value</button>
+      <span style="font-size:12px">Option 2: </span>
+      <button id="addKeyValueBtn">Add Key-Value Pair</button>
       <button id="submitKeyValueBtn">Submit</button>
       <br>
-      <text style="font-size:12px"><i>You can add up to 5 unique Key-Value fields. Once your fields are complete, press Submit to drop it in the coffin.</i></text>
-      <br>
-      <br>
+      <span style="font-size:12px">Option 3: </span>
       <button onclick=openMetadataModal() disabled>Personality Form</button>
       <br>
-      <text style="font-size:12px"><i>Create a custom personality!</i></text>
-
-
       <br>
       <br>
-      <text for="modalResurrectTime">Resurrection:</text>
+      <text for="modalResurrectTime">6) Resurrection:</text>
       <input type="datetime-local" id="modalResurrectTime" />
       <br>
       <text style="font-size:12px"><i>Resurrection is the exact time the Beneficiary will gain access to the coffins Unlock, Reveal, and Rebury mechanics.</i></text>
 
       <br><br>
-      <text for="modalBeneficiary">Beneficiary:</text>
+      <text for="modalBeneficiary">7) Beneficiary:</text>
       <input type="text" id="modalBeneficiary" />
       <br>
       <text style="font-size:12px"><i>Beneficiary must be an ethereum address (0x...)</i></text>
@@ -103,9 +112,10 @@
 
       <text style="color:#ffd000">ⓘ You will be asked to sign 2 transactions. The first transaction will bury your
         coffin. The second
-        transaction gives the beneficiary approval to resurrect any of your coffins.</text>
+        transaction gives the beneficiary approval to resurrect any of your coffins, but they will only be able to resurrect coffins in which they are listed.</text>
       <br><br>
       <button id="submitModal">BURY</button>
+      <br>
     </div>
   </div>
   
