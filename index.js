@@ -840,6 +840,8 @@ const RESURRECT_BUTTON_ID = "resurrectButton";
 const BURY_AGAIN_BUTTON_ID = "buryAgainButton";
 const UNLOCK_METADATA_BUTTON_ID = "unlockMetadataButton";
 const EXPOSE_METADATA_BUTTON_ID = "exposeMetadataButton";
+const CHAT_BUTTON_ID = "chatButton";
+const CHAT_MODAL_ID = "chatModal";
 
 const statusBar = document.createElement("span");
 statusBar.setAttribute("id", "statsign");
@@ -1221,6 +1223,16 @@ async function getNFTDetails(graveNumber) {
 			tokenDetailsElement.appendChild(div);
 		});
 
+			// ADD CHAT BUTTON
+		const chatButton = document.createElement("button");
+		chatButton.textContent = "Chat with me";
+		chatButton.id = CHAT_BUTTON_ID;
+		// Disable the chat button
+		chatButton.disabled = true
+		chatButton.addEventListener("click", openChatModal);
+		tokenDetailsElement.appendChild(chatButton);
+		tokenDetailsElement.appendChild(document.createElement("br"));
+
 		const bottomElements = [
 			{ class: "epitaph", text: `${nftDetails.epitaph}` },
 			{
@@ -1258,6 +1270,8 @@ async function getNFTDetails(graveNumber) {
 				text: `This Coffin has been buried ${nftDetails.buriedCounter} times.`,
 			},
 		];
+
+
 
 		if (nftDetails.mediaUrl.startsWith("ipfs://")) {
 
@@ -2546,3 +2560,44 @@ metadataModal.appendChild(metadataModalContent);
 
 // append the main modal container to the body
 document.body.appendChild(metadataModal);
+
+
+
+function openChatModal() {
+	toggleModal(CHAT_MODAL_ID, true);
+	setStatus("Chatting in the graveyard");
+}
+function toggleModal(modalId, isShow) {
+	const modal = document.getElementById(modalId);
+	modal.style.display = isShow ? "block" : "none";
+	const statusBarContainer = isShow ? modal : document.getElementById("statusBar");
+	statusBarContainer.insertBefore(statusBar, statusBarContainer.firstChild);
+
+}
+
+		// ADD CHAT MODAL
+const chatModal = document.createElement("div");
+chatModal.id = CHAT_MODAL_ID;
+chatModal.className = "chat-modal";
+
+const chatModalContent = document.createElement("div");
+chatModalContent.className = "chat-modal-content";
+
+const closeChatBtn = document.createElement("span");
+closeChatBtn.className = "chat-modal-close";
+closeChatBtn.textContent = "X";
+closeChatBtn.addEventListener("click", closeChatModal);
+chatModalContent.appendChild(closeChatBtn);
+
+const chatroom = document.createElement("div");
+chatroom.id = "chatroom";
+chatModalContent.appendChild(chatroom);
+
+chatModal.appendChild(chatModalContent);
+
+document.body.appendChild(chatModal);
+
+function closeChatModal() {
+	toggleModal(CHAT_MODAL_ID, false);
+	setStatus("Welcome to the cemetery");
+}
