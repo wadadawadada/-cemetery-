@@ -1784,8 +1784,8 @@ async function uploadFileToIPFS(buffer, fileType) {
 	const response = await fetch(url, {
 		method: 'POST',
 		headers: {
-			'pinata_api_key': '3edcfb989ad2b8a716f9',
-			'pinata_secret_api_key': 'bdce1163f7b4acfaa9f4b7bc4f1885cea4f95753238cf18052aba3a295a9daf9'
+			'pinata_api_key': process.env.pinata_api_key,
+			'pinata_secret_api_key': process.env.pinata_secret_api_key
 		},
 		body: formData,
 	});
